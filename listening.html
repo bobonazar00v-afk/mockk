@@ -247,8 +247,8 @@ body.dark #dark-toggle { border-color: #4a5a7a; background: #2a3a5a; }
 <!-- Answer Key -->
 <div id="answer-key" style="display:none;">
 "1": "train",
-"2": ["5", "five"],
-"3": ["coach", "bus"],
+"2": "5",
+"3": "coach",
 "4": "walk",
 "5": "waterfall",
 "6": "whales",
@@ -261,31 +261,31 @@ body.dark #dark-toggle { border-color: #4a5a7a; background: #2a3a5a; }
 "13": "A",
 "14": "C",
 "15": "A",
-"16": "C",
-"17": "F",
-"18": "A",
-"19": "H",
-"20": "E",
-"21": ["B", "D"],
-"22": ["B", "D"],
-"23": ["D", "E"],
-"24": ["D", "E"],
-"25": ["A", "C"],
-"26": ["A", "C"],
+"16": "F",
+"17": "G",
+"18": "B",
+"19": "D",
+"20": "H",
+"21": "B",
+"22": "D",
+"23": "D",
+"24": "E",
+"25": "A",
+"26": "C",
 "27": "C",
 "28": "A",
 "29": "F",
 "30": "D",
-"31": ["elderly", "old"],
-"32": ["meals", "food", "eating"],
+"31": "elderly",
+"32": "meals",
 "33": "digestion",
 "34": "temperature",
-"35": ["skin", "complexion"],
+"35": "skin",
 "36": "headaches",
 "37": "anxiety",
 "38": "swallowing",
 "39": "athletes",
-"40": ["salt", "sodium"]
+"40": "salt"
 </div>
 
 <!-- LOGIN -->
@@ -341,31 +341,10 @@ body.dark #dark-toggle { border-color: #4a5a7a; background: #2a3a5a; }
   </div>
 </div>
 
-<!-- AUDIO MODAL -->
-<div id="audio-modal" style="display:none; position:fixed; inset:0; z-index:20000; align-items:center; justify-content:center;">
-  <div style="position:absolute; inset:0; backdrop-filter:blur(6px); background:rgba(10,15,40,0.65);"></div>
-  <div style="position:relative; background:white; border-radius:20px; padding:44px 40px; max-width:420px; width:90%; text-align:center; box-shadow:0 30px 80px rgba(0,0,0,0.5); animation:cardIn .4s cubic-bezier(.22,1,.36,1);">
-    <div style="font-size:64px; margin-bottom:14px;">🎧</div>
-    <h2 style="font-size:22px; font-weight:800; color:#1a1a2e; margin-bottom:10px;">Ready to start?</h2>
-    <p style="color:#555; font-size:14px; margin-bottom:16px;">Press Play to begin the audio. The test will start automatically.</p>
-    <div style="background:#fff3cd; border:1px solid #ffc107; border-radius:10px; padding:12px 16px; margin-bottom:24px; text-align:left;">
-      <p style="font-size:13px; color:#856404; margin:0;">⚠️ Once started, the audio <strong>cannot be paused, rewound or replayed.</strong></p>
-    </div>
-    <audio id="global-audio-player"
-      src="https://bobonazar00v-afk.github.io/trainer-2.6/audio.mp3"
-      preload="auto"
-      controls
-      controlsList="nodownload nofullscreen noremoteplayback"
-      style="width:100%; border-radius:8px; margin-bottom:10px;">
-    </audio>
-    <p style="color:#888; font-size:13px;">Нажми на <strong>▶</strong> чтобы начать аудио и тест</p>
-  </div>
-</div>
-
 <!-- COMPLETION -->
 <div class="completion-screen" id="completion-screen">
   <div class="completion-message">Listening section ended</div>
-  <a class="navigation-button" href="https://bobonazar00v-afk.github.io/trainer-2.6/Reading.html">Please move to reading section</a>
+  <a class="navigation-button" href="Reading.html">Please move to reading section</a>
 </div>
 
 <!-- HEADER -->
@@ -382,7 +361,7 @@ body.dark #dark-toggle { border-color: #4a5a7a; background: #2a3a5a; }
   </div>
 </div>
 
-<audio id="global-audio-player" src="https://bobonazar00v-afk.github.io/trainer-2.6/audio.mp3" preload="auto" style="display:none;"></audio>
+<audio id="global-audio-player" style="display:none;"></audio>
 
 <!-- MAIN -->
 <div class="main-container" id="main-container">
@@ -771,7 +750,7 @@ body.dark #dark-toggle { border-color: #4a5a7a; background: #2a3a5a; }
 
 <script>
 const PASSWORD = '1234';
-const AUDIO_SRC = 'https://bobonazar00v-afk.github.io/trainer-2.6/audio.mp3';
+const AUDIO_SRC = 'audio.mp3';
 
 let currentPart = 1;
 let currentQuestion = 1;
@@ -818,31 +797,25 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('login-screen').style.display = 'flex';
   });
   document.getElementById('start-test-btn').addEventListener('click', function() {
-    // Показываем тест но заблюренный
     document.getElementById('intro-screen').style.display = 'none';
     document.getElementById('main-header').style.display = 'flex';
     document.getElementById('main-container').style.display = 'flex';
     document.getElementById('nav-arrows').style.display = 'flex';
     document.getElementById('nav-row').style.display = 'flex';
-    document.getElementById('main-container').style.filter = 'blur(6px)';
-    document.getElementById('main-header').style.filter = 'blur(6px)';
-    document.getElementById('nav-row').style.filter = 'blur(6px)';
+    const audio = document.getElementById('global-audio-player');
+    audio.src = AUDIO_SRC;
+    audio.load();
+    audio.play().catch(function() {
+      document.addEventListener('click', function tryPlay() {
+        audio.play();
+        document.removeEventListener('click', tryPlay);
+      }, { once: true });
+    });
     switchToPart(1);
     setupDragAndDrop();
     setupCheckboxLimits();
     setupInputListeners();
     updateAnsweredIndicators();
-    // Показываем модалку
-    document.getElementById('audio-modal').style.display = 'flex';
-  });
-
-  document.getElementById('global-audio-player').addEventListener('play', function() {
-    if (document.getElementById('audio-modal').style.display !== 'none') {
-      document.getElementById('audio-modal').style.display = 'none';
-      document.getElementById('main-container').style.filter = '';
-      document.getElementById('main-header').style.filter = '';
-      document.getElementById('nav-row').style.filter = '';
-    }
   });
   document.getElementById('logout-btn').addEventListener('click', function() {
     if (confirm('Logout?')) window.location.reload();
@@ -872,23 +845,6 @@ function nextPart() { if (currentPart < 4) switchToPart(currentPart + 1); }
 
 // ---- AUDIO (hidden, no UI) ----
 const audioEl = document.getElementById('global-audio-player');
-
-// Автосабмит когда аудио закончилось
-audioEl.addEventListener('ended', function() {
-  submitTest();
-});
-
-// Блокируем паузу и перемотку после старта теста
-audioEl.addEventListener('pause', function() {
-  if (document.getElementById('main-container').style.display !== 'none') {
-    audioEl.play();
-  }
-});
-audioEl.addEventListener('seeking', function() {
-  if (document.getElementById('main-container').style.display !== 'none') {
-    audioEl.currentTime = audioEl.currentTime; // запрещаем перемотку
-  }
-});
 
 function fmt(s) {
   if (isNaN(s)) return '0:00';
@@ -1098,22 +1054,15 @@ function setupDragAndDrop() {
 
 // ---- ANSWER KEY ----
 function parseAnswerKey() {
-  const raw = document.getElementById('answer-key').textContent.trim();
-  // Clean trailing commas before } or ] which break JSON.parse
-  const cleaned = raw.replace(/,\s*([}\]])/g, '$1');
   try {
-    return JSON.parse('{' + cleaned + '}');
+    const raw = document.getElementById('answer-key').textContent.trim();
+    return JSON.parse('{' + raw + '}');
   } catch(e) {
-    // fallback: handle both string and array values
+    // fallback: build object manually line by line
     const obj = {};
-    cleaned.split('\n').forEach(line => {
-      const t = line.trim();
-      // array value: "1": ["a", "b"]
-      const ma = t.match(/^"(\d+)":\s*(\[.*?\])/);
-      if (ma) { try { obj[ma[1]] = JSON.parse(ma[2]); } catch(_) {} return; }
-      // string value: "1": "train"
-      const ms = t.match(/^"(\d+)":\s*"([^"]+)"/);
-      if (ms) obj[ms[1]] = ms[2];
+    document.getElementById('answer-key').textContent.trim().split('\n').forEach(line => {
+      const m = line.trim().match(/^"(\d+)":\s*"([^"]+)"/);
+      if (m) obj[m[1]] = m[2];
     });
     return obj;
   }
@@ -1137,21 +1086,11 @@ function getUserAnswer(q) {
 }
 
 // ---- SUBMIT ----
-let testSubmitted = false;
 function submitTest() {
-  if (testSubmitted) return;
   if (!confirm('Submit test and download your PDF results?')) return;
-  testSubmitted = true;
-  try {
-    downloadResultsPDF();
-  } catch(e) {
-    console.error('PDF error:', e);
-    alert('Could not generate PDF. Please try again or contact support.\nError: ' + e.message);
-    testSubmitted = false;
-    return;
-  }
+  downloadResultsPDF();
   setTimeout(() => { document.getElementById('completion-screen').style.display = 'flex'; }, 1500);
-  setTimeout(() => { window.location.href = 'https://bobonazar00v-afk.github.io/trainer-2.6/Reading.html'; }, 3000);
+  setTimeout(() => { window.location.href = 'Reading.html'; }, 800);
 }
 
 function downloadResultsPDF() {
@@ -1160,15 +1099,12 @@ function downloadResultsPDF() {
   const results = [];
   for (const [q, ans] of Object.entries(key)) {
     const user = getUserAnswer(parseInt(q));
-    const ok = Array.isArray(ans)
-      ? ans.some(a => user.toLowerCase() === String(a).toLowerCase())
-      : user.toLowerCase() === String(ans).toLowerCase();
+    const ok = user.toLowerCase() === String(ans).toLowerCase();
     if (ok) correct++;
     results.push({ q, user: user || '—', ans, ok });
   }
   const band = (r => { if(r>=39)return 9;if(r>=37)return 8.5;if(r>=35)return 8;if(r>=32)return 7.5;if(r>=30)return 7;if(r>=26)return 6.5;if(r>=23)return 6;if(r>=18)return 5.5;if(r>=16)return 5;if(r>=13)return 4.5;if(r>=10)return 4;if(r>=8)return 3.5;if(r>=6)return 3;if(r>=4)return 2.5;if(r>=2)return 2;if(r===1)return 1.5;return 0; })(correct);
 
-  if (!window.jspdf || !window.jspdf.jsPDF) throw new Error('jsPDF library not loaded. Check your internet connection.');
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
   doc.setFontSize(18); doc.setFont(undefined,'bold');
@@ -1185,7 +1121,7 @@ function downloadResultsPDF() {
     doc.setTextColor('#000000');
     doc.text(r.q, 20, y);
     doc.text(r.user, 35, y);
-    doc.text(Array.isArray(r.ans) ? r.ans.join(' / ') : String(r.ans), 100, y);
+    doc.text(String(r.ans), 100, y);
     doc.setTextColor(r.ok ? '#1a7a1a' : '#c0392b');
     doc.text(r.ok ? 'Correct' : 'Wrong', 155, y);
     y += 8;
