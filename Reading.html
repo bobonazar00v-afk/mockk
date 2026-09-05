@@ -102,6 +102,16 @@ select.answer-input { width:auto; min-width:80px; cursor:pointer; }
 .tf-option:has(input[type="radio"]:checked) { background:#dbeafe; font-weight:600; }
 .tf-option input[type="radio"] { margin-right:8px; }
 
+/* Checkbox group (choose two) */
+.checkbox-group { margin-top:8px; }
+.checkbox-group label { display:block; padding:10px 14px; background:#fff; cursor:pointer; border:1px solid #eee; border-radius:4px; margin-bottom:6px; }
+.checkbox-group label:hover { background:#f5f9ff; }
+.checkbox-group label:has(input[type="checkbox"]:checked) { background:#dbeafe; border-color:#4a90e2; font-weight:600; }
+.checkbox-group input[type="checkbox"] { margin-right:10px; }
+body.dark .checkbox-group label { background:#1e1e1e; color:#e0e0e0; border-color:#3a3a3a; }
+body.dark .checkbox-group label:hover { background:#2a2a2a; }
+body.dark .checkbox-group label:has(input[type="checkbox"]:checked) { background:#2d4a2d; color:#a0e0a0; border-color:#4a90e2; }
+
 /* Single choice */
 .single-choice-container { display:flex; flex-direction:column; gap:8px; margin-top:8px; }
 .single-choice label { display:block; padding:10px 14px; background:#fff; cursor:pointer; border:1px solid #eee; border-radius:4px; }
@@ -273,8 +283,107 @@ body.dark .centered-title { color: #ffffff; }
 .submit-btn-fixed:hover { background: #c82333; transform: translateY(-2px); box-shadow: 0 7px 24px rgba(220,53,69,.55); }
 body.dark .submit-btn-fixed { box-shadow: 0 4px 18px rgba(220,53,69,.3); }
 
+/* ── DARK MODE: fix all white/light boxes ── */
+body.dark .question { background: #1a1a1a; }
+body.dark .question-prompt p { color: #c8c8c8; }
+
+/* Tables (Passage 1 fill-table, inline tables) */
+body.dark table { background: #1a1a1a; border-color: #3a3a3a; }
+body.dark th { background: #252525 !important; color: #b0b0b0 !important; border-color: #3a3a3a !important; }
+body.dark td { background: #1a1a1a !important; color: #d0d0d0 !important; border-color: #2e2e2e !important; }
+body.dark tr:nth-child(even) td, body.dark tr.alt td { background: #202020 !important; }
+body.dark div[style*="overflow-x:auto"] { border-color: #3a3a3a !important; }
+body.dark div[style*="background:#f0f4ff"] { background: #252535 !important; }
+body.dark div[style*="background:#fafbff"] { background: #1e1e2a !important; }
+
+/* Matching form rows */
+body.dark .matching-form-container { background: #1a1a1a; }
+body.dark .matching-form-row { background: #1e1e1e; border-color: #3a3a3a; }
+body.dark .matching-form-label { color: #c8c8c8; }
+body.dark select.answer-input { background: #2a2a2a !important; color: #e0e0e0 !important; border-color: #555 !important; }
+body.dark select.answer-input option { background: #2a2a2a; color: #e0e0e0; }
+
+/* Notes / summary boxes */
+body.dark .notes-box { background: #1e1e1e; border-color: #3a3a3a; color: #d0d0d0; }
+body.dark .summary-box { background: #1e1e1e; border-color: #3a3a3a; color: #d0d0d0; }
+body.dark .summary-text p, body.dark .summary-text li { color: #d0d0d0; }
+body.dark .fill-table { background: #1a1a1a; }
+body.dark .fill-table th { background: #252525; color: #b0b0b0; border-color: #3a3a3a; }
+body.dark .fill-table td { background: #1a1a1a; color: #d0d0d0; border-color: #2e2e2e; }
+
+/* TF questions */
+body.dark .tf-question { background: #1a1a1a; }
+body.dark .tf-question-line { color: #d0d0d0; }
+body.dark .tf-question-number { color: #7aa0e0; }
+body.dark .tf-question-text { color: #d0d0d0; }
+
+/* Map rows (inline styled) */
+body.dark div[style*="background:#f9fafb"] { background: #1e1e1e !important; color: #d0d0d0 !important; border-color: #3a3a3a !important; }
+body.dark div[style*="background:#f8f8f8"] { background: #1e1e1e !important; }
+body.dark div[style*="border:1.5px solid #e8ecf0"] { border-color: #3a3a3a !important; }
+body.dark div[style*="border:1px solid #eee"] { border-color: #3a3a3a !important; }
+
+/* Passage header title */
+body.dark .part-header { background: #1e1e1e; color: #e0e0e0; border-color: #3a3a3a; }
+
+/* Footer nav */
+body.dark .footer__questionWrapper___1tZ46 { background: #1e1e1e; border-color: #3a3a3a; }
+body.dark .subQuestion { background: #2a2a2a; border-color: #444; color: #ccc; }
+
+/* Context menu & misc */
+body.dark .context-menu { background: #2a2a2a; border-color: #444; }
+body.dark .active-question { background: #2a2a1a; }
+
 .hidden { display:none !important; }
 .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* ===== ADMIN PANEL ===== */
+#admin-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:99999; align-items:center; justify-content:center; }
+#admin-overlay.open { display:flex; }
+#admin-box { background:#1a1d27; border:1px solid #3a3f55; border-radius:12px; padding:28px 32px; width:380px; max-width:95vw; color:#e2ddd5; font-family:system-ui,sans-serif; font-size:14px; }
+.admin-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
+#admin-box h2 { margin:0; font-size:16px; font-weight:700; color:#fff; }
+#admin-close-x { background:none; border:none; color:#8a8fa0; font-size:22px; cursor:pointer; line-height:1; padding:0 2px; }
+#admin-close-x:hover { color:#e2ddd5; }
+.admin-hint { font-size:11px; color:#555; margin-bottom:20px; }
+#admin-pw-wrap { display:flex; gap:8px; margin-bottom:8px; }
+#admin-pw { flex:1; background:#111318; border:1px solid #3a3f55; border-radius:7px; color:#e2ddd5; font-size:14px; padding:8px 12px; outline:none; }
+#admin-pw:focus { border-color:#4a9eff; }
+#admin-pw-err { color:#e05c5c; font-size:12px; min-height:16px; margin-bottom:12px; }
+#admin-unlock-btn { background:#4a9eff; border:none; color:#fff; border-radius:7px; padding:8px 16px; font-size:13px; font-weight:600; cursor:pointer; }
+#admin-controls { display:none; flex-direction:column; gap:10px; }
+#admin-controls.show { display:flex; }
+.admin-section { background:#111318; border:1px solid #2a2e3a; border-radius:8px; padding:14px; }
+.admin-section h4 { margin:0 0 10px; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#4a9eff; }
+.admin-row { display:flex; align-items:center; gap:8px; }
+.admin-btn { background:#2a2e3a; border:1px solid #3a3f55; color:#e2ddd5; border-radius:6px; padding:7px 13px; font-size:12px; font-weight:600; cursor:pointer; transition:border-color .15s; }
+.admin-btn:hover { border-color:#4a9eff; color:#4a9eff; }
+#admin-timer-status { font-size:12px; color:#8a8fa0; }
+#admin-settings-btn { background:none; border:1px solid #ccc; border-radius:4px; padding:5px 9px; cursor:pointer; font-size:15px; line-height:1; color:#555; }
+#admin-settings-btn:hover { border-color:#888; color:#111; }
+body.dark #admin-settings-btn { border-color:#3a3f55; color:#8a8fa0; }
+
+/* ===== CONFIRM BLUR MODAL ===== */
+#confirm-overlay { display:none; position:fixed; inset:0; z-index:8000; align-items:center; justify-content:center; }
+#confirm-overlay.open { display:flex; }
+#confirm-backdrop { position:absolute; inset:0; backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); background:rgba(0,0,0,.45); }
+#confirm-box { position:relative; z-index:1; background:#fff; border-radius:16px; padding:36px 32px; width:400px; max-width:95vw; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.35); }
+body.dark #confirm-box { background:#1e2130; color:#e2ddd5; }
+#confirm-box h3 { font-size:20px; font-weight:700; margin-bottom:10px; }
+#confirm-box p { font-size:14px; color:#666; margin-bottom:24px; line-height:1.6; }
+body.dark #confirm-box p { color:#8a8fa0; }
+.confirm-stats { display:flex; gap:12px; justify-content:center; margin-bottom:24px; }
+.confirm-stat { background:#f5f5f5; border-radius:10px; padding:14px 20px; min-width:100px; }
+body.dark .confirm-stat { background:#111318; }
+.confirm-stat-num { font-size:28px; font-weight:800; color:#333; }
+body.dark .confirm-stat-num { color:#e2ddd5; }
+.confirm-stat-label { font-size:11px; color:#888; text-transform:uppercase; letter-spacing:.05em; }
+.confirm-btns { display:flex; gap:10px; }
+.confirm-btn-back { flex:1; background:#f0f0f0; border:none; border-radius:10px; padding:13px; font-size:14px; font-weight:600; cursor:pointer; color:#555; }
+.confirm-btn-back:hover { background:#e0e0e0; }
+body.dark .confirm-btn-back { background:#2a2e3a; color:#c8c8d0; }
+.confirm-btn-submit { flex:1; background:#e53935; border:none; border-radius:10px; padding:13px; font-size:14px; font-weight:700; cursor:pointer; color:#fff; }
+.confirm-btn-submit:hover { background:#c62828; }
 </style>
 </head>
 <body>
@@ -283,11 +392,11 @@ body.dark .submit-btn-fixed { box-shadow: 0 4px 18px rgba(220,53,69,.3); }
 <div class="login-screen" id="login-screen">
   <div class="login-content">
     <div class="login-logo"><img src="logo.png" alt="Logo" onerror="this.style.display='none'"/></div>
-    <h1>IELTS Reading Test</h1>
-    <p class="subtitle">Enter your password to continue</p>
+    <h1>IELTS Academic</h1>
+    <p class="subtitle">Reading Test — Enter your password to continue</p>
     <div class="form-group">
-      <label for="password">Password</label>
-      <input id="password" type="password" placeholder="••••••••"/>
+      <label for="password">Exam Password</label>
+      <input id="password" type="password" placeholder="Enter exam password"/>
     </div>
     <button class="login-button" type="button" onclick="submitLogin()">Continue →</button>
     <div class="error-message" id="login-error">Incorrect password. Please try again.</div>
@@ -298,12 +407,20 @@ body.dark .submit-btn-fixed { box-shadow: 0 4px 18px rgba(220,53,69,.3); }
 <div class="candidate-screen" id="candidate-screen">
   <div class="candidate-content">
     <div class="candidate-logo"><img src="logo.png" alt="Logo" onerror="this.style.display='none'"/></div>
-    <h1>Candidate Verification</h1>
-    <p class="subtitle">Enter your Candidate ID to proceed</p>
-    <input class="candidate-id-input" id="candidate-id-input" maxlength="12" placeholder="ID" type="text"/>
-    <button class="candidate-button" type="button" onclick="submitCandidate()">Continue →</button>
+    <h1>Candidate Details</h1>
+    <p class="subtitle">Please enter your name and test date</p>
+    <div class="form-group" style="text-align:left;margin-bottom:14px;">
+      <label style="display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:6px;letter-spacing:.05em;text-transform:uppercase;">Full Name</label>
+      <input style="width:100%;padding:13px 16px;border:2px solid #e8ecf0;border-radius:10px;font-size:15px;font-family:inherit;background:#f9fafb;transition:border-color .2s;box-sizing:border-box;outline:none;" id="candidate-name-input" type="text" placeholder="e.g. Azizbek Toshmatov" autocomplete="name" onfocus="this.style.borderColor='#0f3460';this.style.background='#fff'" onblur="this.style.borderColor='#e8ecf0';this.style.background='#f9fafb'"/>
+    </div>
+    <div class="form-group" style="text-align:left;margin-bottom:20px;">
+      <label style="display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:6px;letter-spacing:.05em;text-transform:uppercase;">Test Date</label>
+      <input style="width:100%;padding:13px 16px;border:2px solid #e8ecf0;border-radius:10px;font-size:15px;font-family:inherit;background:#f9fafb;transition:border-color .2s;box-sizing:border-box;outline:none;" id="test-date-input" type="date" onfocus="this.style.borderColor='#0f3460';this.style.background='#fff'" onblur="this.style.borderColor='#e8ecf0';this.style.background='#f9fafb'"/>
+    </div>
+    <input type="hidden" id="candidate-id-input"/>
+    <button class="candidate-button" type="button" onclick="submitCandidate()">Confirm &amp; Proceed →</button>
     <button class="back-button" id="back-to-login" type="button">← Back</button>
-    <div class="error-message" id="candidate-error">Please enter a valid Candidate ID.</div>
+    <div class="error-message" id="candidate-error">Please enter your full name.</div>
   </div>
 </div>
 
@@ -345,6 +462,7 @@ body.dark .submit-btn-fixed { box-shadow: 0 4px 18px rgba(220,53,69,.3); }
   <div class="header-right">
     <span id="candidate-label">Candidate: <span id="header-candidate-id"></span></span>
     <button id="dark-toggle" title="Toggle dark mode">🌙</button>
+    <button id="admin-settings-btn" onclick="adminTogglePanel()" title="Admin Settings">⚙️</button>
     <button id="logout-btn">Logout</button>
   </div>
 </div>
@@ -352,7 +470,7 @@ body.dark .submit-btn-fixed { box-shadow: 0 4px 18px rgba(220,53,69,.3); }
 <!-- MAIN -->
 <div class="main-container" id="main-container">
   <div id="part-header-bar" class="part-header-bar">
-    <strong>Part 1</strong> — Read the text and answer questions 1–13. (Earth's Lakes Are Under Threat)
+    <strong>Part 1</strong> — Read the text and answer questions 1–13. (The History of Modern American Dance)
   </div>
   <div class="panels-container">
 
@@ -360,39 +478,36 @@ body.dark .submit-btn-fixed { box-shadow: 0 4px 18px rgba(220,53,69,.3); }
     <div class="passage-panel" id="passage-panel">
 
       <!-- PASSAGE 1 -->
-      <div id="passage-text-1" class="reading-passage">
-        <h4>Earth's LAKES ARE UNDER THREAT</h4>
-        <p>Lake Poopo used to be Bolivia's second largest lake. Situated in the Altiplano Mountains at an altitude of around 3,700m, the lake in winter would cover an area of some 2,700 square kilometres as it was fed by swollen rivers. With very little rainfall during summer, this reduced to around 1,000, still a remarkable size. This was the pattern in previous centuries, but in December 2015, satellites confirmed the reports of local people that the lake had gone. While scientists had suspected that Poopo would eventually run dry, they didn't expect that this would occur for at least another thousand years. The local mining industry had already contributed to the pollution of the lake, but scientists believe global warming, drought and irrigation projects are all responsible for its disappearance. Today the consequences of Lake Poopo's disappearance are dramatic; many people who lived in the villages around it have left, since there are no more fish to be caught. Environmentalists also point to the fact that the lake had been the stopover point for thousands of birds as they migrated to other regions. Their numbers will certainly fall now the lake has gone.</p>
-        <p>Lake Poopo is not the only vast area of water to have disappeared. The Aral Sea in Central Asia was once the world's fourth largest lake but then it began to shrink in the 1960s. As a shallow lake, it depended on rivers to keep its level up. But then water from these rivers was diverted for irrigation purposes. Rice is a crop that needs huge quantities of water to survive in desert areas. Fields planted with cotton also require a regular supply. Now the water level is so low that fishing has stopped altogether. And it is not just the immediate area that is affected. Because the floor of the lake is now exposed, the salt that lies there is often carried by the wind across a radius of 300 kilometres. This impacts on agriculture as it damages growing plants and is absorbed by the soil.</p>
-        <p>For some lakes, the biggest threat is from climate change. On average, the surface water of the world's lakes has gone up in temperature by 0.34° C every ten years since 1985. Lake Tanganyika in East Africa is a lake where this trend has been observed, although it is by no means the most extreme example. This would be Lake Fracksjön in Sweden, where an increase of 1.35° C per decade has been observed — a figure which is estimated to rise. For Lake Tanganyika, however, the consequences have been severe. Warming has disrupted its ecosystem, and fish numbers have dropped sharply. In turn, this decline in fish stocks has impacted on families living in villages and towns around the lake, since they have no other source of protein. Furthermore, around 100,000 people depend on the fisheries established around Lake Tanganyika. These companies provide them with regular employment, without which communities will not survive.</p>
-        <p>In Iran, Lake Urmia's waters have also been affected by unusually hot summers, but dams and irrigation projects have also played a part. In the past, people admired its beautiful green-blue colour. However, the water now has a red tint. The reason for this is that bacteria quickly multiply in the warm waters of a shallow lake. Now local communities are understandably concerned about the future. One of their concerns is that Lake Urmia is no longer seen as a place where people can bathe to improve their health. As a result, in the last decade, there has been a downturn in tourism in the area, an industry many people depended on.</p>
-        <p>In some cases, it can be a challenge for scientists to predict outcomes for a lake or to recognise the factors that threaten it. Take, for example, Lake Waiau in Hawaii, a lake that was used in healing rituals by native Hawaiians. It is a fairly small lake, approximately 100m across, with some variation as the water level rises and falls. However, in early 2010, the lake began to decrease in size. By September 2013, it could only be described as a pond. The cause of the lake's decline has not yet been established, but drought is among the suspects. Then there is Scott Lake in central Florida. In June 2006 a massive sinkhole opened up beneath the lake — acting like a plug hole in a bath. It only took two weeks for the water to drain away. Local residents called meetings to decide what action to take, but in the end, nature took care of the problem. Clay, sand and other fine material plugged the hole and the lake started to fill with water again. Nevertheless, as geologists point out, sinkholes can occur with some frequency in Florida so there is a chance that Scott Lake will drain away again.</p>
+            <div id="passage-text-1" class="reading-passage">
+        <h4>A river reveals its Roman past</h4>
+        <p>2,000 years ago the town of Arles, in what is now south-western France, was a busy gateway to the area of the Roman Empire known as Gaul. Goods from all over the Mediterranean were transferred there to barges – long, shallow riverboats – then pulled up the Rhone river to supply the northern half of the great empire. Today, Arles is a small, quiet place, and the Rhone is polluted and mostly ignored.</p>
+        <p>In 1986, a friend persuaded Luc Long, a keen diver, to dive for the first time in his home river. Long reluctantly agreed. The two men entered the river on a chilly November morning, when the water was around 8°C, thick, cloudy and foul-smelling. They could see no more than a metre ahead through the murky water. At a depth of about six metres, Long saw a sunken truck. To his surprise, he discovered an ancient Roman jar known as an amphora on the driver's seat. These containers were used throughout the Roman Empire to transport olive oil, fish sauce, and other products. When empty, they would simply be discarded. Within a short time the divers had located dozens more amphorae, and he has been mapping this Roman rubbish dump ever since.</p>
+        <p>For the first 20 years or so, no one paid much attention to what Long was doing. In 2004, one of his colleagues came across a 34-metre-long Roman barge. Long doubted that there would ever be enough money available to raise it. In 2007, Long handed over the study of this barge to a young archaeologist, Sabrina Marlier, and concentrated on a survey of the rest of the dump, around 50 metres upstream. This was where he started finding pieces of the Roman town of Arles, including statues. Word began to leak out. The French customs police warned Long that antiquities thieves might be watching his operation. So when a rare marble bust of the Roman emperor Caesar was found, Long hid it in a friend's garage.</p>
+        <p>Before the diving season was over, divers had discovered a rare marble bust of the Roman emperor Caesar. News of the find spread around the world. 'The exhibition's success was astonishing,' said Claude Sintes, director of Arles' local antiquities museum, where the exhibition was held. 'When a modest town like ours got 400,000 visitors, the politicians understood that the economic return was strong.' By the autumn of 2010, the Caesar exhibition was nearing its end, and those same politicians were looking for more culture to invest in, because the European Union had designated the region around Arles a 2013 European Capital of Culture. Suddenly nine million euros became available to build a new wing on the museum and put a Roman barge into it. There was just one problem. The project would need to be completed by 2013. That meant the barge needed to be extracted during the one diving season in 2011. This was because although the wood of the boat had suffered no microbial decay, water had filled its cells, leaving the whole structure soft and spongy. If that water were to evaporate, the boat would collapse. The solution was to leave the boat in water, gradually infusing it with a polymer before extracting the water. The process would take nearly two years.</p>
+        <p>So there was only one diving season to extract the boat from the Rhone. 'We all thought the deadline was impossible,' said Benoit Poinard, who led the diving team. Normally, Poinard explained, the Rhone is safe for diving only from late June to October; otherwise the current is too strong. Three or four months would not be enough to excavate Arles-Rhone 3. Then 2011 arrived. It hardly snowed in the Alps that winter and that spring it barely rained. The Rhone's current was so gentle that the team got in the water by early May. The team worked straight into November, losing only a single week to bad weather and completed the job. 'Two hours after we finished,' Poinard said, 'the Rhone became undiveable for the whole winter.'</p>
+        <p>When Arles-Rhone 3 sank, it was carrying 33 tons of stone for building work. It had come from a quarry just north of Arles, and was probably heading towards a construction site further down the river. The boat was pointed upstream, though, rather than downstream, indicating it had been moored at the quay when it sank. A flash flood had probably swamped it. As soon as the flood subsided, the barge would have been covered in a coating of fine clay no more than 20 cm thick. This was where the archaeologists discovered the personal effects that the crew had left on the boat, including cooking utensils and plates. When the restorers were taking the boat apart, they found a silver coin dated to 30 BCE – the year before the battle of Actium – under the floorboards. They guessed someone had left it there to bring good luck. And it did – 2,000 years later. Arles-Rhone 3 was able to take its place in the new wing of the museum, on schedule, just over two years after re-emerging from the cloudy depths of the Rhone.</p>
       </div>
-
       <!-- PASSAGE 2 -->
-      <div id="passage-text-2" class="reading-passage hidden">
-        <h4>Biofuels: are they the fuels of the future?</h4>
-        <p><strong>A</strong>&nbsp;&nbsp;On paper, biofuels seem the ideal replacement for oil, coal and gas, the fossil fuels we depend upon, and which drive global warming and disrupt weather patterns by releasing carbon dioxide into the atmosphere. But the past decade has seen the biofuel industry face tough questions over whether it can truly claim to be 'green'. One of the biggest criticisms of biofuel crops – at least those that produce the fuel ethanol – has been their impact on food markets and on traditional land use. Direct impacts – for example cutting forests to make way for a biofuel crop – are usually obvious, says Professor Bill Laurance, director of the Centre for Tropical Environmental and Sustainability Science at James Cook University. But, in his experience, indirect impacts can be no less devastating for the environment and are far more of a challenge to anticipate.</p>
-        <p><strong>B</strong>&nbsp;&nbsp;Let's take Brazil, for example. When farmers in the US opted out of soy in favour of corn as a biofuel crop, soy prices soared, suddenly making it an attractive crop for Brazilian farmers. In turn, this increased demand for freshly deforested cropland in Brazil. Similar situations are occurring all over the world. But while deforestation can certainly lead to economic benefits for farmers, it also puts biodiversity at risk. Then, once a biofuel crop has been planted on deforestation land, farmers need to ensure that it grows as well as it can. That means applying large quantities of fertilizer, and while this helps the plants to shoot up, there is also the possibility it will lead to the contamination of local rivers.</p>
-        <p><strong>C</strong>&nbsp;&nbsp;Not all biofuels have been grown on land, but the once-popular idea of generating them from microscopic algae grown in ponds or tanks has largely been forgotten. Professor Rachel Burton, leader of the ARC Centre of Excellence for Plant Cell Walls at the University of Adelaide, thinks that there is a smarter way forward for biofuels and it starts with selecting the right crop for land not usually used for agriculture. Burton and others are looking to tough plants that grow on land too dry or salty for conventional crops. Australia, for example, could turn to crops such as agave, hemp or the native saltbush and wild-growing sorghum for the biofuels of the future, she says.</p>
-        <p><strong>D</strong>&nbsp;&nbsp;Researchers must also consider economic factors, however. While plant oils can be extracted and turned into biodiesel for vehicles and machinery, currently the process is very expensive – much more so than the process for fossil fuels. Dr Allan Green is innovation leader for bio-based products at CSIRO Agriculture and Food. His solution is to make plants oilier by genetically altering them so that they produce oil in their leaves, not just in their fruit or seeds. With more oil being produced on a particular section of land by the same number of plants, it would become cheaper to harvest and extract the oil. The technology, which has so far only been tested in tobacco, shows that oil production can be boosted to a third or more of a tobacco leaf's weight. If used in a different crop – one that already produces oil in its seeds or fruit – the hope is that oil output could be doubled, though that idea is yet to be put to the test.</p>
-        <p><strong>E</strong>&nbsp;&nbsp;A technology which is becoming increasingly popular in the biofuel industry is hydrothermal liquefaction. This is a process which uses heat and pressure to break apart molecules in whole plants and remove oxygen, so that the raw material is turned into crude oil. After this, it can then be turned into different kinds of fuel. One advantage of the hydrothermal liquefaction process is that many kinds of plant can be used. And if this process could run on energy from solar panels or wind farms, it would be much more environmentally sustainable.</p>
-        <p><strong>F</strong>&nbsp;&nbsp;New processing technologies are giving biofuel producers hope that, in future, they won't be limited to plants designed to be biofuel-only crops. Perhaps they will be able to choose species that deliver added benefits or sources of income. Hemp crops, for instance, could be used for their oil, but also for their fibre. Some car manufacturers have already used it as a soundproofing material in their vehicles, and others may do the same. And according to Kristen Heimann, associate professor at the College of Science and Engineering at James Cook University, it might be possible, say, for algae not just to act as a biofuel, but to decontaminate water. Burton believes this kind of multi-purpose use for biofuel crops is the way forward. 'It's much more sophisticated thinking', she says. 'Biofuels maybe don't need to be as cheap as we think they do, because you can make money out of the other things.' Eventually, the biofuel industry could well develop into a very diverse one, with no one crop or process dominating the market, according to Green. 'The amount of fuel we need to move away from petroleum is massive, so there's plenty of space for all technologies', he says.</p>
+            <div id="passage-text-2" class="reading-passage hidden">
+        <h4>Learning from the Romans</h4>
+        <p style="font-style:italic;text-align:center;">How an ancient building material is influencing modern construction</p>
+        <p><strong>A</strong>&nbsp;&nbsp;In a quest to make concrete more durable and sustainable, an international team of geologists and engineers has found inspiration in the concrete used by the ancient Romans. The chemical secrets of Roman concrete have been uncovered in samples taken from a concrete Roman breakwater. A breakwater is a barrier that is built out into the sea to protect coasts and harbors from the force of waves. This particular breakwater has spent the last 2,000 years submerged in seawater. The international team of researchers that collected the samples was led by Paulo Monteiro, a professor of civil and environmental engineering at the University of California, Berkeley. Analysis of samples from the ancient underwater site in Pozzuoli Bay near Naples in Italy, and pinpointed why the best Roman concrete was superior to most modern concrete.</p>
+        <p><strong>B</strong>&nbsp;&nbsp;Concrete was the Roman Empire's construction material of choice. It was used in land monuments such as the Pantheon in Rome, as well as in underwater and partially underwater coastal and harbor structures. Monteiro and his team were particularly interested in how the coastal and harbor structures endured the challenging saltwater environment. Chemical analysis of Roman concrete showed that it differs from the modern kind in several ways. One is the content of the cement that binds the material in the concrete. The most commonly used cement in recent decades has been Portland cement. Portland cement is a compound of calcium, silicon, and hydrates (C-S-H). However, analysis of Roman concrete shows that it contains a significantly different cement. Roman cement contains aluminum, which is not found in Portland cement, and less silicon than is found in Portland cement. The resulting calcium-aluminum-silicate-hydrate (C-A-S-H) is an exceptionally stable cement.</p>
+        <p><strong>C</strong>&nbsp;&nbsp;The recipe for the contents of Roman concrete was first described around 30 BC by Vitruvius, an engineer for the Roman Emperor Augustus. Volcanic ash was one of the ingredients, and it is now understood that this is crucial, as it is volcanic ash that contains the aluminum that ultimately gives Roman concrete the great durability. The Romans devised an efficient method of making concrete for coastal structures. They combined volcanic ash with lime, which added the calcium to the mix. This was then packed, together with stones and chunks of rock, into wooden molds, which were then immersed in seawater. The seawater instantly triggered a hot chemical reaction. The lime was hydrated by the seawater, which means that it incorporated water molecules into its structure, and reacted with the volcanic ash to cement the whole mixture together. This reaction formed the concrete that was used to build some of the most enduring structures in human civilisation.</p>
+        <p><strong>D</strong>&nbsp;&nbsp;The analysis by Monteiro's team revealed that the Roman method of immersing the concrete in seawater was a key factor in its longevity. The seawater reacting with the volcanic ash and lime caused the growth of rare minerals, such as Al-tobermorite and phillipsite, within the concrete. These mineral crystals, which are not found in modern concrete, helped to reinforce the material, making it stronger over time. In contrast, modern Portland cement concrete breaks down when exposed to seawater, as the saltwater corrodes the compounds and weakens the structure.</p>
+        <p><strong>E</strong>&nbsp;&nbsp;The implications of this research are significant for modern construction. By understanding and adapting the Roman recipe, engineers could develop a new, more durable, and environmentally friendly concrete. Modern concrete production is a major source of carbon emissions, primarily due to the high temperatures required to produce Portland cement. The Roman method, which uses less lime and incorporates volcanic ash, requires significantly less heat, suggesting a potential reduction in the carbon footprint of future concrete production. This ancient technology offers a promising path towards creating marine structures, such as seawalls and piers, that can last for centuries without requiring frequent and costly repairs.</p>
       </div>
-
       <!-- PASSAGE 3 -->
-      <div id="passage-text-3" class="reading-passage hidden">
-        <h4>Team Building</h4>
-        <p style="text-align:center;font-style:italic;">If you thought ancient monuments were built in honour of gods and kings, think again, says Laura Spinney</p>
-        <p>At Poverty Point in the US state of Louisiana, a remarkable monument overlooks the Mississippi river. Built around 3,500 years ago entirely from earth, it consists of six semi-circular ridges and five mounds. 'Mound A', as archaeologists refer to it, is the largest at 22 metres high. The earth mounds at Poverty Point are not just impressive, they are also intriguing. Ancient monuments have always been regarded as products of large, hierarchical societies, built as tributes to gods and kings. But the creators of the Poverty Point monument were hunter-gatherers, who functioned in a more democratic way. They may have looked to elders for guidance, but these would not have exerted a commanding influence over their small groups. So who, or what, motivated building on such a grand scale?</p>
-        <p>Archaeologists have been excavating Poverty Point for more than a century. However, the truly remarkable nature of Mound A only emerged a few years ago. This was when a team led by Tristram Kidder of Washington University drilled into the mound. They saw for the first time that it consisted of neat layers of differently coloured earth. It rains a lot around Poverty Point, and we know that fluctuations in temperature and increased flooding eventually led to its abandonment. But Kidder could see no sign that the layers had combined as you might expect if it had rained during construction. Kidder reached a startling conclusion: Mound A must have been built in one short period, perhaps in as little as 30 days, and probably no more than 90.</p>
-        <p>Mound A contains nearly 240,000 cubic metres of earth; the equivalent of 32,000 truckloads. There were no trucks, of course, nor any other heavy machinery, animals like mules to carry the earth, or wheelbarrows. Assuming it did take 90 days, Kidder's group calculated that around 3,000 basket-carrying individuals would have been needed to get the job done. Given that people probably travelled in family groups, as many as 9,000 people may have assembled at Poverty Point during construction. 'If that's true, it was an extraordinarily large gathering,' says Kidder. Why would they have chosen to do this?</p>
-        <p>Another archaeologist, Carl Lipo, thinks he has the answer: the same reason that the people of Easter Island built their famous stone heads. When Lipo first went to Easter Island, the prevailing idea was that the enormous statues had been rolled into place using logs, and the resulting deforestation contributed to the human population's collapse. But Lipo and fellow archaeologist Terry Hunt showed the statues could have been 'walked' upright into place by cooperating bands of people using ropes, with no need for trees. They argue further that by making statues, people's energy was directed into peaceful interactions and information-sharing. They ceased crafting statues, Lipo claims, precisely because daily existence became less of a challenge, and it was no longer so important that they work together.</p>
-        <p>An ancient temple known as Gobekli Tepe in south-east Turkey is another site where a giant team-building project might have taken place. Since excavations started, archaeologists have uncovered nine enclosures formed of massive stone pillars. Given the vast size of these pillars, a considerable workforce would have been needed to move them. But what archaeologists have also discovered is that every so often the workers filled in the enclosures with broken rock and built new ones. The apparent disposability of these monuments makes sense if the main aim was building a team rather than a lasting structure. Indeed, the many bones from animals such as gazelle found in the filled-in enclosures suggest people held feasts to celebrate the end of collaborative effort.</p>
-        <p>A number of researchers share Lipo's view that the need to cooperate is what drove monument makers. But as you might expect when a major shift in thinking is proposed, not everyone goes along with it. The sceptics include Tristram Kidder. For him, the interesting question is not 'Did cooperative building promote group survival' but 'What did the builders think they were doing?' All human behaviour comes down to a pursuit of food and self-preservation, he says. As for why people came to Poverty Point, he and his colleagues have suggested it was a pilgrimage site.</p>
-        <p>If Lipo is right, have we inherited our ancestors' tendency to work together for the sake of social harmony? Evolutionary biologist David Sloan Wilson thinks we have. Wilson cites the Burning Man festival, promoted as an experiment in community and art, which draws thousands of people to Nevada's Black Rock Desert each summer. Among the ten principles laid down by co-founder Larry Harvey are 'inclusion' and 'community effort'. Another is 'leaving no trace', meaning that whatever festival-goers create they destroy before departing. In this way, the desert landscape is only temporarily disturbed. Wilson says there is evidence that such cooperative ventures matter more today than ever because we are dependent on a wider range of people than our ancestors were. Food, education, security: all are provided by people beyond our family group. Recently, as part of his Neighbourhood Project in Binghamton, Wilson and his colleagues helped locals create their own parks. 'This brought people together and enabled them to cooperate in numerous other contexts,' he explains. This included helping with repair after a series of floods in 2011. Social psychologist Susan Fiske of Princeton University also sees value in community projects. Her research shows, for example, that they can help break down the ill-informed views that people hold towards others they have observed but do not usually interact with. So if modern projects really help build better communities, that will surely be a monumental achievement.</p>
+            <div id="passage-text-3" class="reading-passage hidden">
+        <h4>Saving the Skink</h4>
+        <p style="font-style:italic;text-align:center;">What can be done to save the skink, one of New Zealand's most endangered lizards?</p>
+        <p>New Zealand's reptiles come in three forms: the tuatara, the geckos and the skinks. With their gleaming scales, long bodies and often surprisingly short limbs, skinks are instantly recognisable. There are more than 90 species, half of which still await formal description. Identification depends on where specimens are found, and such minutiae as the number of scales on their toes. Two of the largest species of skink — the grand and the Otago — are found only in Otago, in New Zealand's South Island.</p>
+        <p>Skinks, being reptiles, need to regulate their temperature, and lie on sunny rocks to absorb heat. However, the grand and Otago are the only kinds that do not hibernate through winter; when snow can fall even in summer in Otago, there is no point in them lying dormant for extended periods. Like all other New Zealand reptiles except tuatara and the egg-laying Suter's skink, they give birth to tiny baby lizards. Today, the Otago and grand skinks are lucky to reach five years of age in the wild, although in zoos or research centres they can live beyond thirty.</p>
+        <p>Unfortunately, extinction may loom for these reptiles. With any decline in New Zealand fauna, predation is always suspected, so the efforts of the Department of Conservation (DOC) have focused on controlling specific pests. An example was a six-year project to control the feral cats on the Otago Skink Reserve, launched in the 1990s. Despite the capture of hundreds of cats, skinks showed no signs of recovery. Indeed, there were further declines. The trapping programme also revealed rats and hedgehogs to be predators.</p>
+        <p>Parasite infections are also thought to be on the rise. Although no direct health implications have been detected the trend is a concern, as it may signal a subtle deterioration in the skinks' living environment. Infection with mites is suspected of inhibiting reproduction among captive animals.</p>
+        <p>Another potential threat is habitat loss. Eight hundred years ago, Otago was covered in forest. However, extensive burning produced wide open tussock country. The skinks' response to this change isn't known, nor what their habitat was in the earlier environment, with its predominance of shrubs and trees. Furthermore, recent intensive farming has led to poor soil. Even if we had the answer to the eradication of predators, we haven't a clue to the habitat we should be recreating for the skinks, or if where they persist is best for conservation.</p>
+        <p>It is also puzzling that grand and Otago skinks have persisted only in small, isolated populations on rocky outcrops. Why they cannot survive in the surrounding grassland, which appears similar in many respects, is unknown. Climate change poses a further, longer-term threat, potentially altering temperature patterns and food availability in ways that may not favor these specialist reptiles. A lack of fundamental knowledge about their ecology — what they eat, how they interact with other species, and their precise microhabitat needs — makes effective conservation planning difficult. Current efforts involve a combination of captive breeding programs, predator-free fencing around key sites, and ongoing research. The survival of these unique skinks will depend on solving the complex puzzle of intertwined threats, from predators and parasites to habitat degradation and our own limited understanding.</p>
       </div>
-
     </div><!-- /passage-panel -->
 
     <div class="resizer" id="resizer"></div>
@@ -402,46 +517,43 @@ body.dark .submit-btn-fixed { box-shadow: 0 4px 18px rgba(220,53,69,.3); }
 
       <!-- QUESTIONS SET 1 -->
       <div id="questions-1" class="question-set">
-        <div class="question" data-q-start="1" data-q-end="8">
+        <div class="question" data-q-start="1" data-q-end="6">
           <div class="question-prompt">
-            <p><strong>Questions 1–8</strong><br>Complete the notes below.</p>
-            <p>Choose <strong>ONE WORD AND/OR A NUMBER</strong> from the passage for each answer.</p>
-          </div>
-          <div class="summary-text">
-            <p class="centered-title">Disappearing and Damaged Lakes</p>
-            <p><strong>Lake Poopo</strong></p>
-            <ul>
-              <li>&bull; It covered about <input type="text" class="answer-input" id="q1" placeholder="1"> square kilometres in the dry season.</li>
-              <li>&bull; It can no longer support people, fish or visiting <input type="text" class="answer-input" id="q2" placeholder="2">.</li>
-            </ul>
-            <p><strong>The Aral Sea</strong></p>
-            <ul>
-              <li>&bull; It has shrunk because water is used for crops such as <input type="text" class="answer-input" id="q3" placeholder="3"> and rice.</li>
-              <li>&bull; <input type="text" class="answer-input" id="q4" placeholder="4"> from the bottom of the lake affects an area of 300 kilometres.</li>
-            </ul>
-            <p><strong>Lake Tanganyika</strong></p>
-            <ul>
-              <li>&bull; Families need to eat fish for its <input type="text" class="answer-input" id="q5" placeholder="5">.</li>
-              <li>&bull; Fisheries give <input type="text" class="answer-input" id="q6" placeholder="6"> to over 100,000 people.</li>
-            </ul>
-            <p><strong>Lake Urmia</strong></p>
-            <ul>
-              <li>&bull; The colour has changed because <input type="text" class="answer-input" id="q7" placeholder="7"> are increasing.</li>
-              <li>&bull; <input type="text" class="answer-input" id="q8" placeholder="8"> has declined in the last ten years.</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="question" data-q-start="9" data-q-end="13">
-          <div class="question-prompt">
-            <p><strong>Questions 9–13</strong><br>Do the following statements agree with the information given in Reading Passage 1?</p>
+            <p><strong>Questions 1–6</strong><br>Do the following statements agree with the information given in Reading Passage 1?</p>
             <p>Write <strong>TRUE</strong>, <strong>FALSE</strong> or <strong>NOT GIVEN</strong>.</p>
           </div>
-          <div class="tf-question" data-q-start="9"><div class="tf-question-line"><span class="tf-question-number">9</span><span class="tf-question-text">Scientists are surprised that Lake Poopo has disappeared so quickly.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q9" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q9" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q9" value="NOT GIVEN"> NOT GIVEN</label></div></div>
-          <div class="tf-question" data-q-start="10"><div class="tf-question-line"><span class="tf-question-number">10</span><span class="tf-question-text">Steps are being taken to reduce the impact of mining on Lake Poopo.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q10" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q10" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q10" value="NOT GIVEN"> NOT GIVEN</label></div></div>
-          <div class="tf-question" data-q-start="11"><div class="tf-question-line"><span class="tf-question-number">11</span><span class="tf-question-text">Lake Fracksjön is the fastest warming lake in the world.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q11" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q11" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q11" value="NOT GIVEN"> NOT GIVEN</label></div></div>
-          <div class="tf-question" data-q-start="12"><div class="tf-question-line"><span class="tf-question-number">12</span><span class="tf-question-text">Researchers are certain about the reason for Lake Waiau's disappearance.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q12" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q12" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q12" value="NOT GIVEN"> NOT GIVEN</label></div></div>
-          <div class="tf-question" data-q-start="13"><div class="tf-question-line"><span class="tf-question-number">13</span><span class="tf-question-text">Scott Lake's rising water level has occurred as a result of rainfall.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q13" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q13" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q13" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+          <div class="tf-question" data-q-start="1"><div class="tf-question-line"><span class="tf-question-number">1</span><span class="tf-question-text">In 1986 Luc Long had been looking for an opportunity to dive in the Rhone for some time.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q1" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q1" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q1" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+          <div class="tf-question" data-q-start="2"><div class="tf-question-line"><span class="tf-question-number">2</span><span class="tf-question-text">Long and his friend were the first divers to find Roman remains in the Rhone.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q2" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q2" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q2" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+          <div class="tf-question" data-q-start="3"><div class="tf-question-line"><span class="tf-question-number">3</span><span class="tf-question-text">Long's work in the Rhone attracted immediate interest.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q3" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q3" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q3" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+          <div class="tf-question" data-q-start="4"><div class="tf-question-line"><span class="tf-question-number">4</span><span class="tf-question-text">It was thought that the Neptune statue would be of interest to thieves.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q4" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q4" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q4" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+          <div class="tf-question" data-q-start="5"><div class="tf-question-line"><span class="tf-question-number">5</span><span class="tf-question-text">Benoit Poinard doubted that the barge could be raised in one diving season.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q5" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q5" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q5" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+          <div class="tf-question" data-q-start="6"><div class="tf-question-line"><span class="tf-question-number">6</span><span class="tf-question-text">The restorers were surprised to discover a silver coin in the barge.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q6" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q6" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q6" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+        </div>
+
+        <div class="question" data-q-start="7" data-q-end="13">
+          <div class="question-prompt">
+            <p><strong>Questions 7–13</strong><br>Complete the notes below.</p>
+            <p>Choose <strong>ONE WORD ONLY</strong> from the passage for each answer.</p>
+          </div>
+          <div class="notes-box">
+            <p style="text-align:center;font-weight:bold;font-size:15px;margin-bottom:12px;">The Roman barge <em>Arles-Rhone 3</em></p>
+            <h3 style="font-size:15px;margin:10px 0 6px;">The discovery and condition of the barge</h3>
+            <ul style="list-style:disc;padding-left:22px;">
+              <li style="margin-bottom:6px;font-size:14px;">The barge was 34 metres long and was found by one of Long's <input class="answer-input" id="q7" type="text" placeholder="7" style="width:150px;"/> in 2004.</li>
+              <li style="margin-bottom:6px;font-size:14px;">The wood had not decayed, but water had filled its cells, making the structure soft and <input class="answer-input" id="q8" type="text" placeholder="8" style="width:150px;"/>.</li>
+            </ul>
+            <h3 style="font-size:15px;margin:10px 0 6px;">Extraction from the Rhone</h3>
+            <ul style="list-style:disc;padding-left:22px;">
+              <li style="margin-bottom:6px;font-size:14px;">Normally, the Rhone is safe for diving only from late June to <input class="answer-input" id="q9" type="text" placeholder="9" style="width:150px;"/>.</li>
+              <li style="margin-bottom:6px;font-size:14px;">In 2011, because it hardly snowed in the Alps, the river's <input class="answer-input" id="q10" type="text" placeholder="10" style="width:150px;"/> was very gentle.</li>
+              <li style="margin-bottom:6px;font-size:14px;">The diving team lost only one <input class="answer-input" id="q11" type="text" placeholder="11" style="width:150px;"/> to bad weather.</li>
+            </ul>
+            <h3 style="font-size:15px;margin:10px 0 6px;">What was found on or near the barge</h3>
+            <ul style="list-style:disc;padding-left:22px;">
+              <li style="margin-bottom:6px;font-size:14px;">The barge was carrying 33 tons of <input class="answer-input" id="q12" type="text" placeholder="12" style="width:150px;"/> for building work.</li>
+              <li style="margin-bottom:6px;font-size:14px;">Under the floorboards, restorers found a silver <input class="answer-input" id="q13" type="text" placeholder="13" style="width:150px;"/> dated to 30 BCE.</li>
+            </ul>
+          </div>
         </div>
       </div><!-- /questions-1 -->
 
@@ -449,127 +561,103 @@ body.dark .submit-btn-fixed { box-shadow: 0 4px 18px rgba(220,53,69,.3); }
       <div id="questions-2" class="question-set hidden">
         <div class="question" data-q-start="14" data-q-end="19">
           <div class="question-prompt">
-            <p><strong>Questions 14–19</strong><br>Reading Passage 2 has six paragraphs, <strong>A–F</strong>.</p>
+            <p><strong>Questions 14–19</strong><br>The reading passage has five paragraphs, <strong>A–E</strong>.</p>
             <p>Which paragraph contains the following information?</p>
+            <p><em>Write the correct letter, A–E. You may use any letter more than once.</em></p>
           </div>
-          <div class="matching-form-container">
-            <div class="matching-form-row"><label class="matching-form-label"><strong>14</strong>&nbsp;&nbsp;a theory about oil production which must still be proved</label><select class="answer-input" id="q14"><option value=""></option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></div>
-            <div class="matching-form-row"><label class="matching-form-label"><strong>15</strong>&nbsp;&nbsp;an overview of the stages in a particular biofuel manufacturing method</label><select class="answer-input" id="q15"><option value=""></option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></div>
-            <div class="matching-form-row"><label class="matching-form-label"><strong>16</strong>&nbsp;&nbsp;examples of the uses that biofuel crops might have apart from providing energy</label><select class="answer-input" id="q16"><option value=""></option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></div>
-            <div class="matching-form-row"><label class="matching-form-label"><strong>17</strong>&nbsp;&nbsp;an explanation of the way that fossil fuel use harms the environment</label><select class="answer-input" id="q17"><option value=""></option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></div>
-            <div class="matching-form-row"><label class="matching-form-label"><strong>18</strong>&nbsp;&nbsp;reference to a particular biofuel production method being abandoned</label><select class="answer-input" id="q18"><option value=""></option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></div>
-            <div class="matching-form-row"><label class="matching-form-label"><strong>19</strong>&nbsp;&nbsp;a comparison between the production costs for biofuels and for other kinds of fuel</label><select class="answer-input" id="q19"><option value=""></option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></div>
-          </div>
-        </div>
-
-        <div class="question" data-q-start="20" data-q-end="23">
-          <div class="question-prompt">
-            <p><strong>Questions 20–23</strong><br>Look at the following statements and the list of researchers below.</p>
-            <p>Match each statement with the correct researcher, <strong>A</strong>, <strong>B</strong> or <strong>C</strong>.</p>
-            <p><em>NB You may use any letter more than once.</em></p>
-          </div>
-          <div class="summary-text" style="margin-bottom:12px;">
-            <p><strong>A</strong>&nbsp;&nbsp;Professor Bill Laurance</p>
-            <p><strong>B</strong>&nbsp;&nbsp;Professor Rachel Burton</p>
-            <p><strong>C</strong>&nbsp;&nbsp;Dr Allan Green</p>
-          </div>
-          <div class="matching-form-container">
-            <div class="matching-form-row"><label class="matching-form-label"><strong>20</strong>&nbsp;&nbsp;It would be more cost-effective if a biofuel was used for a range of products.</label><select class="answer-input" id="q20"><option value=""></option><option>A</option><option>B</option><option>C</option></select></div>
-            <div class="matching-form-row"><label class="matching-form-label"><strong>21</strong>&nbsp;&nbsp;It is not always easy to predict what effects the use of biofuel crops may have.</label><select class="answer-input" id="q21"><option value=""></option><option>A</option><option>B</option><option>C</option></select></div>
-            <div class="matching-form-row"><label class="matching-form-label"><strong>22</strong>&nbsp;&nbsp;A variety of biofuel crops and manufacturing processes will be required in future.</label><select class="answer-input" id="q22"><option value=""></option><option>A</option><option>B</option><option>C</option></select></div>
-            <div class="matching-form-row"><label class="matching-form-label"><strong>23</strong>&nbsp;&nbsp;It would be best to use biofuel crops that can survive in difficult environmental conditions.</label><select class="answer-input" id="q23"><option value=""></option><option>A</option><option>B</option><option>C</option></select></div>
+          <div style="display:flex;flex-direction:column;gap:10px;max-width:560px;">
+            <div style="display:flex;align-items:center;gap:14px;padding:10px 14px;background:#f9fafb;border:1.5px solid #e8ecf0;border-radius:8px;"><strong style="min-width:24px;">14</strong><span style="flex:1;font-size:14px;">A description of the chemical process that strengthened the Roman concrete over time.</span><select class="answer-input" id="q14" style="padding:6px 10px;border:1.5px solid #ddd;border-radius:6px;font-size:14px;min-width:70px;"><option value="">—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select></div>
+            <div style="display:flex;align-items:center;gap:14px;padding:10px 14px;background:#f9fafb;border:1.5px solid #e8ecf0;border-radius:8px;"><strong style="min-width:24px;">15</strong><span style="flex:1;font-size:14px;">The name of the person who first recorded the composition of Roman concrete.</span><select class="answer-input" id="q15" style="padding:6px 10px;border:1.5px solid #ddd;border-radius:6px;font-size:14px;min-width:70px;"><option value="">—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select></div>
+            <div style="display:flex;align-items:center;gap:14px;padding:10px 14px;background:#f9fafb;border:1.5px solid #e8ecf0;border-radius:8px;"><strong style="min-width:24px;">16</strong><span style="flex:1;font-size:14px;">The main environmental advantage of adopting the Roman concrete-making method today.</span><select class="answer-input" id="q16" style="padding:6px 10px;border:1.5px solid #ddd;border-radius:6px;font-size:14px;min-width:70px;"><option value="">—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select></div>
+            <div style="display:flex;align-items:center;gap:14px;padding:10px 14px;background:#f9fafb;border:1.5px solid #e8ecf0;border-radius:8px;"><strong style="min-width:24px;">17</strong><span style="flex:1;font-size:14px;">The specific location where the research samples were collected.</span><select class="answer-input" id="q17" style="padding:6px 10px;border:1.5px solid #ddd;border-radius:6px;font-size:14px;min-width:70px;"><option value="">—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select></div>
+            <div style="display:flex;align-items:center;gap:14px;padding:10px 14px;background:#f9fafb;border:1.5px solid #e8ecf0;border-radius:8px;"><strong style="min-width:24px;">18</strong><span style="flex:1;font-size:14px;">A comparison of how modern and Roman concrete behave in seawater.</span><select class="answer-input" id="q18" style="padding:6px 10px;border:1.5px solid #ddd;border-radius:6px;font-size:14px;min-width:70px;"><option value="">—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select></div>
+            <div style="display:flex;align-items:center;gap:14px;padding:10px 14px;background:#f9fafb;border:1.5px solid #e8ecf0;border-radius:8px;"><strong style="min-width:24px;">19</strong><span style="flex:1;font-size:14px;">The two key minerals that contributed to the strength of the Roman concrete.</span><select class="answer-input" id="q19" style="padding:6px 10px;border:1.5px solid #ddd;border-radius:6px;font-size:14px;min-width:70px;"><option value="">—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select></div>
           </div>
         </div>
 
-        <div class="question" data-q-start="24" data-q-end="26">
+        <div class="question" data-q-start="20" data-q-end="26">
           <div class="question-prompt">
-            <p><strong>Questions 24–26</strong><br>Complete the sentences below.</p>
-            <p>Choose <strong>ONE WORD ONLY</strong> from the passage for each answer.</p>
+            <p><strong>Questions 20–26</strong><br>Complete the summary below.</p>
+            <p>Choose <strong>NO MORE THAN TWO WORDS</strong> from the passage for each answer.</p>
           </div>
-          <div class="summary-text">
-            <ul style="list-style:none;padding-left:0;">
-              <li style="margin-bottom:12px;"><strong>24.</strong>&nbsp;&nbsp;The decision by US farmers to grow <input type="text" class="answer-input" id="q24" placeholder="24"> had an effect on land in Brazil.</li>
-              <li style="margin-bottom:12px;"><strong>25.</strong>&nbsp;&nbsp;<input type="text" class="answer-input" id="q25" placeholder="25"> is threatened when trees are cut down so crops can be planted.</li>
-              <li style="margin-bottom:12px;"><strong>26.</strong>&nbsp;&nbsp;Rivers may be polluted by the <input type="text" class="answer-input" id="q26" placeholder="26"> that farmers use on biofuel crops.</li>
-            </ul>
+          <div class="notes-box">
+            <p style="font-weight:bold;text-align:center;font-size:15px;margin-bottom:12px;">Roman Concrete vs. Modern Concrete</p>
+            <p style="font-size:14px;line-height:2.2;">Research into an ancient Roman <input class="answer-input" id="q20" type="text" placeholder="20" style="width:150px;"/> has provided new insights into concrete. The study, led by Paulo Monteiro, analyzed samples that had been submerged in seawater for two millennia.</p>
+            <p style="font-size:14px;line-height:2.2;">The analysis showed that Roman concrete uses a different binding cement. While modern <input class="answer-input" id="q21" type="text" placeholder="21" style="width:130px;"/> cement is a compound of calcium, silicon, and hydrates, Roman cement includes <input class="answer-input" id="q22" type="text" placeholder="22" style="width:130px;"/> and less silicon, forming a very stable compound called C-A-S-H.</p>
+            <p style="font-size:14px;line-height:2.2;">A key ingredient in the Roman recipe was <input class="answer-input" id="q23" type="text" placeholder="23" style="width:140px;"/>, which provided the aluminum. The Romans made their concrete for coastal structures by mixing this with lime, placing the mixture in <input class="answer-input" id="q24" type="text" placeholder="24" style="width:150px;"/>, and then immersing it in seawater. This immersion caused a hot chemical reaction.</p>
+            <p style="font-size:14px;line-height:2.2;">A significant finding was that this process led to the growth of rare minerals within the concrete, which reinforced it. In contrast, seawater <input class="answer-input" id="q25" type="text" placeholder="25" style="width:120px;"/> modern concrete. Adopting the Roman method today could lead to the creation of more <input class="answer-input" id="q26" type="text" placeholder="26" style="width:120px;"/> marine structures.</p>
           </div>
         </div>
       </div><!-- /questions-2 -->
 
       <!-- QUESTIONS SET 3 -->
       <div id="questions-3" class="question-set hidden">
-        <div class="question" data-q-start="27" data-q-end="32">
+        <div class="question" data-q-start="27" data-q-end="31">
           <div class="question-prompt">
-            <p><strong>Questions 27–32</strong><br>Do the following statements agree with the claims of the writer in Reading Passage 3?</p>
+            <p><strong>Questions 27–31</strong><br>Complete the notes below.</p>
+            <p>Choose <strong>NO MORE THAN TWO WORDS</strong> from the passage for each answer.</p>
+          </div>
+          <div class="notes-box">
+            <p style="text-align:center;font-weight:bold;font-size:15px;margin-bottom:12px;">Key Facts about Otago and Grand Skinks</p>
+            <ul style="list-style:disc;padding-left:22px;">
+              <li style="margin-bottom:6px;font-size:14px;">They are two of New Zealand's largest <input class="answer-input" id="q27" type="text" placeholder="27" style="width:140px;"/>.</li>
+              <li style="margin-bottom:6px;font-size:14px;">Unlike most skinks, they do not <input class="answer-input" id="q28" type="text" placeholder="28" style="width:140px;"/> in winter.</li>
+              <li style="margin-bottom:6px;font-size:14px;">They give birth to live young, unlike the egg-laying <input class="answer-input" id="q29" type="text" placeholder="29" style="width:160px;"/>.</li>
+              <li style="margin-bottom:6px;font-size:14px;">In the wild, their lifespan is rarely more than <input class="answer-input" id="q30" type="text" placeholder="30" style="width:80px;"/> years.</li>
+              <li style="margin-bottom:6px;font-size:14px;">One known predator, aside from cats, is the <input class="answer-input" id="q31" type="text" placeholder="31" style="width:120px;"/>.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="question" data-q-start="32" data-q-end="35">
+          <div class="question-prompt">
+            <p><strong>Questions 32–35</strong><br>Do the following statements agree with the claims of the writer in Reading Passage 3?</p>
             <p>Write <strong>YES</strong>, <strong>NO</strong> or <strong>NOT GIVEN</strong>.</p>
           </div>
-          <div class="tf-question" data-q-start="27"><div class="tf-question-line"><span class="tf-question-number">27</span><span class="tf-question-text">The whole monument at Poverty Point was made out of earth.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q27" value="YES"> YES</label><label class="tf-option"><input type="radio" name="q27" value="NO"> NO</label><label class="tf-option"><input type="radio" name="q27" value="NOT GIVEN"> NOT GIVEN</label></div></div>
-          <div class="tf-question" data-q-start="28"><div class="tf-question-line"><span class="tf-question-number">28</span><span class="tf-question-text">The monument at Poverty Point was the first of its kind to be built in the US.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q28" value="YES"> YES</label><label class="tf-option"><input type="radio" name="q28" value="NO"> NO</label><label class="tf-option"><input type="radio" name="q28" value="NOT GIVEN"> NOT GIVEN</label></div></div>
-          <div class="tf-question" data-q-start="29"><div class="tf-question-line"><span class="tf-question-number">29</span><span class="tf-question-text">The older members of the tribes at Poverty Point had great power over their people.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q29" value="YES"> YES</label><label class="tf-option"><input type="radio" name="q29" value="NO"> NO</label><label class="tf-option"><input type="radio" name="q29" value="NOT GIVEN"> NOT GIVEN</label></div></div>
-          <div class="tf-question" data-q-start="30"><div class="tf-question-line"><span class="tf-question-number">30</span><span class="tf-question-text">It is surprising that archaeologists took so long to discover the existence of Mound A.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q30" value="YES"> YES</label><label class="tf-option"><input type="radio" name="q30" value="NO"> NO</label><label class="tf-option"><input type="radio" name="q30" value="NOT GIVEN"> NOT GIVEN</label></div></div>
-          <div class="tf-question" data-q-start="31"><div class="tf-question-line"><span class="tf-question-number">31</span><span class="tf-question-text">Tristram Kidder's work at Mound A revealed something previously unknown to researchers.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q31" value="YES"> YES</label><label class="tf-option"><input type="radio" name="q31" value="NO"> NO</label><label class="tf-option"><input type="radio" name="q31" value="NOT GIVEN"> NOT GIVEN</label></div></div>
-          <div class="tf-question" data-q-start="32"><div class="tf-question-line"><span class="tf-question-number">32</span><span class="tf-question-text">A change in weather patterns forced people living around the Poverty Point monument to move away.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q32" value="YES"> YES</label><label class="tf-option"><input type="radio" name="q32" value="NO"> NO</label><label class="tf-option"><input type="radio" name="q32" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+          <div class="tf-question" data-q-start="32"><div class="tf-question-line"><span class="tf-question-number">32</span><span class="tf-question-text">Over half of New Zealand's skink species have been formally named and described.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q32" value="YES"> YES</label><label class="tf-option"><input type="radio" name="q32" value="NO"> NO</label><label class="tf-option"><input type="radio" name="q32" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+          <div class="tf-question" data-q-start="33"><div class="tf-question-line"><span class="tf-question-number">33</span><span class="tf-question-text">The program to control feral cats in the 1990s was successful in helping the skink population recover.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q33" value="YES"> YES</label><label class="tf-option"><input type="radio" name="q33" value="NO"> NO</label><label class="tf-option"><input type="radio" name="q33" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+          <div class="tf-question" data-q-start="34"><div class="tf-question-line"><span class="tf-question-number">34</span><span class="tf-question-text">Mite infections have been proven to cause health problems for wild skinks.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q34" value="YES"> YES</label><label class="tf-option"><input type="radio" name="q34" value="NO"> NO</label><label class="tf-option"><input type="radio" name="q34" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+          <div class="tf-question" data-q-start="35"><div class="tf-question-line"><span class="tf-question-number">35</span><span class="tf-question-text">Scientists know what the ideal habitat for the skinks' conservation should be.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q35" value="YES"> YES</label><label class="tf-option"><input type="radio" name="q35" value="NO"> NO</label><label class="tf-option"><input type="radio" name="q35" value="NOT GIVEN"> NOT GIVEN</label></div></div>
         </div>
 
-        <div class="question" data-q-start="33" data-q-end="36">
+        <div class="question" data-q-start="36" data-q-end="40">
           <div class="question-prompt">
-            <p><strong>Questions 33–36</strong><br>Choose the correct letter, <strong>A, B, C</strong> or <strong>D</strong>.</p>
+            <p><strong>Questions 36–40</strong><br>Choose the correct letter, <strong>A</strong>, <strong>B</strong>, <strong>C</strong> or <strong>D</strong>.</p>
           </div>
-          <p style="margin-bottom:8px;"><strong>33</strong> The writer refers to trucks, mules and wheelbarrows in order to</p>
+          <p style="margin-bottom:8px;"><strong>36</strong> What is the main reason given for the skinks' poor survival rate in the wild?</p>
           <div class="single-choice-container" style="margin-bottom:20px;">
-            <div class="single-choice"><label><input type="radio" name="q33" value="A"> A &nbsp;&nbsp;highlight the technical ability of the Poverty Point inhabitants.</label></div>
-            <div class="single-choice"><label><input type="radio" name="q33" value="B"> B &nbsp;&nbsp;emphasise the number of workers required to build the mound.</label></div>
-            <div class="single-choice"><label><input type="radio" name="q33" value="C"> C &nbsp;&nbsp;question the logic of choosing Poverty Point as a place for construction.</label></div>
-            <div class="single-choice"><label><input type="radio" name="q33" value="D"> D &nbsp;&nbsp;challenge the idea that the mound could have been made so quickly.</label></div>
+            <div class="single-choice"><label><input type="radio" name="q36" value="A"> A &nbsp;&nbsp;Lack of food</label></div>
+            <div class="single-choice"><label><input type="radio" name="q36" value="B"> B &nbsp;&nbsp;Predation</label></div>
+            <div class="single-choice"><label><input type="radio" name="q36" value="C"> C &nbsp;&nbsp;Extreme winter temperatures</label></div>
+            <div class="single-choice"><label><input type="radio" name="q36" value="D"> D &nbsp;&nbsp;Competition with other lizards</label></div>
           </div>
-          <p style="margin-bottom:8px;"><strong>34</strong> Archaeologist Carl Lipo's research at Easter Island has led him to believe that</p>
+          <p style="margin-bottom:8px;"><strong>37</strong> According to the passage, what does the rise in parasite infections possibly indicate?</p>
           <div class="single-choice-container" style="margin-bottom:20px;">
-            <div class="single-choice"><label><input type="radio" name="q34" value="A"> A &nbsp;&nbsp;people had to cut down trees in order to transport larger statues.</label></div>
-            <div class="single-choice"><label><input type="radio" name="q34" value="B"> B &nbsp;&nbsp;remote communities faced greater environmental challenges than other societies.</label></div>
-            <div class="single-choice"><label><input type="radio" name="q34" value="C"> C &nbsp;&nbsp;islanders stopped making statues when their lives became easier.</label></div>
-            <div class="single-choice"><label><input type="radio" name="q34" value="D"> D &nbsp;&nbsp;methods of making the statues varied amongst different groups.</label></div>
+            <div class="single-choice"><label><input type="radio" name="q37" value="A"> A &nbsp;&nbsp;An increase in the skink population</label></div>
+            <div class="single-choice"><label><input type="radio" name="q37" value="B"> B &nbsp;&nbsp;An improvement in the skinks' environment</label></div>
+            <div class="single-choice"><label><input type="radio" name="q37" value="C"> C &nbsp;&nbsp;A decline in the quality of the skinks' habitat</label></div>
+            <div class="single-choice"><label><input type="radio" name="q37" value="D"> D &nbsp;&nbsp;The success of captive breeding programs</label></div>
           </div>
-          <p style="margin-bottom:8px;"><strong>35</strong> According to the writer, excavations at Gobekli Tepe suggest that</p>
+          <p style="margin-bottom:8px;"><strong>38</strong> The transformation of Otago's landscape 800 years ago involved:</p>
           <div class="single-choice-container" style="margin-bottom:20px;">
-            <div class="single-choice"><label><input type="radio" name="q35" value="A"> A &nbsp;&nbsp;there was disagreement between groups over the temple's design.</label></div>
-            <div class="single-choice"><label><input type="radio" name="q35" value="B"> B &nbsp;&nbsp;human occupation drove certain animal populations into decline.</label></div>
-            <div class="single-choice"><label><input type="radio" name="q35" value="C"> C &nbsp;&nbsp;each of the enclosures that were built served a different purpose.</label></div>
-            <div class="single-choice"><label><input type="radio" name="q35" value="D"> D &nbsp;&nbsp;the builders had no intention of creating permanent structures.</label></div>
+            <div class="single-choice"><label><input type="radio" name="q38" value="A"> A &nbsp;&nbsp;The planting of forests</label></div>
+            <div class="single-choice"><label><input type="radio" name="q38" value="B"> B &nbsp;&nbsp;The creation of farmland</label></div>
+            <div class="single-choice"><label><input type="radio" name="q38" value="C"> C &nbsp;&nbsp;Extensive burning</label></div>
+            <div class="single-choice"><label><input type="radio" name="q38" value="D"> D &nbsp;&nbsp;The introduction of predators</label></div>
           </div>
-          <p style="margin-bottom:8px;"><strong>36</strong> In the sixth paragraph, what are we told about Tristram Kidder?</p>
+          <p style="margin-bottom:8px;"><strong>39</strong> What does the writer identify as a major obstacle to conserving the skinks?</p>
           <div class="single-choice-container" style="margin-bottom:20px;">
-            <div class="single-choice"><label><input type="radio" name="q36" value="A"> A &nbsp;&nbsp;He feels the academic community should support Carl Lipo's theory.</label></div>
-            <div class="single-choice"><label><input type="radio" name="q36" value="B"> B &nbsp;&nbsp;He has changed his mind about the purpose of the Poverty Point monument.</label></div>
-            <div class="single-choice"><label><input type="radio" name="q36" value="C"> C &nbsp;&nbsp;He doubts that Carl Lipo has identified the key reason for monument making.</label></div>
-            <div class="single-choice"><label><input type="radio" name="q36" value="D"> D &nbsp;&nbsp;He believes that most people recognise the need to help each other to survive.</label></div>
+            <div class="single-choice"><label><input type="radio" name="q39" value="A"> A &nbsp;&nbsp;A lack of funding</label></div>
+            <div class="single-choice"><label><input type="radio" name="q39" value="B"> B &nbsp;&nbsp;Public apathy</label></div>
+            <div class="single-choice"><label><input type="radio" name="q39" value="C"> C &nbsp;&nbsp;Insufficient scientific knowledge</label></div>
+            <div class="single-choice"><label><input type="radio" name="q39" value="D"> D &nbsp;&nbsp;Conflict with farmers</label></div>
           </div>
-        </div>
-
-        <div class="question" data-q-start="37" data-q-end="40">
-          <div class="question-prompt">
-            <p><strong>Questions 37–40</strong><br>Complete the summary using the list of words, <strong>A–H</strong>, below.</p>
-          </div>
-          <div class="summary-options-bank" data-dnd-group="summary-37-40">
-            <div class="drag-item" draggable="true" data-value="A" data-dnd-group="summary-37-40">A &nbsp;basic needs</div>
-            <div class="drag-item" draggable="true" data-value="B" data-dnd-group="summary-37-40">B &nbsp;different generations</div>
-            <div class="drag-item" draggable="true" data-value="C" data-dnd-group="summary-37-40">C &nbsp;new infrastructure</div>
-            <div class="drag-item" draggable="true" data-value="D" data-dnd-group="summary-37-40">D &nbsp;human activities</div>
-            <div class="drag-item" draggable="true" data-value="E" data-dnd-group="summary-37-40">E &nbsp;negative impressions</div>
-            <div class="drag-item" draggable="true" data-value="F" data-dnd-group="summary-37-40">F &nbsp;emergency situation</div>
-            <div class="drag-item" draggable="true" data-value="G" data-dnd-group="summary-37-40">G &nbsp;commercial advertising</div>
-            <div class="drag-item" draggable="true" data-value="H" data-dnd-group="summary-37-40">H &nbsp;economic growth</div>
-          </div>
-          <div class="summary-text" style="margin-top:16px;">
-            <p><strong>Examples of cooperation in modern times</strong></p>
-            <p>David Wilson believes that events such as the Burning Man festival encourage social harmony. For example, participants in the festival cooperate so
-            <span class="summary-drop-zone" data-q-start="37" data-dnd-group="summary-37-40">37</span>
-            won't permanently affect the desert environment. In Wilson's opinion, cooperation is especially important today because we now rely on many people for our
-            <span class="summary-drop-zone" data-q-start="38" data-dnd-group="summary-37-40">38</span>.
-            Wilson points to how community projects such as park creation can lead to improved group efforts in
-            <span class="summary-drop-zone" data-q-start="39" data-dnd-group="summary-37-40">39</span>.
-            Psychologist Susan Fiske has also shown how
-            <span class="summary-drop-zone" data-q-start="40" data-dnd-group="summary-37-40">40</span>
-            can change when community projects encourage interaction between strangers.</p>
+          <p style="margin-bottom:8px;"><strong>40</strong> Which of the following is NOT mentioned as a current conservation effort?</p>
+          <div class="single-choice-container">
+            <div class="single-choice"><label><input type="radio" name="q40" value="A"> A &nbsp;&nbsp;Building predator-free fences</label></div>
+            <div class="single-choice"><label><input type="radio" name="q40" value="B"> B &nbsp;&nbsp;Captive breeding programs</label></div>
+            <div class="single-choice"><label><input type="radio" name="q40" value="C"> C &nbsp;&nbsp;Relocating skinks to new islands</label></div>
+            <div class="single-choice"><label><input type="radio" name="q40" value="D"> D &nbsp;&nbsp;Ongoing research</label></div>
           </div>
         </div>
       </div><!-- /questions-3 -->
@@ -604,11 +692,11 @@ body.dark .submit-btn-fixed { box-shadow: 0 4px 18px rgba(220,53,69,.3); }
       <button class="subQuestion" onclick="goToQuestion(27)">27</button><button class="subQuestion" onclick="goToQuestion(28)">28</button><button class="subQuestion" onclick="goToQuestion(29)">29</button><button class="subQuestion" onclick="goToQuestion(30)">30</button><button class="subQuestion" onclick="goToQuestion(31)">31</button><button class="subQuestion" onclick="goToQuestion(32)">32</button><button class="subQuestion" onclick="goToQuestion(33)">33</button><button class="subQuestion" onclick="goToQuestion(34)">34</button><button class="subQuestion" onclick="goToQuestion(35)">35</button><button class="subQuestion" onclick="goToQuestion(36)">36</button><button class="subQuestion" onclick="goToQuestion(37)">37</button><button class="subQuestion" onclick="goToQuestion(38)">38</button><button class="subQuestion" onclick="goToQuestion(39)">39</button><button class="subQuestion" onclick="goToQuestion(40)">40</button>
     </div>
   </div>
-  <button class="footer__deliverButton___3FM07" style="display:none;">Submit Test</button>
+  <button class="footer__deliverButton___3FM07" onclick="openConfirm()">Submit Test</button>
 </nav>
 
 <!-- FIXED SUBMIT BUTTON bottom-right -->
-<button class="submit-btn-fixed" id="submit-btn-fixed" onclick="submitTest()">Submit Test ✓</button>
+
 
 <!-- CONTEXT MENU -->
 <div class="context-menu" id="contextMenu">
@@ -621,6 +709,8 @@ body.dark .submit-btn-fixed { box-shadow: 0 4px 18px rgba(220,53,69,.3); }
 <script>
 const PASSWORD = '1234';
 let candidateId = '';
+let candidateName = '';
+let candidateDate = '';
 let currentPassage = 1;
 let currentQuestion = 1;
 let timeInSeconds = 3600;
@@ -631,15 +721,15 @@ let savedRange = null;
 let contextTargetEl = null;
 
 const correctAnswers = {
-  '1':'1000','2':'birds','3':'cotton','4':'salt',
-  '5':'protein','6':'employment','7':'bacteria','8':'tourism',
-  '9':'TRUE','10':'NOT GIVEN','11':'NOT GIVEN','12':'FALSE','13':'FALSE',
-  '14':'D','15':'E','16':'F','17':'A','18':'C','19':'D',
-  '20':'B','21':'A','22':'C','23':'B',
-  '24':'corn','25':'biodiversity','26':'fertilizer',
-  '27':'YES','28':'NOT GIVEN','29':'NO','30':'NOT GIVEN','31':'YES','32':'YES',
-  '33':'B','34':'C','35':'D','36':'C',
-  '37':'D','38':'A','39':'F','40':'E'
+  '1':'FALSE','2':'NOT GIVEN','3':'FALSE','4':'TRUE','5':'TRUE','6':'NOT GIVEN',
+  '7':'colleagues','8':'spongy','9':'October','10':'current',
+  '11':'week','12':'stone','13':'coin',
+  '14':'D','15':'C','16':'E','17':'A','18':'D','19':'D',
+  '20':'breakwater','21':'Portland','22':'aluminum',
+  '23':'volcanic ash','24':'wooden molds','25':'corrodes','26':'durable',
+  '27':'species','28':'hibernate','29':["Suter's skink","suter's skink"],'30':'five',
+  '31':'rats','32':'NO','33':'NO','34':'NO','35':'NO',
+  '36':'B','37':'C','38':'C','39':'C','40':'C'
 };
 
 // ---- LOGIN ----
@@ -653,11 +743,15 @@ function submitLogin() {
 }
 
 function submitCandidate() {
-  const val = document.getElementById('candidate-id-input').value.trim();
+  const name = (document.getElementById('candidate-name-input') || {}).value || '';
+  const date = (document.getElementById('test-date-input') || {}).value || '';
+  const val = name.trim();
   if (val.length < 1) { document.getElementById('candidate-error').style.display = 'block'; return; }
   candidateId = val;
-  document.getElementById('header-candidate-id').textContent = candidateId;
-  document.getElementById('intro-candidate-name').textContent = candidateId;
+  candidateName = val;
+  candidateDate = date || new Date().toLocaleDateString();
+  document.getElementById('header-candidate-id').textContent = val;
+  document.getElementById('intro-candidate-name').textContent = val;
   document.getElementById('candidate-screen').style.display = 'none';
   const intro = document.getElementById('intro-screen');
   intro.style.display = 'flex';
@@ -666,7 +760,7 @@ function submitCandidate() {
 
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('password').addEventListener('keydown', e => { if (e.key === 'Enter') submitLogin(); });
-  document.getElementById('candidate-id-input').addEventListener('keydown', e => { if (e.key === 'Enter') submitCandidate(); });
+  document.getElementById('candidate-name-input') && document.getElementById('candidate-name-input').addEventListener('keydown', e => { if (e.key === 'Enter') submitCandidate(); });
   document.getElementById('back-to-login').addEventListener('click', function() {
     document.getElementById('candidate-screen').style.display = 'none';
     document.getElementById('login-screen').style.display = 'flex';
@@ -678,10 +772,11 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('main-container').style.display = 'flex';
     document.getElementById('nav-arrows').style.display = 'flex';
     document.getElementById('nav-row').style.display = 'flex';
-    document.getElementById('submit-btn-fixed').style.display = 'block';
+    
     switchToPart(1);
     initDragDrop();
     setupInputListeners();
+    setupCheckboxLimits();
     updateAllIndicators();
     startTimer();
     initResizer();
@@ -777,6 +872,11 @@ function isAnswered(q) {
   const txt = document.getElementById('q' + q);
   if (txt && txt.value && txt.value.trim() !== '') return true;
   if (document.querySelector('input[name="q' + q + '"]:checked')) return true;
+  const cbMap = {};
+  if (cbMap[q]) {
+    const checked = document.querySelectorAll('input[name="' + cbMap[q] + '"]:checked').length;
+    if (checked >= 2) return true;
+  }
   const dz = document.querySelector('.drop-zone[data-q-start="' + q + '"]');
   if (dz && dz.querySelector('.drag-item')) return true;
   const sz = document.querySelector('.summary-drop-zone[data-q-start="' + q + '"]');
@@ -799,9 +899,20 @@ function updateAllIndicators() {
 }
 
 function setupInputListeners() {
-  document.querySelectorAll('.answer-input, input[type="radio"]').forEach(inp => {
+  document.querySelectorAll('.answer-input, input[type="radio"], input[type="checkbox"]').forEach(inp => {
     inp.addEventListener('input', updateAllIndicators);
     inp.addEventListener('change', updateAllIndicators);
+  });
+}
+
+function setupCheckboxLimits() {
+  ['q20-21'].forEach(name => {
+    document.querySelectorAll('input[name="' + name + '"]').forEach(cb => {
+      cb.addEventListener('click', function() {
+        const checked = document.querySelectorAll('input[name="' + name + '"]:checked');
+        if (checked.length > 2) cb.checked = false;
+      });
+    });
   });
 }
 
@@ -998,9 +1109,16 @@ function submitTest() {
   if (!confirm('Submit test and download your PDF results?')) return;
   testCompleted = true;
   clearInterval(timerInterval);
-  try { downloadPDF(); } catch(e) { console.error('PDF error:', e); }
-  setTimeout(() => { document.getElementById('completion-screen').style.display = 'flex'; }, 500);
-  setTimeout(() => { window.location.href = 'Writing.html'; }, 2500);
+  try {
+    downloadPDF();
+  } catch(e) {
+    console.error('PDF error:', e);
+    alert('Could not generate PDF. Please try again.\nError: ' + e.message);
+    testCompleted = false;
+    return;
+  }
+  setTimeout(() => { document.getElementById('completion-screen').style.display = 'flex'; }, 1500);
+  setTimeout(() => { window.location.href = 'Writing.html'; }, 3000);
 }
 
 function getUserAnswer(q) {
@@ -1008,6 +1126,12 @@ function getUserAnswer(q) {
   if (txt && (txt.tagName === 'INPUT' || txt.tagName === 'SELECT')) return txt.value.trim();
   const radio = document.querySelector('input[name="q' + q + '"]:checked');
   if (radio) return radio.value;
+  const cbMap = {};
+  if (cbMap[q]) {
+    const vals = Array.from(document.querySelectorAll('input[name="' + cbMap[q] + '"]:checked')).map(c => c.value).sort();
+    const idx = (q === 20) ? 0 : 1;
+    return vals[idx] || '';
+  }
   const dz = document.querySelector('.drop-zone[data-q-start="' + q + '"]');
   if (dz && dz.querySelector('.drag-item')) return dz.querySelector('.drag-item').dataset.value || '';
   const sz = document.querySelector('.summary-drop-zone[data-q-start="' + q + '"]');
@@ -1029,6 +1153,7 @@ function calculateBand(score) {
 }
 
 function downloadPDF() {
+  if (!window.jspdf || !window.jspdf.jsPDF) throw new Error('jsPDF not loaded. Check your internet connection.');
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
   let score = 0;
@@ -1042,12 +1167,12 @@ function downloadPDF() {
   }
   const band = calculateBand(score);
   doc.setFontSize(18); doc.setFont(undefined, 'bold');
-  doc.text('IELTS Reading Test Results', 105, 20, { align: 'center' });
+  doc.text('IELTS Reading Practice — Results', 105, 20, { align: 'center' });
   doc.setFontSize(14); doc.setFont(undefined, 'normal');
   doc.text('Score: ' + score + ' / 40', 20, 40);
   doc.text('Band Score: ' + band, 20, 50);
-  doc.text('Candidate: ' + candidateId, 20, 60);
-  doc.text('Date: ' + new Date().toLocaleDateString(), 20, 70);
+  doc.text('Candidate: ' + (candidateName || candidateId), 20, 60);
+  doc.text('Date: ' + (candidateDate || new Date().toLocaleDateString()), 20, 70);
   doc.setFontSize(11);
   doc.setFont(undefined, 'bold');
   doc.text('Q', 20, 90); doc.text('Your Answer', 35, 90); doc.text('Correct', 100, 90); doc.text('Result', 155, 90);
@@ -1064,7 +1189,157 @@ function downloadPDF() {
     if (y > 280) { doc.addPage(); y = 20; }
   });
   doc.setTextColor('#000000');
-  doc.save('IELTS_Reading_' + candidateId + '.pdf');
+  doc.save('IELTS_Reading_Practice_' + (candidateName||candidateId).replace(/\s+/g,'_') + '.pdf');
+}
+</script>
+<!-- CONFIRM MODAL (blur backdrop, timer keeps running) -->
+<div id="confirm-overlay">
+  <div id="confirm-backdrop"></div>
+  <div id="confirm-box">
+    <h3>Submit Test?</h3>
+    <p>Once submitted, your answers are locked and the PDF will download.</p>
+    <div class="confirm-stats">
+      <div class="confirm-stat"><div class="confirm-stat-num" id="confirm-answered-num">0</div><div class="confirm-stat-label">Answered</div></div>
+      <div class="confirm-stat"><div class="confirm-stat-num" id="confirm-remaining-num">40</div><div class="confirm-stat-label">Remaining</div></div>
+    </div>
+    <div class="confirm-btns">
+      <button class="confirm-btn-back" onclick="closeConfirm()">← Go Back</button>
+      <button class="confirm-btn-submit" onclick="confirmSubmit()">Submit ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-overlay">
+  <div id="admin-box">
+    <div class="admin-header">
+      <h2>🔒 Admin Mode</h2>
+      <button id="admin-close-x" onclick="adminClose()">×</button>
+    </div>
+    <div class="admin-hint">Shift + 6 + 7 to toggle</div>
+    <div id="admin-login">
+      <div id="admin-pw-wrap">
+        <input id="admin-pw" type="password" placeholder="Password…">
+        <button id="admin-unlock-btn" onclick="adminUnlock()">Unlock</button>
+      </div>
+      <div id="admin-pw-err"></div>
+    </div>
+    <div id="admin-controls">
+      <div class="admin-section">
+        <h4>Timer</h4>
+        <div class="admin-row">
+          <span id="admin-timer-status">Running</span>
+          <button class="admin-btn" id="admin-freeze-btn" onclick="adminToggleTimer()">⏸ Freeze</button>
+        </div>
+      </div>
+      <button onclick="adminClose()" style="align-self:flex-end;background:none;border:1px solid #3a3f55;color:#8a8fa0;border-radius:6px;padding:6px 14px;font-size:12px;cursor:pointer;margin-top:4px;">Close Panel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── ADMIN ──────────────────────────────────────────────────────────────────
+const ADMIN_PASSWORD = '456654';
+let adminUnlocked = false, adminOpen = false, adminFrozen = false;
+const _adminKeys = new Set();
+
+document.addEventListener('keydown', e => {
+  _adminKeys.add(e.key);
+  if (e.shiftKey && _adminKeys.has('6') && _adminKeys.has('7')) {
+    e.preventDefault();
+    adminOpen ? adminClose() : adminTogglePanel();
+  }
+});
+document.addEventListener('keyup', e => _adminKeys.delete(e.key));
+
+function adminTogglePanel() {
+  adminOpen = true; adminUnlocked = false;
+  document.getElementById('admin-login').style.display = '';
+  document.getElementById('admin-controls').classList.remove('show');
+  document.getElementById('admin-pw').value = '';
+  document.getElementById('admin-pw-err').textContent = '';
+  document.getElementById('admin-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('admin-pw').focus(), 50);
+}
+function adminClose() {
+  adminOpen = false;
+  document.getElementById('admin-overlay').classList.remove('open');
+}
+function adminUnlock() {
+  if (document.getElementById('admin-pw').value === ADMIN_PASSWORD) {
+    adminUnlocked = true;
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-controls').classList.add('show');
+  } else {
+    document.getElementById('admin-pw-err').textContent = 'Wrong password.';
+    document.getElementById('admin-pw').value = '';
+    document.getElementById('admin-pw').focus();
+  }
+}
+function adminToggleTimer() {
+  adminFrozen = !adminFrozen;
+  const btn = document.getElementById('admin-freeze-btn');
+  const status = document.getElementById('admin-timer-status');
+  btn.textContent = adminFrozen ? '▶ Resume' : '⏸ Freeze';
+  status.textContent = adminFrozen ? 'Frozen ❄️' : 'Running';
+  status.style.color = adminFrozen ? '#e05c5c' : '#8a8fa0';
+}
+document.getElementById('admin-pw').addEventListener('keydown', e => { if (e.key === 'Enter') adminUnlock(); });
+
+// ── PATCH TIMER to respect adminFrozen ────────────────────────────────────
+// Wrap the existing startTimer to check adminFrozen flag
+const _origInterval = setInterval;
+// Instead, patch by overriding timerInterval tick - we hook into the existing
+// timer by modifying timeInSeconds only when not frozen.
+// The existing startTimer uses setInterval; we patch by monkey-patching
+// the tick: override after DOMContentLoaded.
+document.addEventListener('DOMContentLoaded', function() {
+  // Re-patch start-test to inject adminFrozen check
+  const origStartTest = window.startTest || null;
+  // We patch by replacing timerInterval after startTest runs
+  document.getElementById('start-test-btn').addEventListener('click', function() {
+    // After startTest fires, find and patch the interval
+    setTimeout(() => {
+      // Clear existing interval and restart with adminFrozen check
+      clearInterval(timerInterval);
+      timerInterval = setInterval(function() {
+        if (adminFrozen) return; // freeze check
+        timeInSeconds--;
+        const m = Math.floor(timeInSeconds / 60), s = timeInSeconds % 60;
+        const display = document.getElementById('timer-display');
+        display.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+        if (timeInSeconds <= 300) display.classList.add('timer-warning');
+        if (timeInSeconds <= 0) { clearInterval(timerInterval); handleTimeUp(); }
+      }, 1000);
+    }, 100);
+  }, true); // capture phase so runs before existing listener
+});
+
+// ── CONFIRM MODAL ─────────────────────────────────────────────────────────
+function countAnswered() {
+  let n = 0;
+  for (let i = 1; i <= 40; i++) {
+    const txt = document.getElementById('q' + i);
+    if (txt && txt.value && txt.value.trim()) { n++; continue; }
+    if (document.querySelector('input[name="q' + i + '"]:checked')) { n++; continue; }
+  }
+  return n;
+}
+
+function openConfirm() {
+  const answered = countAnswered();
+  document.getElementById('confirm-answered-num').textContent = answered;
+  document.getElementById('confirm-remaining-num').textContent = 40 - answered;
+  document.getElementById('confirm-overlay').classList.add('open');
+}
+
+function closeConfirm() {
+  document.getElementById('confirm-overlay').classList.remove('open');
+}
+
+function confirmSubmit() {
+  closeConfirm();
+  submitTest(); // call existing submitTest
 }
 </script>
 </body>
