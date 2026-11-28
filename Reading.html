@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IELTS MOCK</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; background: #fff; line-height: 1.5; font-size: 15px; }
+
+/* ===== SCREENS ===== */
+@keyframes cardIn { from { opacity:0; transform:translateY(24px) scale(.97); } to { opacity:1; transform:none; } }
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+@keyframes pulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.4);opacity:.7;} }
+
+.login-screen { position:fixed; inset:0; background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460); display:flex; justify-content:center; align-items:center; z-index:10000; }
+.login-content { background:rgba(255,255,255,.97); padding:44px 40px; border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,.35); max-width:400px; width:90%; text-align:center; animation:cardIn .5s cubic-bezier(.22,1,.36,1); }
+.login-logo { margin-bottom:24px; }
+.login-logo img { width:130px; height:130px; object-fit:contain; }
+.login-content h1 { color:#1a1a2e; font-size:22px; margin-bottom:6px; font-weight:700; }
+.login-content .subtitle { color:#888; font-size:14px; margin-bottom:28px; }
+.form-group { margin-bottom:18px; text-align:left; }
+.form-group label { display:block; margin-bottom:7px; color:#444; font-size:13px; font-weight:600; letter-spacing:.3px; text-transform:uppercase; }
+.form-group input { width:100%; padding:12px 16px; border:2px solid #e8ecf0; border-radius:10px; font-size:15px; box-sizing:border-box; transition:border-color .2s; background:#f9fafb; }
+.form-group input:focus { outline:none; border-color:#0f3460; background:#fff; }
+.login-button { width:100%; background:linear-gradient(135deg,#0f3460,#1a6eb5); color:white; border:none; padding:14px 20px; font-size:15px; font-weight:700; border-radius:10px; cursor:pointer; margin-top:8px; transition:transform .15s, box-shadow .15s; }
+.login-button:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(15,52,96,.35); }
+.error-message { color:#e53e3e; font-size:13px; margin-top:10px; display:none; }
+
+.candidate-screen { position:fixed; inset:0; background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460); display:none; justify-content:center; align-items:center; z-index:10000; }
+.candidate-content { background:rgba(255,255,255,.97); padding:44px 40px; border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,.35); max-width:450px; width:90%; text-align:center; animation:cardIn .5s cubic-bezier(.22,1,.36,1); }
+.candidate-logo img { width:130px; height:130px; object-fit:contain; margin-bottom:20px; }
+.candidate-content h1 { color:#1a1a2e; font-size:22px; margin-bottom:8px; font-weight:700; }
+.candidate-content .subtitle { color:#888; font-size:14px; margin-bottom:28px; }
+.candidate-id-input { width:100%; padding:14px 16px; border:2px solid #e8ecf0; border-radius:10px; font-size:20px; text-align:center; letter-spacing:4px; font-weight:700; box-sizing:border-box; background:#f9fafb; }
+.candidate-id-input:focus { outline:none; border-color:#0f3460; background:#fff; }
+.candidate-button { width:100%; background:linear-gradient(135deg,#0f3460,#1a6eb5); color:white; border:none; padding:14px 20px; font-size:15px; font-weight:700; border-radius:10px; cursor:pointer; margin-top:18px; }
+.candidate-button:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(15,52,96,.35); }
+.back-button { background:none; color:#999; border:none; padding:10px 20px; font-size:13px; border-radius:6px; cursor:pointer; margin-top:12px; width:100%; }
+.back-button:hover { color:#555; }
+
+.intro-screen { position:fixed; inset:0; background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460); display:none; justify-content:center; align-items:center; z-index:10000; flex-direction:column; }
+.intro-inner { text-align:center; color:white; padding:40px; max-width:700px; }
+.intro-logo { margin-bottom:32px; opacity:0; animation:fadeUp .6s .2s forwards; }
+.intro-logo img { width:130px; height:130px; object-fit:contain; filter:brightness(0) invert(1); }
+.intro-title { font-size:42px; font-weight:800; letter-spacing:-1px; margin-bottom:10px; opacity:0; animation:fadeUp .6s .4s forwards; }
+.intro-subtitle { font-size:16px; color:rgba(255,255,255,.6); margin-bottom:48px; opacity:0; animation:fadeUp .6s .6s forwards; }
+.intro-candidate-badge { display:inline-flex; align-items:center; gap:10px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); border-radius:50px; padding:10px 24px; font-size:15px; color:white; margin-bottom:48px; opacity:0; animation:fadeUp .6s .8s forwards; }
+.intro-badge-dot { width:8px; height:8px; background:#4ade80; border-radius:50%; animation:pulse 1.5s infinite; }
+.intro-cards { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-bottom:48px; opacity:0; animation:fadeUp .6s 1s forwards; }
+.intro-card { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); border-radius:12px; padding:20px 24px; min-width:140px; }
+.intro-card-num { font-size:32px; font-weight:800; color:#60a5fa; }
+.intro-card-label { font-size:12px; color:rgba(255,255,255,.5); margin-top:4px; text-transform:uppercase; letter-spacing:1px; }
+.intro-btn { background:white; color:#0f3460; border:none; padding:16px 52px; font-size:16px; font-weight:800; border-radius:50px; cursor:pointer; opacity:0; animation:fadeUp .6s 1.2s forwards; transition:transform .15s, box-shadow .15s; box-shadow:0 4px 20px rgba(0,0,0,.3); }
+.intro-btn:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,.4); }
+
+/* ===== HEADER ===== */
+.header { background:#fff; padding:0 20px; border-bottom:1px solid #e0e0e0; display:none; justify-content:space-between; align-items:center; position:fixed; top:0; left:0; right:0; z-index:100; height:70px; }
+.header-logo img { width:130px; height:56px; object-fit:contain; }
+.timer-display { font-size:16px; font-weight:600; color:#333; }
+.timer-warning { color:#e53e3e !important; }
+.header-right { display:flex; align-items:center; gap:12px; }
+#logout-btn { background:#e74c3c; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-size:12px; }
+#candidate-label { color:#333; font-size:13px; font-weight:500; }
+
+/* ===== MAIN LAYOUT ===== */
+.main-container { margin-top:70px; display:none; height:calc(100vh - 70px); flex-direction:column; }
+.part-header-bar { background:#f1f2ec; padding:10px 20px; border-bottom:1px solid #e0e0e0; font-size:14px; flex-shrink:0; }
+.part-header-bar strong { margin-right:8px; }
+.panels-container { display:flex; flex:1; overflow:hidden; }
+
+.passage-panel { flex:1; padding:20px 20px 120px; overflow-y:auto; min-width:200px; }
+.resizer { width:8px; cursor:col-resize; background:#f0f0f0; background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="30" viewBox="0 0 8 30"><path d="M3 10h2v2H3zM3 14h2v2H3zM3 18h2v2H3z" fill="%23aaa"/></svg>'); background-repeat:no-repeat; background-position:center; flex-shrink:0; }
+.questions-panel { flex:1; padding:20px 20px 120px; overflow-y:auto; min-width:200px; border-left:1px solid #e0e0e0; }
+
+.reading-passage h4 { font-size:19px; font-weight:bold; margin-bottom:15px; text-align:center; }
+.reading-passage p { margin-bottom:1.1em; }
+.reading-passage .hidden { display:none !important; }
+
+/* ===== QUESTIONS ===== */
+.question { margin-bottom:36px; }
+.question p { margin-bottom:10px; }
+.question-prompt { margin-bottom:18px; }
+.summary-text ul { list-style:none; padding-left:0; }
+.summary-text ul li { margin-bottom:10px; }
+.centered-title { text-align:center; font-weight:bold; margin-bottom:12px; }
+
+.answer-input { border:1px solid #888; border-radius:4px; background:#fff; padding:2px 8px; font-size:14px; height:28px; width:150px; transition:border-color .2s, box-shadow .2s; }
+.answer-input:focus { outline:none; border-color:#4a90e2; box-shadow:0 0 0 2px rgba(74,144,226,.2); }
+.answer-input::placeholder { color:#999; font-weight:bold; text-align:center; }
+select.answer-input { width:auto; min-width:80px; cursor:pointer; }
+
+/* T/F/NG */
+.tf-question { margin-bottom:22px; }
+.tf-question-line { display:flex; align-items:flex-start; margin-bottom:10px; gap:10px; }
+.tf-question-number { border:2px solid #ccc; padding:2px 8px; border-radius:3px; font-weight:bold; white-space:nowrap; }
+.tf-options { padding-left:0; }
+.tf-option { display:flex; align-items:center; gap:10px; padding:10px 14px; background:#fff; cursor:pointer; transition:background .15s; }
+.tf-option:hover { background:#f8fafc; }
+.tf-option:has(input[type="radio"]:checked) { background:#dbeafe; font-weight:600; }
+.tf-option input[type="radio"] { margin-right:8px; }
+
+/* Checkbox group (choose two) */
+.checkbox-group { margin-top:8px; }
+.checkbox-group label { display:block; padding:10px 14px; background:#fff; cursor:pointer; border:1px solid #eee; border-radius:4px; margin-bottom:6px; }
+.checkbox-group label:hover { background:#f5f9ff; }
+.checkbox-group label:has(input[type="checkbox"]:checked) { background:#dbeafe; border-color:#4a90e2; font-weight:600; }
+.checkbox-group input[type="checkbox"] { margin-right:10px; }
+body.dark .checkbox-group label { background:#1e1e1e; color:#e0e0e0; border-color:#3a3a3a; }
+body.dark .checkbox-group label:hover { background:#2a2a2a; }
+body.dark .checkbox-group label:has(input[type="checkbox"]:checked) { background:#2d4a2d; color:#a0e0a0; border-color:#4a90e2; }
+
+/* Single choice */
+.single-choice-container { display:flex; flex-direction:column; gap:8px; margin-top:8px; }
+.single-choice label { display:block; padding:10px 14px; background:#fff; cursor:pointer; border:1px solid #eee; border-radius:4px; }
+.single-choice label:hover { background:#eef5fd; }
+.single-choice label:has(input[type="radio"]:checked) { background:#cfe3f6; border-color:#4a90e2; }
+
+/* Multi choice */
+.multi-choice-option label { display:block; padding:8px 12px; cursor:pointer; }
+.multi-choice-option label:hover { background:#f5f9ff; }
+.multi-choice-option label:has(input[type="radio"]:checked) { background:#dbeafe; font-weight:600; }
+
+/* Matching form */
+.matching-form-container { display:flex; flex-direction:column; gap:10px; margin-top:12px; }
+.matching-form-row { display:flex; align-items:center; gap:12px; }
+.matching-form-label { min-width:140px; font-size:14px; }
+
+/* Drag and drop */
+.drag-item { background:white; border:1px solid #9c9c9c; font-weight:600; padding:4px 10px; border-radius:4px; cursor:move; font-size:14px; transition:all .2s; user-select:none; display:inline-block; }
+.drag-item:hover { background:#e9ecef; }
+.drag-item.dragging { opacity:.5; transform:rotate(2deg); }
+.drop-zone { border:2px dashed #aaa; border-radius:4px; min-height:32px; min-width:60px; padding:3px 6px; display:inline-flex; align-items:center; justify-content:center; transition:background .2s, border-color .2s; font-weight:bold; color:#aaa; vertical-align:middle; }
+.drop-zone.drag-over { background:#e6f4ff; border-color:#4a90e2; }
+.drop-zone.filled { border:2px solid #2c7be5; color:#333; }
+.summary-drop-zone { display:inline-flex; min-width:60px; min-height:28px; border:2px dashed #aaa; border-radius:4px; padding:2px 6px; align-items:center; justify-content:center; font-weight:bold; color:#aaa; vertical-align:middle; transition:background .2s, border-color .2s; }
+.summary-drop-zone.filled { border:2px solid #2c7be5; color:#333; }
+.summary-drop-zone.drag-over { background:#e6f4ff; border-color:#4a90e2; }
+
+.matching-options-bank { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:15px; padding:10px; border:1px solid #ddd; border-radius:5px; background:#f9f9f9; }
+.matching-question-container { display:flex; flex-direction:column; gap:12px; margin-top:15px; }
+.matching-question-item { display:flex; align-items:center; gap:15px; padding:6px 0; }
+.matching-question-item > span { flex:1; font-size:14px; }
+
+.summary-options-bank { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:15px; padding:10px; border:1px solid #ddd; border-radius:5px; background:#f9f9f9; }
+.summary-text { font-size:14px; line-height:1.9; }
+
+/* People table */
+.people-table { width:100%; border-collapse:collapse; border:1px solid #ccc; font-size:14px; margin:10px 0; }
+.people-table th,.people-table td { border:1px solid #ddd; padding:8px 10px; }
+.people-table th { background:#f0f0f0; font-weight:bold; text-align:left; }
+
+/* ===== BOTTOM NAV ===== */
+.nav-row { position:fixed; bottom:0; left:0; right:0; background:#fff; padding:0; display:none; align-items:center; height:80px; z-index:100; overflow-x:auto; overflow-y:hidden; white-space:nowrap; border-top:1px solid #e0e0e0; }
+.footer__questionWrapper___1tZ46 { display:inline-flex; align-items:center; margin-right:15px; flex-shrink:0; }
+.footer__questionNo___3WNct { background:none; border:none; padding:10px 15px; font-size:16px; font-weight:600; color:#333; cursor:pointer; display:flex; align-items:center; gap:5px; }
+.footer__questionNo___3WNct:hover { background:#f8f9fa; }
+.footer__questionWrapper___1tZ46.selected .footer__questionNo___3WNct { border-bottom:3px solid #333; }
+.footer__subquestionWrapper___9GgoP { display:none; gap:2px; margin-left:6px; }
+.footer__questionWrapper___1tZ46.selected .footer__subquestionWrapper___9GgoP { display:flex; }
+.sectionNr { font-size:16px; font-weight:bold; }
+.attemptedCount { font-size:13px; color:#666; margin-left:5px; }
+.subQuestion { background:none; border:1px solid #ccc; border-radius:3px; padding:5px 8px; font-size:13px; cursor:pointer; color:#555; transition:all .2s; }
+.subQuestion:hover { background:#f0f0f0; }
+.subQuestion.active { background:#333; color:white; border-color:#333; }
+.subQuestion.answered { background:#e8f4e8; border-color:#28a745; color:#155724; }
+.subQuestion.answered.active { background:#28a745; color:white; }
+.footer__deliverButton___3FM07 { background:#dc3545; color:white; border:none; padding:10px 26px; border-radius:4px; font-size:16px; font-weight:600; cursor:pointer; margin-left:auto; flex-shrink:0; }
+.footer__deliverButton___3FM07:hover { background:#c82333; }
+
+/* Nav arrows */
+.nav-arrows { position:fixed; bottom:100px; right:20px; display:none; gap:5px; z-index:101; }
+.nav-arrow { width:50px; height:50px; background:#333; color:white; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:bold; }
+.nav-arrow:hover { background:#555; }
+.nav-arrow:disabled { background:#ccc; cursor:not-allowed; }
+
+/* ===== SELECTION TOOLBAR & CONTEXT MENU ===== */
+.selection-toolbar { position:absolute; display:none; gap:4px; background:#1e2130; border:none; border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,.45); z-index:3000; padding:6px; }
+.selection-toolbar button { display:flex; align-items:center; gap:6px; background:none; border:none; padding:9px 14px; border-radius:8px; cursor:pointer; font-size:13px; font-weight:600; color:#c8c8d0; transition:background .12s, color .12s; white-space:nowrap; }
+.selection-toolbar button:hover { background:#2a2e42; color:#fff; }
+.selection-toolbar button svg { width:15px; height:15px; fill:currentColor; flex-shrink:0; }
+.context-menu { position:fixed; background:#1e2130; border:none; border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,.45); z-index:3000; display:none; overflow:hidden; padding:6px; }
+.context-menu-item { padding:10px 16px; cursor:pointer; font-size:12px; font-weight:600; display:flex; align-items:center; gap:8px; color:#c8c8d0; border-radius:8px; transition:background .12s; white-space:nowrap; }
+.context-menu-item:hover { background:#2a2e42; color:#fff; }
+.highlight { background:#f5a623; border-radius:4px; cursor:pointer; padding:1px 2px; transition:background .15s; color:inherit; }
+.highlight:hover { background:#e6950f; }
+.comment-highlight { background:#aed6ff; border-bottom:2px dotted #2a6c96; cursor:help; padding:1px 2px; border-radius:3px; position:relative; color:inherit; }
+.comment-highlight:hover { background:#93c8ff; }
+.comment-tooltip { display:none; position:absolute; bottom:130%; left:50%; transform:translateX(-50%); background:#1e2130; color:#fff; padding:7px 12px; border-radius:8px; font-size:12px; font-weight:500; white-space:normal; max-width:240px; width:max-content; z-index:3001; box-shadow:0 6px 20px rgba(0,0,0,.35); line-height:1.4; }
+.comment-highlight:hover .comment-tooltip { display:block; }
+
+/* ═══ Header tool buttons ═══ */
+.header-tool-btn { width:44px; height:36px; border:1px solid #d5d9e0; border-radius:8px; background:#ffffff; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; flex-shrink:0; }
+.header-tool-btn:hover { background:#f3f4f6; }
+.header-tool-btn svg { width:20px; height:20px; fill:#1f2937; }
+
+/* ═══ Settings modal ═══ */
+.settings-modal-content { background:#ffffff; border-radius:14px; width:100%; max-width:470px; max-height:88vh; overflow-y:auto; padding:22px 24px 24px; box-shadow:0 10px 34px rgba(0,0,0,.28); }
+.settings-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+.settings-title { display:flex; align-items:center; gap:9px; font-size:19px; font-weight:700; color:#111827; }
+.settings-title svg { width:20px; height:20px; fill:#111827; }
+.settings-close { background:none; border:none; font-size:24px; line-height:1; cursor:pointer; color:#6b7280; padding:0 4px; }
+.settings-close:hover { color:#111827; }
+.settings-section-title { display:flex; align-items:center; gap:8px; font-size:15px; font-weight:700; color:#111827; margin:20px 0 10px; }
+.settings-section-title svg { width:17px; height:17px; fill:#111827; }
+.settings-option { display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:#ffffff; border:1px solid #e5e7eb; border-radius:9px; padding:13px 15px; margin-bottom:9px; font-size:15px; font-family:inherit; color:#4b5563; cursor:pointer; }
+.settings-option:hover { background:#f7f8fa; }
+.settings-option svg { width:18px; height:18px; fill:currentColor; flex-shrink:0; }
+.settings-option.selected { background:#eef2f7; color:#111827; font-weight:600; }
+.settings-reset { display:block; width:100%; text-align:left; background:#ffffff; border:1px solid #e5e7eb; border-radius:9px; padding:14px 16px; margin-top:22px; font-family:inherit; cursor:pointer; }
+.settings-reset:hover { background:#f7f8fa; }
+.settings-reset-title { display:flex; align-items:center; gap:10px; font-size:15px; font-weight:600; color:#111827; margin-bottom:5px; }
+.settings-reset-title svg { width:18px; height:18px; fill:#111827; }
+.settings-reset-sub { font-size:13.5px; color:#6b7280; padding-left:28px; }
+
+/* ═══ Text size ═══ */
+body.text-large .reading-passage, body.text-large .reading-passage p, body.text-large .reading-passage li,
+body.text-large .question-prompt p, body.text-large .tf-question-text, body.text-large .single-choice label,
+body.text-large .answer-input, body.text-large .notes-box, body.text-large .notes-box li, body.text-large .summary-text { font-size:18.5px; }
+body.text-xlarge .reading-passage, body.text-xlarge .reading-passage p, body.text-xlarge .reading-passage li,
+body.text-xlarge .question-prompt p, body.text-xlarge .tf-question-text, body.text-xlarge .single-choice label,
+body.text-xlarge .answer-input, body.text-xlarge .notes-box, body.text-xlarge .notes-box li, body.text-xlarge .summary-text { font-size:21.5px; }
+body.text-large .reading-passage h4, body.text-xlarge .reading-passage h4 { font-size:23px; }
+
+/* ═══ Header tool buttons / settings modal — dark theme ═══ */
+body.dark .header-tool-btn { background:#26282d; border-color:#4b5057; }
+body.dark .header-tool-btn:hover { background:#33363b; }
+body.dark .header-tool-btn svg { fill:#e5e7eb; }
+body.dark .settings-modal-content { background:#26282d; color:#e5e7eb; }
+body.dark .settings-title, body.dark .settings-section-title, body.dark .settings-reset-title { color:#f3f4f6; }
+body.dark .settings-title svg, body.dark .settings-section-title svg, body.dark .settings-reset-title svg { fill:#f3f4f6; }
+body.dark .settings-option, body.dark .settings-reset { background:#26282d; border-color:#3f434a; color:#b7bcc4; }
+body.dark .settings-option:hover, body.dark .settings-reset:hover { background:#31343a; }
+body.dark .settings-option.selected { background:#363a42; color:#ffffff; }
+body.dark .selection-toolbar { background:#2a2a2a; }
+body.dark .highlight { background:#f5a623; color:#111; border-radius:4px; }
+body.dark .highlight:hover { background:#e6950f; }
+
+/* ===== ACTIVE QUESTION ===== */
+.active-question { background:#fffbe6; border-radius:4px; }
+@keyframes flash { 0%{background:#e6f4ff;} 100%{background:transparent;} }
+.flash { animation:flash 1s ease-out; }
+
+/* ===== COMPLETION ===== */
+.completion-screen { position:fixed; inset:0; background:#fff; display:none; justify-content:center; align-items:center; z-index:10000; flex-direction:column; text-align:center; padding:20px; }
+.completion-screen h2 { font-size:28px; margin-bottom:20px; }
+.restart-btn { background:#dc2626; color:white; border:none; padding:14px 30px; font-size:16px; font-weight:600; border-radius:8px; cursor:pointer; }
+
+/* ===== DARK THEME ===== */
+/* ===== DARK THEME ===== */
+body.dark { background: #121212; color: #e0e0e0; }
+body.dark .header { background: #1e1e1e; border-bottom-color: #333; }
+body.dark .part-header-bar { background: #2a2a2a; border-color: #3a3a3a; color: #e0e0e0; }
+body.dark .main-container { background: #121212; }
+body.dark .panels-container { background: #121212; }
+body.dark .passage-panel { background: #121212; color: #d0d0d0; }
+body.dark .questions-panel { background: #121212; border-left-color: #333; color: #d0d0d0; }
+body.dark .resizer { background: #2a2a2a; }
+body.dark .reading-passage { color: #d0d0d0; }
+body.dark .reading-passage h4 { color: #ffffff; }
+body.dark .answer-input { background: #2a2a2a; border-color: #555; color: #e0e0e0; }
+body.dark .answer-input::placeholder { color: #777; }
+body.dark select.answer-input { background: #2a2a2a; color: #e0e0e0; }
+body.dark select.answer-input option { background: #2a2a2a; color: #e0e0e0; }
+body.dark .tf-option { background: #1e1e1e; color: #e0e0e0; }
+body.dark .tf-option:hover { background: #2a2a2a; }
+body.dark .tf-option:has(input[type="radio"]:checked) { background: #2d4a2d; color: #a0e0a0; }
+body.dark .single-choice label { background: #1e1e1e; color: #e0e0e0; }
+body.dark .single-choice label:hover { background: #2a2a2a; }
+body.dark .single-choice label:has(input[type="radio"]:checked) { background: #2d4a2d; color: #a0e0a0; }
+body.dark .multi-choice-option label { color: #e0e0e0; }
+body.dark .multi-choice-option label:hover { background: #2a2a2a; }
+body.dark .multi-choice-option label:has(input[type="radio"]:checked) { background: #2d4a2d; color: #a0e0a0; }
+body.dark .matching-options-bank { background: #1e1e1e; border-color: #3a3a3a; }
+body.dark .summary-options-bank { background: #1e1e1e; border-color: #3a3a3a; }
+body.dark .drag-item { background: #2a2a2a; border-color: #555; color: #e0e0e0; }
+body.dark .drag-item:hover { background: #333; }
+body.dark .drop-zone { border-color: #555; }
+body.dark .drop-zone.filled { border-color: #4a90e2; }
+body.dark .summary-drop-zone { border-color: #555; color: #888; }
+body.dark .summary-drop-zone.filled { border-color: #4a90e2; color: #e0e0e0; }
+body.dark .matching-form-label { color: #d0d0d0; }
+body.dark .people-table th { background: #2a2a2a; color: #e0e0e0; }
+body.dark .people-table td { background: #1e1e1e; color: #e0e0e0; border-color: #333; }
+body.dark .nav-row { background: #1e1e1e; border-top-color: #333; }
+body.dark .footer__questionNo___3WNct { color: #ccc; }
+body.dark .footer__questionNo___3WNct:hover { background: #2a2a2a; }
+body.dark .subQuestion { background: #2a2a2a; border-color: #444; color: #aaa; }
+body.dark .subQuestion:hover { background: #333; }
+body.dark .subQuestion.active { background: #555; border-color: #555; color: white; }
+body.dark .subQuestion.answered { background: #1a3a1a; border-color: #2a6a2a; color: #7ecf8e; }
+body.dark .subQuestion.answered.active { background: #2a6a2a; color: white; }
+body.dark .context-menu { background: #2a2a2a; }
+body.dark .context-menu-item { color: #e0e0e0; }
+body.dark .context-menu-item:hover { background: #333; }
+body.dark .nav-arrow { background: #2a2a2a; }
+body.dark .nav-arrow:hover { background: #444; }
+body.dark .nav-arrow:disabled { background: #1e1e1e; color: #555; }
+body.dark .active-question { background: #2a2a1a; }
+body.dark .timer-display { color: #e0e0e0; }
+body.dark #candidate-label { color: #ccc; }
+body.dark .completion-screen { background: #121212; color: #e0e0e0; }
+body.dark .question-prompt p { color: #d0d0d0; }
+body.dark .summary-text { color: #d0d0d0; }
+body.dark .centered-title { color: #ffffff; }
+
+/* Fixed Submit button — bottom right */
+.submit-btn-fixed {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 200;
+  display: none;
+  box-shadow: 0 4px 18px rgba(220,53,69,.45);
+  transition: background .15s, transform .15s, box-shadow .15s;
+  letter-spacing: .3px;
+}
+.submit-btn-fixed:hover { background: #c82333; transform: translateY(-2px); box-shadow: 0 7px 24px rgba(220,53,69,.55); }
+body.dark .submit-btn-fixed { box-shadow: 0 4px 18px rgba(220,53,69,.3); }
+
+/* ── DARK MODE: fix all white/light boxes ── */
+body.dark .question { background: #1a1a1a; }
+body.dark .question-prompt p { color: #c8c8c8; }
+
+/* Tables (Passage 1 fill-table, inline tables) */
+body.dark table { background: #1a1a1a; border-color: #3a3a3a; }
+body.dark th { background: #252525 !important; color: #b0b0b0 !important; border-color: #3a3a3a !important; }
+body.dark td { background: #1a1a1a !important; color: #d0d0d0 !important; border-color: #2e2e2e !important; }
+body.dark tr:nth-child(even) td, body.dark tr.alt td { background: #202020 !important; }
+body.dark div[style*="overflow-x:auto"] { border-color: #3a3a3a !important; }
+body.dark div[style*="background:#f0f4ff"] { background: #252535 !important; }
+body.dark div[style*="background:#fafbff"] { background: #1e1e2a !important; }
+
+/* Matching form rows */
+body.dark .matching-form-container { background: #1a1a1a; }
+body.dark .matching-form-row { background: #1e1e1e; border-color: #3a3a3a; }
+body.dark .matching-form-label { color: #c8c8c8; }
+body.dark select.answer-input { background: #2a2a2a !important; color: #e0e0e0 !important; border-color: #555 !important; }
+body.dark select.answer-input option { background: #2a2a2a; color: #e0e0e0; }
+
+/* Notes / summary boxes */
+body.dark .notes-box { background: #1e1e1e; border-color: #3a3a3a; color: #d0d0d0; }
+body.dark .summary-box { background: #1e1e1e; border-color: #3a3a3a; color: #d0d0d0; }
+body.dark .summary-text p, body.dark .summary-text li { color: #d0d0d0; }
+body.dark .fill-table { background: #1a1a1a; }
+body.dark .fill-table th { background: #252525; color: #b0b0b0; border-color: #3a3a3a; }
+body.dark .fill-table td { background: #1a1a1a; color: #d0d0d0; border-color: #2e2e2e; }
+
+/* TF questions */
+body.dark .tf-question { background: #1a1a1a; }
+body.dark .tf-question-line { color: #d0d0d0; }
+body.dark .tf-question-number { color: #7aa0e0; }
+body.dark .tf-question-text { color: #d0d0d0; }
+
+/* Map rows (inline styled) */
+body.dark div[style*="background:#f9fafb"] { background: #1e1e1e !important; color: #d0d0d0 !important; border-color: #3a3a3a !important; }
+body.dark div[style*="background:#f8f8f8"] { background: #1e1e1e !important; }
+body.dark div[style*="border:1.5px solid #e8ecf0"] { border-color: #3a3a3a !important; }
+body.dark div[style*="border:1px solid #eee"] { border-color: #3a3a3a !important; }
+
+/* Passage header title */
+body.dark .part-header { background: #1e1e1e; color: #e0e0e0; border-color: #3a3a3a; }
+
+/* Footer nav */
+body.dark .footer__questionWrapper___1tZ46 { background: #1e1e1e; border-color: #3a3a3a; }
+body.dark .subQuestion { background: #2a2a2a; border-color: #444; color: #ccc; }
+
+/* Context menu & misc */
+body.dark .context-menu { background: #2a2a2a; border-color: #444; }
+body.dark .active-question { background: #2a2a1a; }
+
+.hidden { display:none !important; }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* ===== ADMIN PANEL ===== */
+#admin-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:99999; align-items:center; justify-content:center; }
+#admin-overlay.open { display:flex; }
+#admin-box { background:#1a1d27; border:1px solid #3a3f55; border-radius:12px; padding:28px 32px; width:380px; max-width:95vw; color:#e2ddd5; font-family:system-ui,sans-serif; font-size:14px; }
+.admin-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
+#admin-box h2 { margin:0; font-size:16px; font-weight:700; color:#fff; }
+#admin-close-x { background:none; border:none; color:#8a8fa0; font-size:22px; cursor:pointer; line-height:1; padding:0 2px; }
+#admin-close-x:hover { color:#e2ddd5; }
+.admin-hint { font-size:11px; color:#555; margin-bottom:20px; }
+#admin-pw-wrap { display:flex; gap:8px; margin-bottom:8px; }
+#admin-pw { flex:1; background:#111318; border:1px solid #3a3f55; border-radius:7px; color:#e2ddd5; font-size:14px; padding:8px 12px; outline:none; }
+#admin-pw:focus { border-color:#4a9eff; }
+#admin-pw-err { color:#e05c5c; font-size:12px; min-height:16px; margin-bottom:12px; }
+#admin-unlock-btn { background:#4a9eff; border:none; color:#fff; border-radius:7px; padding:8px 16px; font-size:13px; font-weight:600; cursor:pointer; }
+#admin-controls { display:none; flex-direction:column; gap:10px; }
+#admin-controls.show { display:flex; }
+.admin-section { background:#111318; border:1px solid #2a2e3a; border-radius:8px; padding:14px; }
+.admin-section h4 { margin:0 0 10px; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#4a9eff; }
+.admin-row { display:flex; align-items:center; gap:8px; }
+.admin-btn { background:#2a2e3a; border:1px solid #3a3f55; color:#e2ddd5; border-radius:6px; padding:7px 13px; font-size:12px; font-weight:600; cursor:pointer; transition:border-color .15s; }
+.admin-btn:hover { border-color:#4a9eff; color:#4a9eff; }
+#admin-timer-status { font-size:12px; color:#8a8fa0; }
+
+/* ===== CONFIRM BLUR MODAL ===== */
+#confirm-overlay { display:none; position:fixed; inset:0; z-index:8000; align-items:center; justify-content:center; }
+#confirm-overlay.open { display:flex; }
+#confirm-backdrop { position:absolute; inset:0; backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); background:rgba(0,0,0,.45); }
+#confirm-box { position:relative; z-index:1; background:#fff; border-radius:16px; padding:36px 32px; width:400px; max-width:95vw; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.35); }
+body.dark #confirm-box { background:#1e2130; color:#e2ddd5; }
+#confirm-box h3 { font-size:20px; font-weight:700; margin-bottom:10px; }
+#confirm-box p { font-size:14px; color:#666; margin-bottom:24px; line-height:1.6; }
+body.dark #confirm-box p { color:#8a8fa0; }
+.confirm-stats { display:flex; gap:12px; justify-content:center; margin-bottom:24px; }
+.confirm-stat { background:#f5f5f5; border-radius:10px; padding:14px 20px; min-width:100px; }
+body.dark .confirm-stat { background:#111318; }
+.confirm-stat-num { font-size:28px; font-weight:800; color:#333; }
+body.dark .confirm-stat-num { color:#e2ddd5; }
+.confirm-stat-label { font-size:11px; color:#888; text-transform:uppercase; letter-spacing:.05em; }
+.confirm-btns { display:flex; gap:10px; }
+.confirm-btn-back { flex:1; background:#f0f0f0; border:none; border-radius:10px; padding:13px; font-size:14px; font-weight:600; cursor:pointer; color:#555; }
+.confirm-btn-back:hover { background:#e0e0e0; }
+body.dark .confirm-btn-back { background:#2a2e3a; color:#c8c8d0; }
+.confirm-btn-submit { flex:1; background:#e53935; border:none; border-radius:10px; padding:13px; font-size:14px; font-weight:700; cursor:pointer; color:#fff; }
+.confirm-btn-submit:hover { background:#c62828; }
+
+body.dark #admin-pw-settings { background:#26282d; border-color:#4b5057; color:#e5e7eb; }
+body.dark #admin-controls-settings > div { background:#26282d; border-color:#3f434a; }
+body.dark #admin-controls-settings > div > div { color:#b7bcc4; }
+body.dark #admin-freeze-btn-s, body.dark #admin-minus5, body.dark #admin-plus5 { background:#33363b; border-color:#4b5057; color:#e5e7eb; }
+body.dark #admin-lock-btn { background:#26282d; border-color:#3f434a; color:#b7bcc4; }
+body.dark #admin-lock-btn svg { fill:#b7bcc4; }
+.footer__questionNo___3WNct { box-sizing:border-box; width:140px; min-width:140px; justify-content:center; white-space:nowrap; }
+.footer__deliverButton___3FM07 { margin-left:auto !important; margin-right:20px; position:sticky; right:20px; }
+.nav-row { padding-left:10px; }
+input.answer-input[type="text"] { width:150px !important; min-width:150px; max-width:150px; height:28px; box-sizing:border-box; text-align:center; vertical-align:middle; }
+#candidate-label { color:#dc3545 !important; font-size:18px !important; font-weight:700 !important; }
+body.dark #candidate-label { color:#ff6b6b !important; }
+.reading-passage h5 { font-size:16px; font-weight:bold; margin:18px 0 8px; }
+.paste-here { color:#9aa0a6; font-style:italic; }
+.drop-zone .di-text { display:none; }
+.drop-zone .drag-item { border:0; padding:0; background:transparent; font-weight:700; }
+.drop-zone.wide { min-width:100%; justify-content:flex-start; }
+.drop-zone.wide .di-text { display:inline; font-weight:600; }
+.drop-zone.wide .drag-item { font-size:14px; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-content">
+    <div class="login-logo"><img src="logo.png" alt="Logo" onerror="this.style.display='none'"/></div>
+    <h1>MOCK</h1>
+    <p class="subtitle">Reading Test — Enter your password to continue</p>
+    <div class="form-group">
+      <label for="password">Exam Password</label>
+      <input id="password" type="password" placeholder="Enter exam password"/>
+    </div>
+    <button class="login-button" type="button" onclick="submitLogin()">Continue →</button>
+    <div class="error-message" id="login-error">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+<!-- CANDIDATE ID -->
+<div class="candidate-screen" id="candidate-screen">
+  <div class="candidate-content">
+    <div class="candidate-logo"><img src="logo.png" alt="Logo" onerror="this.style.display='none'"/></div>
+    <h1>Candidate Details</h1>
+    <p class="subtitle">Please enter your name and test date</p>
+    <div class="form-group" style="text-align:left;margin-bottom:14px;">
+      <label style="display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:6px;letter-spacing:.05em;text-transform:uppercase;">Full Name</label>
+      <input style="width:100%;padding:13px 16px;border:2px solid #e8ecf0;border-radius:10px;font-size:15px;font-family:inherit;background:#f9fafb;transition:border-color .2s;box-sizing:border-box;outline:none;" id="candidate-name-input" type="text" placeholder="e.g. Azizbek Toshmatov" autocomplete="name" onfocus="this.style.borderColor='#0f3460';this.style.background='#fff'" onblur="this.style.borderColor='#e8ecf0';this.style.background='#f9fafb'"/>
+    </div>
+    <div class="form-group" style="text-align:left;margin-bottom:20px;">
+      <label style="display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:6px;letter-spacing:.05em;text-transform:uppercase;">Test Date</label>
+      <input style="width:100%;padding:13px 16px;border:2px solid #e8ecf0;border-radius:10px;font-size:15px;font-family:inherit;background:#f9fafb;transition:border-color .2s;box-sizing:border-box;outline:none;" id="test-date-input" type="date" onfocus="this.style.borderColor='#0f3460';this.style.background='#fff'" onblur="this.style.borderColor='#e8ecf0';this.style.background='#f9fafb'"/>
+    </div>
+    <input type="hidden" id="candidate-id-input"/>
+    <button class="candidate-button" type="button" onclick="submitCandidate()">Confirm &amp; Proceed →</button>
+    <button class="back-button" id="back-to-login" type="button">← Back</button>
+    <div class="error-message" id="candidate-error">Please enter your full name.</div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div class="intro-screen" id="intro-screen">
+  <div class="intro-inner">
+    <div class="intro-logo"><img src="logo.png" alt="Logo" onerror="this.textContent='📖'; this.style.fontSize='72px';"/></div>
+    <div class="intro-title">IELTS CRAM MOCK</div>
+    <div class="intro-subtitle">Reading Test · Academic Module</div>
+    <div class="intro-candidate-badge">
+      <span class="intro-badge-dot"></span>
+      <span id="intro-candidate-name"></span>
+      <span style="color:rgba(255,255,255,.4)">·</span>
+      <span style="color:rgba(255,255,255,.5);font-size:13px;">Verified</span>
+    </div>
+    <div class="intro-cards">
+      <div class="intro-card"><div class="intro-card-num">3</div><div class="intro-card-label">Passages</div></div>
+      <div class="intro-card"><div class="intro-card-num">40</div><div class="intro-card-label">Questions</div></div>
+      <div class="intro-card"><div class="intro-card-num">60<span style="font-size:18px;color:rgba(96,165,250,.7)">min</span></div><div class="intro-card-label">Duration</div></div>
+    </div>
+    <button class="intro-btn" id="start-test-btn">Start Test</button>
+  </div>
+</div>
+
+<!-- COMPLETION -->
+<div class="completion-screen" id="completion-screen">
+  <h2>Reading section ended</h2>
+  <a class="restart-btn" href="Writing.html">Please move to writing section</a>
+</div>
+
+<!-- HEADER -->
+<div class="header" id="main-header">
+  <div class="header-logo">
+    <img src="logo.png" alt="Logo" onerror="this.style.display='none'"/>
+  </div>
+  <div class="timer-container">
+    <span class="timer-display" id="timer-display">60m remaining</span>
+  </div>
+  <div class="header-right">
+    <span id="candidate-label">Candidate: <span id="header-candidate-id"></span></span>
+    <button type="button" id="settings-btn" class="header-tool-btn" title="Settings">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main-container" id="main-container">
+  <div id="part-header-bar" class="part-header-bar">
+    <strong>Part 1</strong> — Read the text and answer questions 1–13. (The Oldest Leather Shoe)
+  </div>
+  <div class="panels-container">
+
+    <!-- PASSAGE PANEL -->
+    <div class="passage-panel" id="passage-panel">
+
+    <!-- PASSAGE 1 -->
+<div id="passage-text-1" class="reading-passage">
+<h4>The Oldest Leather Shoe</h4>
+<p>Archeologists discovered in 2010 what is said to be the world's oldest known leather shoe. The 5,500-year-old shoe, some 1,000 years older than the Egyptian pyramids, was found by scientists excavating a huge cave, designated Areni-1, in Armenia near the border of Turkey and Iran. The shoe was part of a treasure trove of artefacts that experts say provide unprecedented information about an important and sparsely documented era: the Chalcolithic period or Copper Age, when humans are believed to have invented the wheel, as well as domesticating horses and producing other important innovations.</p><p>Along with the shoe, the cave yielded horns and bones of wild goats and red deer, as well as broken pottery and evidence of what may be the oldest known intentionally dried fruits: apricots, grapes and plums. The cave, first discovered in 1997, appears to have been used primarily by powerful people of high status for keeping this Chalcolithic community's ritual objects, as well as their harvest during the winter months each year. But other people, probably acting as guards, seem to have lived in the front portion of the cave.</p><p>One of the lead scientists excavating Areni-1, Dr Gregory Areshian of the University of California, Los Angeles, in the USA, said that the cave was also used by later civilizations, most recently by 14th-century Mongols, so he had assumed the shoe would be 600 to 700 years old. When separate laboratories at the University of Oxford in the UK and at the University of California at Irvine in the USA carbon-dated the leather to 3653 to 3627 BC, he said, 'We couldn't believe that a shoe could be so ancient.'</p><p>Perfectly preserved under a layer of sheep dung and thus sealed in a stable, cool, dry environment, the shoe, 24.5 cm long, was made of a single piece of cowhide. This was cut into two layers and vegetable oil was applied, which was probably quite a new technology at the time. The pieces of leather comprising the shoe were joined using leather cords which ran along front and back, and these were threaded through numerous holes in the body of the shoe. Although shoes made at this time were probably not specifically designed for the right or left foot as are modern ones, the Areni-1 shoe was worn on the right foot. 'You can see the imprint of the big toe,' said another team leader, Ron Pinhasi of University College Cork in Ireland. 'As the person was wearing it and lacing it, some of the eyelets had been torn and replaced.' The shoe had been deliberately placed in the pit where the archeologists found it. Its bed had been carefully lined with yellow clay. The shoe had been stuffed with grass either to hold its shape or perhaps for warmth for the wearer.</p><p>Protecting the foot was probably one of the main reasons people started wearing shoes, and this certainly seems the case for the Armenian leather shoe. According to Dr Areshian, the terrain around Areni-1 is very rugged and would have been difficult to walk on. Furthermore, shoes like this would have enabled people to cope with the extremes of temperature in the region - up to 45°C in summer and -10°C in winter - and to travel further. 'These people were walking long distances. We have found stones in the cave, which came from at least 120 kilometers away,' explained Dr Areshian.</p><p>Manolo Blahnik, an expert on shoe design, says that 'The (Armenian) shoe's function was obviously to protect the foot, but I am in no doubt that a certain appearance of a shoe meant belonging to a certain tribe.' He adds that it was probably part of the clothing which the wearer used to distinguish their identity.</p><p>Previously, the oldest known remains of a closed-toe leather shoe was one which belonged to Otzi the Iceman, a mummy found in the early 1990s in the Alps, near the Italian-Austrian border. That shoe, about 300 years younger than the Armenian shoe, had bearskin soles, deerskin sides and contained grass socks.</p><p>Footwear even older than the leather shoes includes examples of sandals made of plant fibers which have been found in Missouri and Oregon in the USA. The wearing of some type of footwear, though, is almost certainly far older than the oldest shoes so far discovered. For example, an analysis of toe bones found in 40,000-year-old fossils in China indicates that people had been wearing some type of shoe at that date. Drs Pinhasi and Areshian think it is plausible that shoes as we know them today originated somewhere in the Near East, around Armenia. 'Many other inventions, such as wheel-thrown pottery, cuneiform writing and sheep-wool production evolved in the ancient Near East,' Pinhasi says. 'And so it is quite plausible that Armenia may give us the earliest clue to a "prototype" shoe, which later spread to other parts of the world.'</p><p>Interestingly, the Armenian leather shoe found in Areni-1 is very similar to the 'pampooties' worn on the Aran Islands in the west of Ireland up to the 1950s. 'In fact, enormous similarities exist between the manufacturing technique and style of the Armenian shoe and those found across Europe at subsequent periods, suggesting that this type of shoe was worn for thousands of years across a large and environmentally diverse region,' said Dr Pinhasi.</p>
+</div>
+    <!-- PASSAGE 2 -->
+<div id="passage-text-2" class="reading-passage hidden">
+<h4>Pantomime</h4>
+<p style="margin-bottom:4px;"><span class="drop-zone wide" data-q-start="14" data-dnd-group="g2">14</span></p>
+<p class="para"><strong>A</strong>&nbsp; A pantomime performance is a unique blend of eccentricity and absurdity, a wild mixture of songs, jokes, outrageous costumes and slapstick physical humour. For many British children, their first family trip to see a pantomime in the Christmas holiday season is their introduction to the magic of the theatre. But what has become a quintessentially British form of entertainment is more than just simple fun. As an art form, pantomime presents a tale of good and evil, where hope finally triumphs after danger and virtual despair.</p>
+<p style="margin-bottom:4px;"><span class="drop-zone wide" data-q-start="15" data-dnd-group="g2">15</span></p>
+<p class="para"><strong>B</strong>&nbsp; The story of pantomime begins with the commedia dell'arte tradition in 16th-century Italy. These improvised shows took place in streets and marketplaces in Italy and eventually throughout Europe. Distinctive masks enabled audiences to recognise the people in these stories immediately; they also allowed actors to be rude or disrespectful without fear of being recognised. The key roles in the cast were invariably rich old men, usually portrayed as cowardly and disreputable; young lovers whose parents refuse to let them marry; and ingenious and quick-witted servants. Many commedia plots show the latter, whose lives are a constant struggle to find food and money, outwitting the old men or overthrowing their masters. This theme of the victory of the underdog is still an essential feature of pantomime today.</p>
+<p style="margin-bottom:4px;"><span class="drop-zone wide" data-q-start="16" data-dnd-group="g2">16</span></p>
+<p class="para"><strong>C</strong>&nbsp; By the mid-18th century, many thousands of people were going to theatres across Britain every night. Among the most popular performances were harlequinades, a new kind of entertainment which interwove Ovid's first-century Latin poem Metamorphoses with aspects of the Italian commedia. Created by actor John Rich, these early pantomimes cleverly mixed spectacle, music, ballet and myth, and were tremendously enjoyable to watch. Amazing transformations happened at the touch of a magic wand, with mechanical serpents and flying vehicles. They also showed that even early pantomime was fascinated by the crossing of boundaries: the ambiguity of men dressed as women, and the fun of animal characters played by human beings.</p>
+<p style="margin-bottom:4px;"><span class="drop-zone wide" data-q-start="17" data-dnd-group="g2">17</span></p>
+<p class="para"><strong>D</strong>&nbsp; Despite their popularity, Rich's spectacular performances attracted huge controversy. Critics bitterly attacked pantomimes, complaining that they would bring about the downfall of Shakespeare and the death of serious theatre. David Garrick, the great 18th-century actor-manager, was quick to join these criticisms, while also realising the commercial opportunities of this new art form. But how could Garrick take advantage of the craze and still maintain his position as the defender of 'legitimate' theatre? His tactic was to set about changing pantomime's cultural identity, partly by confining shows to his theatre's Christmas season. Pantomimes became associated with the frivolity of the holiday season rather than being denounced as a threat. In doing so, Garrick created a convention which has survived to this day.</p>
+<p style="margin-bottom:4px;"><span class="drop-zone wide" data-q-start="18" data-dnd-group="g2">18</span></p>
+<p class="para"><strong>E</strong>&nbsp; At the end of the 18th century, popular theatre saw the arrival of the white-faced Clown, in the form of actor Joseph Grimaldi. By the early 19th century, Britain was at war with France; there was intense civil unrest and violent confrontations between the government and the people. Grimaldi's hilarious antics embodied the freedom and liberty of British culture by contrast with the country's supposedly dull, humourless enemies. His anarchic activities included chasing and imprisoning policemen and stealing gigantic quantities of sausages. But the Clown was never caught or sent to jail. Audiences were thrilled by his mischief and his endless eating precisely because he created on stage the fantasy of a different world: a world without hunger, a world of comic revenge against a highly repressive government. Grimaldi became one of the great satirists of his age, a character who offered ludicrous commentaries on everything from the ruling classes to fashion, technology and new forms of transport.</p>
+<p style="margin-bottom:4px;"><span class="drop-zone wide" data-q-start="19" data-dnd-group="g2">19</span></p>
+<p class="para"><strong>F</strong>&nbsp; By the late 19th century, photography had arrived, the telegraph had been invented and the first motor cars were starting to appear on British streets. Meanwhile, the spotlight on the comic stage shifted away from the Clown and towards an unexpected star, the pantomime 'Dame': a tired housewife – always played by a man – struggling to cope in an unfriendly world. Dan Leno was the celebrated performer who created and played this talkative and eccentric working-class woman, a mother facing the difficulties of poverty, which he and his audiences knew all too well. In the Dame, Leno developed a persona whose theatrical power comes from the locking together of compassion and laughter. At the same time, artists such as Leno began to infuse pantomime with the plots and dilemmas of working people's culture.</p>
+<p style="margin-bottom:4px;"><span class="drop-zone wide" data-q-start="20" data-dnd-group="g2">20</span></p>
+<p class="para"><strong>G</strong>&nbsp; Pantomimes are as popular today as they have ever been. Our delight in this form comes from a complex mixture of emotions and relationships. Pantomime offers us the anarchic excitements of a topsy-turvy world only to give up the assurance of harmony restored. The engaging character of the Dame exemplifies pantomime's self-proclaimed absurdity. Her comical conversations with the audience cut across the boundaries between performers and spectators, drawing us into her chaotic world. While she presides over the anarchy which Grimaldi once visited on policemen, the Dame also embodies the collective ties which bind us together as families, as neighbours, and as members of society.</p>
+</div>
+    <!-- PASSAGE 3 -->
+<div id="passage-text-3" class="reading-passage hidden">
+<h4>The tuatara – past and future</h4>
+<p class="para"><strong>A</strong>&nbsp; The New Zealand species of lizard, the tuatara, is firmly embedded in the national psyche: an icon for today which dates from the age of dinosaurs; an ancient reptile commemorated on the back of the five cent coin. New Zealanders feel an affinity with the tuatara, and accept that active conservation management is required to ensure it will be among the legacies left to future generations.</p>
+<p class="para"><strong>B</strong>&nbsp; When European explorers reached New Zealand in 1769 they found two large islands, which together they called the 'mainland', and many tiny offshore islands around the coast. The naturalists who came with the explorers disregarded the tuatara, though it is improbable none were seen. Only several decades later did a tuatara specimen reach the British Museum, where it was eventually classified as just another type of lizard.</p>
+<p class="para"><strong>C</strong>&nbsp; One of the first scientists who realised that aspects of tuatara anatomy were odd – unchanged for tens of thousands of years – was Albert Gunther in 1876. Gunther believed the tuatara was one of the most valuable objects in zoological anatomical collections, and also noted, in passing, the reptile was likely to become extinct. From today's perspective, it is striking that Gunther expressed no concern about the probable demise of the tuatara. He and his contemporaries were products of their age, strongly influenced by Charles Darwin's theory, which had only recently been published. Their views were something like this: 'Extinction is a natural process. It is sad that species disappear, but that is part of nature.'</p>
+<p class="para"><strong>D</strong>&nbsp; There is a second important aspect of Gunther's work. He recorded, correctly, that some of the mammals introduced by Europeans were predators of the tuatara, particularly rats. But what he did not realise was that New Zealand has two species of rat, both introduced, both with an appetite for tuatara: the ship's rat came with European explorers and settlers; but the kiore rat had already been in the country for hundreds of years, brought by Polynesians from the Pacific Islands. Gunther failed to recognise the distinction, believing all rats to be a relatively recent introduction.</p>
+<p class="para"><strong>E</strong>&nbsp; Little further research was conducted until Ian Crook of the NZ Wildlife Service published his findings in 1973, which can be summarised as follows. Tuatara thrive on offshore islands with no rats. Tuatara never survived on islands with ship's rats. On a few islands, small and declining populations of tuatara occur with the kiore. This should not be seen, however, as evidence that tuatara and kiore can coexist. Rather, Crook proposed, kiore probably only arrived recently on such islands, and thus the small populations represent extinctions in progress.</p>
+<p class="para"><strong>F</strong>&nbsp; Throughout the 1990s, Richard Holdaway and his colleagues at Victoria University in Wellington documented the surprising discovery that kiores probably arrived about 1800 years ago, although the human population of New Zealand is thought to be no older than 800 years. How is this possible? Presumably, Holdaway argued, the kiore were brought by Polynesian explorers who visited the country but did not settle. Thereafter, the rats were agents of ecological warfare, exterminating perhaps 1000-3000 species. Thus, tuatara and many other species were already rare or extinct when permanent human inhabitants – the Maori – arrived around 1300. This hypothesis is still being debated, but the evidence continues to accumulate in its favour.</p>
+<p class="para"><strong>G</strong>&nbsp; Conservation practice has changed dramatically since Crook's findings were published in 1973. Eradication of rats from any given environment was believed to be virtually impossible until about 1980, but since then it has become routine. Enormous conservation benefits are accruing as newly rat-free offshore islands are providing sanctuaries for the country's rarest species. In 1995, for example, Nicola Nelson of the Department of Conservation established 68 tuatara on Titi Island. Since then, four more populations of tuatara have been established elsewhere under similar conditions. Today, numbers of tuatara are still a fraction of what they once were, but for the first time in 1800 years the decline has been reversed.</p>
+<p class="para"><strong>H</strong>&nbsp; While the recovery of rare species is itself a good thing, the truly significant outcome of this research is that it liberates the imagination. If we can remove predatory introduced mammals from islands, why not from the mainland too? Perhaps the questions we ask should demonstrate even more visionary ambition. Can non-mammalian pests also be removed from the mainland? Our rivers, for example, are full of surrogate rats, in the form of introduced species of fish called trout. Some day more people will understand that trout have replaced a whole native fauna in our waterways, just as rats replaced tuatara on the mainland. Will such knowledge lead to the creation of mainland 'aquatic islands' where we can once again establish those species of indigenous fish that used to live in our rivers? Similarly, can bellbirds and tuis replace birds like starlings and mynahs?</p>
+<p class="para"><strong>I</strong>&nbsp; The answers to such questions are uncertain, and opposing sides will doubtless be fiercely debated. But the role of scientific knowledge in illuminating the past will be crucial. Just as we now no longer tolerate extinction, in the future we may no longer accept a mainland devoid of the biological wonders of our past such as tuatara. Conservation is thus not primarily about the past but about imagining and then creating the future we wish for our children and ourselves. For 80 million years until humans arrived, tuatara occurred throughout New Zealand – might they do so again?</p>
+</div>
+
+    </div><!-- /passage-panel -->
+
+    <div class="resizer" id="resizer"></div>
+
+    <!-- QUESTIONS PANEL -->
+    <div class="questions-panel" id="questions-panel">
+
+    <!-- QUESTIONS SET 1 -->
+    <div id="questions-1" class="question-set">
+<div class="question" data-q-start="1" data-q-end="8">
+<div class="question-prompt">
+<p><strong>Questions 1–8</strong><br>Complete the notes below.</p><p>Write <strong>ONE WORD ONLY</strong> from the passage for each answer.</p>
+</div>
+<div class="notes-box"><p style="text-align:center;font-weight:bold;font-size:15px;margin-bottom:12px;">The discovery of the Areni-1 shoe</p>
+<h3 style="font-size:15px;margin:10px 0 6px;">The Areni-1 cave</h3><ul style="list-style:disc;padding-left:22px;line-height:2.4;">
+<li>contains artefacts dating from the Copper Age when various <input class="answer-input" id="q1" type="text" placeholder="1"/> such as horse domestication, were introduced</li>
+<li>used for storage of the annual <input class="answer-input" id="q2" type="text" placeholder="2"/> as well as ceremonial items</li></ul>
+<h3 style="font-size:15px;margin:10px 0 6px;">The Areni-1 shoe</h3><ul style="list-style:disc;padding-left:22px;line-height:2.4;">
+<li>made of leather treated with <input class="answer-input" id="q3" type="text" placeholder="3"/> from plants</li>
+<li>held together by <input class="answer-input" id="q4" type="text" placeholder="4"/> also made of leather</li>
+<li>bearing an impression of a human toe</li>
+<li>filled with <input class="answer-input" id="q5" type="text" placeholder="5"/> possibly to keep out the cold</li></ul>
+<h3 style="font-size:15px;margin:10px 0 6px;">Uses of the Areni-1 shoe</h3><ul style="list-style:disc;padding-left:22px;line-height:2.4;">
+<li>to protect the foot because
+<ul style="list-style:circle;padding-left:22px;"><li>the terrain of the surrounding area is rough</li>
+<li>the area was exposed to a great variation in <input class="answer-input" id="q6" type="text" placeholder="6"/></li>
+<li>people travelled widely - as indicated by <input class="answer-input" id="q7" type="text" placeholder="7"/> which were discovered in the cave</li></ul></li>
+<li>to signify membership of a <input class="answer-input" id="q8" type="text" placeholder="8"/></li></ul></div>
+</div>
+<div class="question" data-q-start="9" data-q-end="13">
+<div class="question-prompt">
+<p><strong>Questions 9–13</strong><br>Do the following statements agree with the information given in Reading Passage 1?</p><p>Write <strong>TRUE</strong>, <strong>FALSE</strong> or <strong>NOT GIVEN</strong>.</p>
+</div>
+<div class="tf-question" data-q-start="9"><div class="tf-question-line"><span class="tf-question-number">9</span><span class="tf-question-text">The Otzi shoe was made of leather from more than one animal.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q9" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q9" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q9" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+<div class="tf-question" data-q-start="10"><div class="tf-question-line"><span class="tf-question-number">10</span><span class="tf-question-text">The sandals discovered in Missouri and Oregon are examples of very early leather footwear.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q10" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q10" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q10" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+<div class="tf-question" data-q-start="11"><div class="tf-question-line"><span class="tf-question-number">11</span><span class="tf-question-text">The very early use of footwear is evident in human fossil remains.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q11" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q11" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q11" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+<div class="tf-question" data-q-start="12"><div class="tf-question-line"><span class="tf-question-number">12</span><span class="tf-question-text">Inhabitants of the Irish Aran Islands travelled to the Near East to trade leather goods.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q12" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q12" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q12" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+<div class="tf-question" data-q-start="13"><div class="tf-question-line"><span class="tf-question-number">13</span><span class="tf-question-text">The design of the Areni-1 shoe made it suitable for one specific area of Europe.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q13" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q13" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q13" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+</div>
+    </div><!-- /questions-1 -->
+
+    <!-- QUESTIONS SET 2 -->
+    <div id="questions-2" class="question-set hidden">
+<div class="question" data-q-start="14" data-q-end="20">
+<div class="question-prompt">
+<p><strong>Questions 14–20</strong><br>Reading Passage 2 has seven paragraphs, <strong>A–G</strong>.</p><p>Choose the correct heading for each paragraph from the list of headings below.</p><p style="font-size:13px;color:#666;">Drag a heading into the box above the matching paragraph in the text.</p>
+</div>
+<div class="matching-options-bank" data-dnd-group="g2"><div class="drag-item" data-value="i" data-dnd-group="g2" draggable="true"><span class="di-letter">i.</span><span class="di-text"> A character who provoked sympathy and amusement</span></div><div class="drag-item" data-value="ii" data-dnd-group="g2" draggable="true"><span class="di-letter">ii.</span><span class="di-text"> Outdoor performances with a standard set of characters</span></div><div class="drag-item" data-value="iii" data-dnd-group="g2" draggable="true"><span class="di-letter">iii.</span><span class="di-text"> Pantomime as a means of focusing on political issues</span></div><div class="drag-item" data-value="iv" data-dnd-group="g2" draggable="true"><span class="di-letter">iv.</span><span class="di-text"> Discovering pantomime at a young age</span></div><div class="drag-item" data-value="v" data-dnd-group="g2" draggable="true"><span class="di-letter">v.</span><span class="di-text"> A way of dealing with a negative attitude toward pantomime</span></div><div class="drag-item" data-value="vi" data-dnd-group="g2" draggable="true"><span class="di-letter">vi.</span><span class="di-text"> An explanation of how a pantomime character appeals to modern audiences</span></div><div class="drag-item" data-value="vii" data-dnd-group="g2" draggable="true"><span class="di-letter">vii.</span><span class="di-text"> Debate about the origins of pantomime</span></div><div class="drag-item" data-value="viii" data-dnd-group="g2" draggable="true"><span class="di-letter">viii.</span><span class="di-text"> A successful merging of artistic sources</span></div></div>
+</div>
+<div class="question" data-q-start="21" data-q-end="23">
+<div class="question-prompt">
+<p><strong>Questions 21–23</strong><br>Complete the sentences below.</p><p>Write <strong>ONE WORD ONLY</strong> from the passage for each answer.</p>
+</div>
+<div class="notes-box"><p style="font-size:14px;line-height:2.6;">21&nbsp;&nbsp;Commedia dell’arte actors used <input class="answer-input" id="q21" type="text" placeholder="21"/> to disguise their real identities.</p><p style="font-size:14px;line-height:2.6;">22&nbsp;&nbsp;Harlequinades combined elements of a 16th-century art form with a <input class="answer-input" id="q22" type="text" placeholder="22"/> written many centuries earlier.</p><p style="font-size:14px;line-height:2.6;">23&nbsp;&nbsp;In early 19th-century pantomimes, <input class="answer-input" id="q23" type="text" placeholder="23"/> were often victims of the Clown’s activities.</p></div>
+</div>
+<div class="question" data-q-start="24" data-q-end="26">
+<div class="question-prompt">
+<p><strong>Questions 24–26</strong><br>Look at the following statements and the list of people below.</p><p>Match each statement with the correct person, <strong>A</strong>, <strong>B</strong>, <strong>C</strong> or <strong>D</strong>.</p><p style="font-size:13px;color:#666;margin-top:6px;">A. John Rich &nbsp;&nbsp; B. David Garrick &nbsp;&nbsp; C. Joseph Grimaldi &nbsp;&nbsp; D. Dan Leno</p>
+</div>
+<div style="display:flex;align-items:center;gap:14px;padding:10px 14px;background:#f9fafb;border:1.5px solid #e8ecf0;border-radius:8px;margin-bottom:10px;"><strong style="min-width:24px;">24</strong><span style="flex:1;font-size:14px;">His performances focused on the situation of the less wealthy sections of society.</span><select class="answer-input" id="q24" style="padding:6px 10px;border:1.5px solid #ddd;border-radius:6px;font-size:14px;min-width:70px;"><option value="">–</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select></div>
+<div style="display:flex;align-items:center;gap:14px;padding:10px 14px;background:#f9fafb;border:1.5px solid #e8ecf0;border-radius:8px;margin-bottom:10px;"><strong style="min-width:24px;">25</strong><span style="flex:1;font-size:14px;">He introduced elements of the supernatural to the pantomime genre.</span><select class="answer-input" id="q25" style="padding:6px 10px;border:1.5px solid #ddd;border-radius:6px;font-size:14px;min-width:70px;"><option value="">–</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select></div>
+<div style="display:flex;align-items:center;gap:14px;padding:10px 14px;background:#f9fafb;border:1.5px solid #e8ecf0;border-radius:8px;margin-bottom:10px;"><strong style="min-width:24px;">26</strong><span style="flex:1;font-size:14px;">His pantomime character was never seen to be punished for his on-stage crimes.</span><select class="answer-input" id="q26" style="padding:6px 10px;border:1.5px solid #ddd;border-radius:6px;font-size:14px;min-width:70px;"><option value="">–</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select></div>
+</div>
+    </div><!-- /questions-2 -->
+
+    <!-- QUESTIONS SET 3 -->
+    <div id="questions-3" class="question-set hidden">
+<div class="question" data-q-start="27" data-q-end="31">
+<div class="question-prompt">
+<p><strong>Questions 27–31</strong><br>Choose the correct letter, <strong>A</strong>, <strong>B</strong>, <strong>C</strong> or <strong>D</strong>.</p>
+</div>
+<p style="margin:14px 0 8px;"><strong>27</strong> What are we told about the Europeans who arrived in 1769?</p><div class="single-choice-container"><div class="single-choice"><label><input type="radio" name="q27" value="A"> A &nbsp;&nbsp;They thought there was only one large island.</label></div><div class="single-choice"><label><input type="radio" name="q27" value="B"> B &nbsp;&nbsp;They had not come to study natural history.</label></div><div class="single-choice"><label><input type="radio" name="q27" value="C"> C &nbsp;&nbsp;They had no interest in the tuatara.</label></div><div class="single-choice"><label><input type="radio" name="q27" value="D"> D &nbsp;&nbsp;They sent a tuatara to the British Museum.</label></div></div><p style="margin:14px 0 8px;"><strong>28</strong> What does the writer say about Albert Gunther in paragraph C?</p><div class="single-choice-container"><div class="single-choice"><label><input type="radio" name="q28" value="A"> A &nbsp;&nbsp;He believed the tuatara could fetch a high price.</label></div><div class="single-choice"><label><input type="radio" name="q28" value="B"> B &nbsp;&nbsp;He was typical of his generation of scientists.</label></div><div class="single-choice"><label><input type="radio" name="q28" value="C"> C &nbsp;&nbsp;He disagreed with Charles Darwin’s theory.</label></div><div class="single-choice"><label><input type="radio" name="q28" value="D"> D &nbsp;&nbsp;He wanted to stop the tuatara from becoming extinct.</label></div></div><p style="margin:14px 0 8px;"><strong>29</strong> What did Albert Gunther think about the rats in New Zealand?</p><div class="single-choice-container"><div class="single-choice"><label><input type="radio" name="q29" value="A"> A &nbsp;&nbsp;They did not eat the tuatara.</label></div><div class="single-choice"><label><input type="radio" name="q29" value="B"> B &nbsp;&nbsp;There was one species of rat.</label></div><div class="single-choice"><label><input type="radio" name="q29" value="C"> C &nbsp;&nbsp;There had always been rats in New Zealand.</label></div><div class="single-choice"><label><input type="radio" name="q29" value="D"> D &nbsp;&nbsp;They were killed by Polynesians.</label></div></div><p style="margin:14px 0 8px;"><strong>30</strong> What did Ian Crook conclude from his research?</p><div class="single-choice-container"><div class="single-choice"><label><input type="radio" name="q30" value="A"> A &nbsp;&nbsp;Tuatara are safe on small islands.</label></div><div class="single-choice"><label><input type="radio" name="q30" value="B"> B &nbsp;&nbsp;Ship’s rats kill more tuatara than kiore.</label></div><div class="single-choice"><label><input type="radio" name="q30" value="C"> C &nbsp;&nbsp;Kiore cannot swim to offshore islands.</label></div><div class="single-choice"><label><input type="radio" name="q30" value="D"> D &nbsp;&nbsp;Rats and tuatara cannot live together.</label></div></div><p style="margin:14px 0 8px;"><strong>31</strong> What were the findings of Richard Holdaway’s research?</p><div class="single-choice-container"><div class="single-choice"><label><input type="radio" name="q31" value="A"> A &nbsp;&nbsp;Maori settled more recently than previously thought.</label></div><div class="single-choice"><label><input type="radio" name="q31" value="B"> B &nbsp;&nbsp;The first Polynesian explorers formed permanent settlements.</label></div><div class="single-choice"><label><input type="radio" name="q31" value="C"> C &nbsp;&nbsp;Ship’s rats are the oldest rat species in the country.</label></div><div class="single-choice"><label><input type="radio" name="q31" value="D"> D &nbsp;&nbsp;Rats caused extinctions before any humans settled.</label></div></div>
+</div>
+<div class="question" data-q-start="32" data-q-end="35">
+<div class="question-prompt">
+<p><strong>Questions 32–35</strong><br>Do the following statements agree with the claims of the writer in Reading Passage 3?</p><p>Write <strong>YES</strong>, <strong>NO</strong> or <strong>NOT GIVEN</strong>.</p>
+</div>
+<div class="tf-question" data-q-start="32"><div class="tf-question-line"><span class="tf-question-number">32</span><span class="tf-question-text">The available research supports Holdaway’s theory but it has not been proved.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q32" value="YES"> YES</label><label class="tf-option"><input type="radio" name="q32" value="NO"> NO</label><label class="tf-option"><input type="radio" name="q32" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+<div class="tf-question" data-q-start="33"><div class="tf-question-line"><span class="tf-question-number">33</span><span class="tf-question-text">Nowadays, it is possible to totally destroy a population of rats on a small island.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q33" value="YES"> YES</label><label class="tf-option"><input type="radio" name="q33" value="NO"> NO</label><label class="tf-option"><input type="radio" name="q33" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+<div class="tf-question" data-q-start="34"><div class="tf-question-line"><span class="tf-question-number">34</span><span class="tf-question-text">Crook was the first person to recognise the potential of offshore islands as sanctuaries.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q34" value="YES"> YES</label><label class="tf-option"><input type="radio" name="q34" value="NO"> NO</label><label class="tf-option"><input type="radio" name="q34" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+<div class="tf-question" data-q-start="35"><div class="tf-question-line"><span class="tf-question-number">35</span><span class="tf-question-text">Tuatara numbers are continuing to fall.</span></div><div class="tf-options"><label class="tf-option"><input type="radio" name="q35" value="YES"> YES</label><label class="tf-option"><input type="radio" name="q35" value="NO"> NO</label><label class="tf-option"><input type="radio" name="q35" value="NOT GIVEN"> NOT GIVEN</label></div></div>
+</div>
+<div class="question" data-q-start="36" data-q-end="40">
+<div class="question-prompt">
+<p><strong>Questions 36–40</strong><br>Complete the summary using the list of words, <strong>A–H</strong>, below.</p><p style="font-size:13px;color:#666;">Drag an option into a blank.</p>
+</div>
+<div class="matching-options-bank" data-dnd-group="g3"><div class="drag-item" data-value="A" data-dnd-group="g3" draggable="true"><span class="di-letter">A.</span><span class="di-text"> natural evolution</span></div><div class="drag-item" data-value="B" data-dnd-group="g3" draggable="true"><span class="di-letter">B.</span><span class="di-text"> creative thought</span></div><div class="drag-item" data-value="C" data-dnd-group="g3" draggable="true"><span class="di-letter">C.</span><span class="di-text"> indigenous plants</span></div><div class="drag-item" data-value="D" data-dnd-group="g3" draggable="true"><span class="di-letter">D.</span><span class="di-text"> trout</span></div><div class="drag-item" data-value="E" data-dnd-group="g3" draggable="true"><span class="di-letter">E.</span><span class="di-text"> pollution</span></div><div class="drag-item" data-value="F" data-dnd-group="g3" draggable="true"><span class="di-letter">F.</span><span class="di-text"> restoration</span></div><div class="drag-item" data-value="G" data-dnd-group="g3" draggable="true"><span class="di-letter">G.</span><span class="di-text"> native fish</span></div><div class="drag-item" data-value="H" data-dnd-group="g3" draggable="true"><span class="di-letter">H.</span><span class="di-text"> extinction</span></div></div><div class="notes-box"><p style="text-align:center;font-weight:bold;font-size:15px;margin-bottom:12px;">What conclusions can we draw?</p><p style="font-size:14px;line-height:2.8;">The most important result of the tuatara research is that it frees our <span class="drop-zone" data-q-start="36" data-dnd-group="g3">36</span>. For example, there are many similarities between rats and <span class="drop-zone" data-q-start="37" data-dnd-group="g3">37</span>. Should we now go further and consider reintroducing <span class="drop-zone" data-q-start="38" data-dnd-group="g3">38</span> to our mainland rivers? Perhaps our children will come to believe in the <span class="drop-zone" data-q-start="39" data-dnd-group="g3">39</span> of species, in the same way that our generation refuses to accept <span class="drop-zone" data-q-start="40" data-dnd-group="g3">40</span>.</p></div>
+</div>
+    </div><!-- /questions-3 -->
+
+    </div><!-- /questions-panel -->
+  </div><!-- /panels-container -->
+</div><!-- /main-container -->
+
+<!-- NAV ARROWS -->
+<div class="nav-arrows" id="nav-arrows">
+  <button class="nav-arrow" id="prevBtn" onclick="previousQuestion()">&#8249;</button>
+  <button class="nav-arrow" id="nextBtn" onclick="nextQuestion()">&#8250;</button>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="nav-row" id="nav-row">
+  <div class="footer__questionWrapper___1tZ46" id="part-nav-1">
+    <button class="footer__questionNo___3WNct" onclick="switchToPart(1)"><span class="section-prefix">Part </span><span class="sectionNr">1</span><span class="attemptedCount">0 of 13</span></button>
+    <div class="footer__subquestionWrapper___9GgoP">
+      <button class="subQuestion" onclick="goToQuestion(1)">1</button><button class="subQuestion" onclick="goToQuestion(2)">2</button><button class="subQuestion" onclick="goToQuestion(3)">3</button><button class="subQuestion" onclick="goToQuestion(4)">4</button><button class="subQuestion" onclick="goToQuestion(5)">5</button><button class="subQuestion" onclick="goToQuestion(6)">6</button><button class="subQuestion" onclick="goToQuestion(7)">7</button><button class="subQuestion" onclick="goToQuestion(8)">8</button><button class="subQuestion" onclick="goToQuestion(9)">9</button><button class="subQuestion" onclick="goToQuestion(10)">10</button><button class="subQuestion" onclick="goToQuestion(11)">11</button><button class="subQuestion" onclick="goToQuestion(12)">12</button><button class="subQuestion" onclick="goToQuestion(13)">13</button>
+    </div>
+  </div>
+  <div class="footer__questionWrapper___1tZ46" id="part-nav-2">
+    <button class="footer__questionNo___3WNct" onclick="switchToPart(2)"><span class="section-prefix">Part </span><span class="sectionNr">2</span><span class="attemptedCount">0 of 13</span></button>
+    <div class="footer__subquestionWrapper___9GgoP">
+      <button class="subQuestion" onclick="goToQuestion(14)">14</button><button class="subQuestion" onclick="goToQuestion(15)">15</button><button class="subQuestion" onclick="goToQuestion(16)">16</button><button class="subQuestion" onclick="goToQuestion(17)">17</button><button class="subQuestion" onclick="goToQuestion(18)">18</button><button class="subQuestion" onclick="goToQuestion(19)">19</button><button class="subQuestion" onclick="goToQuestion(20)">20</button><button class="subQuestion" onclick="goToQuestion(21)">21</button><button class="subQuestion" onclick="goToQuestion(22)">22</button><button class="subQuestion" onclick="goToQuestion(23)">23</button><button class="subQuestion" onclick="goToQuestion(24)">24</button><button class="subQuestion" onclick="goToQuestion(25)">25</button><button class="subQuestion" onclick="goToQuestion(26)">26</button>
+    </div>
+  </div>
+  <div class="footer__questionWrapper___1tZ46" id="part-nav-3">
+    <button class="footer__questionNo___3WNct" onclick="switchToPart(3)"><span class="section-prefix">Part </span><span class="sectionNr">3</span><span class="attemptedCount">0 of 14</span></button>
+    <div class="footer__subquestionWrapper___9GgoP">
+      <button class="subQuestion" onclick="goToQuestion(27)">27</button><button class="subQuestion" onclick="goToQuestion(28)">28</button><button class="subQuestion" onclick="goToQuestion(29)">29</button><button class="subQuestion" onclick="goToQuestion(30)">30</button><button class="subQuestion" onclick="goToQuestion(31)">31</button><button class="subQuestion" onclick="goToQuestion(32)">32</button><button class="subQuestion" onclick="goToQuestion(33)">33</button><button class="subQuestion" onclick="goToQuestion(34)">34</button><button class="subQuestion" onclick="goToQuestion(35)">35</button><button class="subQuestion" onclick="goToQuestion(36)">36</button><button class="subQuestion" onclick="goToQuestion(37)">37</button><button class="subQuestion" onclick="goToQuestion(38)">38</button><button class="subQuestion" onclick="goToQuestion(39)">39</button><button class="subQuestion" onclick="goToQuestion(40)">40</button>
+    </div>
+  </div>
+  <button class="footer__deliverButton___3FM07" onclick="openConfirm()">Submit Test</button>
+</nav>
+
+<!-- FIXED SUBMIT BUTTON bottom-right -->
+
+
+<!-- selection-toolbar and context-menu are injected by TextHighlighter -->
+
+<script>
+const PASSWORD = '1234';
+let candidateId = '';
+let candidateName = '';
+let candidateDate = '';
+let currentPassage = 1;
+let currentQuestion = 1;
+let timeInSeconds = 3600;
+let timerInterval = null;
+let testCompleted = false;
+let draggedItem = null;
+
+const correctAnswers = {
+  '1':['innovations'],'2':['harvest'],'3':['oil'],'4':['cords'],'5':['grass'],'6':['temperature'],'7':['stones'],'8':['tribe'],
+  '9':'TRUE','10':'FALSE','11':'TRUE','12':'NOT GIVEN','13':'FALSE',
+  '14':'iv','15':'ii','16':'viii','17':'v','18':'iii','19':'i','20':'vi',
+  '21':['masks'],'22':['poem'],'23':['policemen'],
+  '24':'D','25':'A','26':'C',
+  '27':'C','28':'B','29':'B','30':'D','31':'D',
+  '32':'YES','33':'YES','34':'NOT GIVEN','35':'NO',
+  '36':'B','37':'D','38':'G','39':'F','40':'H'
+};
+
+// ---- LOGIN ----
+function submitLogin() {
+  if (document.getElementById('password').value === PASSWORD) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('candidate-screen').style.display = 'flex';
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+
+function submitCandidate() {
+  const name = (document.getElementById('candidate-name-input') || {}).value || '';
+  const date = (document.getElementById('test-date-input') || {}).value || '';
+  const val = name.trim();
+  if (val.length < 1) { document.getElementById('candidate-error').style.display = 'block'; return; }
+  candidateId = val;
+  candidateName = val;
+  candidateDate = date || new Date().toLocaleDateString();
+  document.getElementById('header-candidate-id').textContent = val;
+  document.getElementById('intro-candidate-name').textContent = val;
+  document.getElementById('candidate-screen').style.display = 'none';
+  const intro = document.getElementById('intro-screen');
+  intro.style.display = 'flex';
+  intro.style.flexDirection = 'column';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('password').addEventListener('keydown', e => { if (e.key === 'Enter') submitLogin(); });
+  document.getElementById('candidate-name-input') && document.getElementById('candidate-name-input').addEventListener('keydown', e => { if (e.key === 'Enter') submitCandidate(); });
+  document.getElementById('back-to-login').addEventListener('click', function() {
+    document.getElementById('candidate-screen').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+  });
+
+  document.getElementById('start-test-btn').addEventListener('click', function() {
+    document.getElementById('intro-screen').style.display = 'none';
+    document.getElementById('main-header').style.display = 'flex';
+    document.getElementById('main-container').style.display = 'flex';
+    document.getElementById('nav-arrows').style.display = 'flex';
+    document.getElementById('nav-row').style.display = 'flex';
+    
+    switchToPart(1);
+    initDragDrop();
+    setupInputListeners();
+    setupCheckboxLimits();
+    updateAllIndicators();
+    startTimer();
+    initResizer();
+  });
+});
+
+// ---- TIMER ----
+function startTimer() {
+  timerInterval = setInterval(function() {
+    timeInSeconds--;
+    const m = Math.floor(timeInSeconds / 60);
+    const s = timeInSeconds % 60;
+    const display = document.getElementById('timer-display');
+    const remaining = Math.ceil(timeInSeconds / 60);
+    display.textContent = remaining + 'm remaining';
+    if (timeInSeconds <= 300) display.classList.add('timer-warning');
+    if (timeInSeconds <= 0) { clearInterval(timerInterval); handleTimeUp(); }
+  }, 1000);
+}
+
+function handleTimeUp() {
+  if (testCompleted) return;
+  testCompleted = true;
+  alert("Time's up! Submitting your test.");
+  downloadPDF();
+  setTimeout(() => { document.getElementById('completion-screen').style.display = 'flex'; }, 1500);
+}
+
+// ---- PART SWITCHING ----
+function switchToPart(n) {
+  currentPassage = n;
+  document.querySelectorAll('.reading-passage,.question-set,.part-header').forEach(el => el.classList.add('hidden'));
+  document.getElementById('passage-text-' + n).classList.remove('hidden');
+  document.getElementById('questions-' + n).classList.remove('hidden');
+  const headers = { 1:'<strong>Part 1</strong> — Read the text and answer questions 1–13. (The Oldest Leather Shoe)', 2:'<strong>Part 2</strong> — Read the text and answer questions 14–26. (Pantomime)', 3:'<strong>Part 3</strong> — Read the text and answer questions 27–40. (The tuatara – past and future)' };
+  document.getElementById('part-header-bar').innerHTML = headers[n];
+  document.querySelectorAll('.footer__questionWrapper___1tZ46').forEach((w, i) => w.classList.toggle('selected', i + 1 === n));
+  const firstQ = {1:1, 2:14, 3:27}[n];
+  goToQuestion(firstQ);
+}
+
+// ---- NAVIGATION ----
+function goToQuestion(qNum) {
+  currentQuestion = qNum;
+  let part = qNum <= 13 ? 1 : qNum <= 26 ? 2 : 3;
+  if (currentPassage !== part) { switchToPart(part); return; }
+
+  document.querySelectorAll('.subQuestion').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector('.subQuestion[onclick="goToQuestion(' + qNum + ')"]');
+  if (btn) btn.classList.add('active');
+
+  // Find and scroll to element
+  let el = document.getElementById('q' + qNum)
+    || document.querySelector('input[name="q' + qNum + '"]')
+    || document.querySelector('.tf-question[data-q-start="' + qNum + '"]')
+    || document.querySelector('.drop-zone[data-q-start="' + qNum + '"]')
+    || document.querySelector('.summary-drop-zone[data-q-start="' + qNum + '"]');
+
+  if (el) {
+    const block = el.closest('.question, .tf-question, .matching-question-item') || el.parentElement;
+    if (block) {
+      block.scrollIntoView({ behavior:'smooth', block:'center' });
+      block.classList.add('flash');
+      setTimeout(() => block.classList.remove('flash'), 1000);
+    }
+  }
+  updateAllIndicators();
+}
+
+function previousQuestion() { if (currentQuestion > 1) goToQuestion(currentQuestion - 1); }
+function nextQuestion() { if (currentQuestion < 40) goToQuestion(currentQuestion + 1); }
+window.previousQuestion = previousQuestion;
+window.nextQuestion = nextQuestion;
+window.goToQuestion = goToQuestion;
+window.switchToPart = switchToPart;
+
+// ---- INDICATORS ----
+function isAnswered(q) {
+  const txt = document.getElementById('q' + q);
+  if (txt && txt.value && txt.value.trim() !== '') return true;
+  if (document.querySelector('input[name="q' + q + '"]:checked')) return true;
+  const cbMap = {};
+  if (cbMap[q]) {
+    const checked = document.querySelectorAll('input[name="' + cbMap[q] + '"]:checked').length;
+    if (checked >= 2) return true;
+  }
+  const dz = document.querySelector('.drop-zone[data-q-start="' + q + '"]');
+  if (dz && dz.querySelector('.drag-item')) return true;
+  const sz = document.querySelector('.summary-drop-zone[data-q-start="' + q + '"]');
+  if (sz && sz.querySelector('.drag-item')) return true;
+  return false;
+}
+
+function updateAllIndicators() {
+  document.querySelectorAll('.subQuestion').forEach(btn => {
+    const m = (btn.getAttribute('onclick') || '').match(/goToQuestion\((\d+)\)/);
+    if (!m) return;
+    btn.classList.toggle('answered', isAnswered(parseInt(m[1])));
+  });
+  [[1,1,13],[2,14,26],[3,27,40]].forEach(([part, start, end]) => {
+    let count = 0;
+    for (let i = start; i <= end; i++) { if (isAnswered(i)) count++; }
+    const w = document.getElementById('part-nav-' + part);
+    if (w) { const ct = w.querySelector('.attemptedCount'); if (ct) ct.textContent = count + ' of ' + (end - start + 1); }
+  });
+}
+
+function setupInputListeners() {
+  document.querySelectorAll('.answer-input, input[type="radio"], input[type="checkbox"]').forEach(inp => {
+    inp.addEventListener('input', updateAllIndicators);
+    inp.addEventListener('change', updateAllIndicators);
+  });
+}
+
+function setupCheckboxLimits() {
+  [].forEach(name => {
+    document.querySelectorAll('input[name="' + name + '"]').forEach(cb => {
+      cb.addEventListener('click', function() {
+        const checked = document.querySelectorAll('input[name="' + name + '"]:checked');
+        if (checked.length > 2) cb.checked = false;
+      });
+    });
+  });
+}
+
+// ---- DRAG AND DROP ----
+function initDragDrop() {
+  document.querySelectorAll('.drag-item').forEach(item => {
+    item.addEventListener('dragstart', e => { draggedItem = e.target; setTimeout(() => e.target.classList.add('dragging'), 0); });
+    item.addEventListener('dragend', e => { e.target.classList.remove('dragging'); draggedItem = null; });
+    // Touch support
+    item.addEventListener('touchstart', handleTouchStart, { passive: true });
+    item.addEventListener('touchmove', handleTouchMove, { passive: false });
+    item.addEventListener('touchend', handleTouchEnd);
+  });
+  document.querySelectorAll('.drop-zone, .summary-drop-zone, .matching-options-bank, .summary-options-bank').forEach(zone => {
+    zone.addEventListener('dragover', e => { e.preventDefault(); if (!draggedItem || draggedItem.dataset.dndGroup !== zone.dataset.dndGroup) return; zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', e => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag-over'); handleDropTo(zone); });
+  });
+}
+
+function handleDropTo(targetZone) {
+  if (!draggedItem || draggedItem.dataset.dndGroup !== targetZone.dataset.dndGroup) return;
+  const sourceZone = draggedItem.parentElement;
+  if (sourceZone === targetZone) return;
+  const isTargetZone = targetZone.classList.contains('drop-zone') || targetZone.classList.contains('summary-drop-zone');
+  const isSourceZone = sourceZone.classList.contains('drop-zone') || sourceZone.classList.contains('summary-drop-zone');
+  const existing = isTargetZone ? targetZone.querySelector('.drag-item') : null;
+  if (existing) { sourceZone.appendChild(existing); }
+  if (isSourceZone && !sourceZone.querySelector('.drag-item')) {
+    sourceZone.classList.remove('filled');
+    sourceZone.textContent = sourceZone.dataset.qStart || '';
+  }
+  if (isTargetZone) { Array.from(targetZone.childNodes).forEach(n => { if (n.nodeType === 3) n.remove(); }); }
+  targetZone.appendChild(draggedItem);
+  if (isTargetZone) { targetZone.classList.add('filled'); }
+  updateAllIndicators();
+}
+
+// Touch drag
+let touchDragged = null, touchClone = null;
+function handleTouchStart(e) {
+  touchDragged = this;
+  draggedItem = this;
+  const t = e.touches[0];
+  touchClone = this.cloneNode(true);
+  touchClone.style.cssText = 'position:fixed;pointer-events:none;opacity:.75;z-index:9999;background:white;border:1px solid #9c9c9c;padding:4px 10px;border-radius:4px;font-size:14px;';
+  touchClone.style.left = (t.clientX - 30) + 'px';
+  touchClone.style.top = (t.clientY - 20) + 'px';
+  document.body.appendChild(touchClone);
+}
+function handleTouchMove(e) {
+  if (!touchClone) return;
+  e.preventDefault();
+  const t = e.touches[0];
+  touchClone.style.left = (t.clientX - 30) + 'px';
+  touchClone.style.top = (t.clientY - 20) + 'px';
+}
+function handleTouchEnd(e) {
+  if (touchClone) { document.body.removeChild(touchClone); touchClone = null; }
+  if (!touchDragged) return;
+  const t = e.changedTouches[0];
+  const el = document.elementFromPoint(t.clientX, t.clientY);
+  const zone = el ? (el.closest('.drop-zone, .summary-drop-zone, .matching-options-bank, .summary-options-bank')) : null;
+  if (zone) handleDropTo(zone);
+  touchDragged = null;
+  draggedItem = null;
+}
+
+// ---- RESIZER ----
+function initResizer() {
+  const resizer = document.getElementById('resizer');
+  const passage = document.getElementById('passage-panel');
+  const questions = document.getElementById('questions-panel');
+  let isResizing = false, startX, startPassW, startQuestW;
+  resizer.addEventListener('mousedown', e => {
+    isResizing = true; startX = e.clientX;
+    startPassW = passage.offsetWidth; startQuestW = questions.offsetWidth;
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  });
+  document.addEventListener('mousemove', e => {
+    if (!isResizing) return;
+    const dx = e.clientX - startX;
+    const newPassW = Math.max(200, startPassW + dx);
+    const newQuestW = Math.max(200, startQuestW - dx);
+    passage.style.flex = 'none';
+    passage.style.width = newPassW + 'px';
+    questions.style.flex = 'none';
+    questions.style.width = newQuestW + 'px';
+  });
+  document.addEventListener('mouseup', () => {
+    isResizing = false;
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  });
+}
+
+// ---- HIGHLIGHT (new system, class defined below) ----
+
+// ---- SUBMIT & PDF ----
+function submitTest() {
+  if (testCompleted) return;
+  if (!confirm('Submit test and download your PDF results?')) return;
+  testCompleted = true;
+  clearInterval(timerInterval);
+  try {
+    downloadPDF();
+  } catch(e) {
+    console.error('PDF error:', e);
+    alert('Could not generate PDF. Please try again.\nError: ' + e.message);
+    testCompleted = false;
+    return;
+  }
+  setTimeout(() => { document.getElementById('completion-screen').style.display = 'flex'; }, 1500);
+  setTimeout(() => { window.location.href = 'Writing.html'; }, 3000);
+}
+
+function getUserAnswer(q) {
+  const txt = document.getElementById('q' + q);
+  if (txt && (txt.tagName === 'INPUT' || txt.tagName === 'SELECT')) return txt.value.trim();
+  const radio = document.querySelector('input[name="q' + q + '"]:checked');
+  if (radio) return radio.value;
+  const cbMap = {};
+  if (cbMap[q]) {
+    const vals = Array.from(document.querySelectorAll('input[name="' + cbMap[q] + '"]:checked')).map(c => c.value).sort();
+    const idx = (q === 23 || q === 25) ? 0 : 1;
+    return vals[idx] || '';
+  }
+  const dz = document.querySelector('.drop-zone[data-q-start="' + q + '"]');
+  if (dz && dz.querySelector('.drag-item')) return dz.querySelector('.drag-item').dataset.value || '';
+  const sz = document.querySelector('.summary-drop-zone[data-q-start="' + q + '"]');
+  if (sz && sz.querySelector('.drag-item')) return sz.querySelector('.drag-item').dataset.value || '';
+  return '';
+}
+
+function checkCorrect(userAns, correct) {
+  if (!userAns) return false;
+  const u = userAns.trim().toLowerCase();
+  if (Array.isArray(correct)) return correct.some(c => u === c.toLowerCase());
+  return u === String(correct).toLowerCase();
+}
+
+function calculateBand(score) {
+  if (score >= 39) return '9.0';
+  const map = {38:'8.5',37:'8.5',36:'8.0',35:'8.0',34:'7.5',33:'7.5',32:'7.0',31:'7.0',30:'7.0',29:'6.5',28:'6.5',27:'6.5',26:'6.0',25:'6.0',24:'6.0',23:'5.5',22:'5.5',21:'5.5',20:'5.5',19:'5.0',18:'5.0',17:'5.0',16:'5.0',15:'5.0',14:'4.5',13:'4.5',12:'4.0',11:'4.0',10:'4.0',9:'3.5',8:'3.5',7:'3.0',6:'3.0',5:'2.5',4:'2.5'};
+  return map[score] || '0.0';
+}
+
+function downloadPDF() {
+  if (!window.jspdf || !window.jspdf.jsPDF) throw new Error('jsPDF not loaded. Check your internet connection.');
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  let score = 0;
+  const results = [];
+  for (let i = 1; i <= 40; i++) {
+    const user = getUserAnswer(i);
+    const correct = correctAnswers[String(i)];
+    const ok = checkCorrect(user, correct);
+    if (ok) score++;
+    results.push({ q: i, user: user || '—', correct: Array.isArray(correct) ? correct[0] : correct, ok });
+  }
+  const band = calculateBand(score);
+  doc.setFontSize(18); doc.setFont(undefined, 'bold');
+  doc.text('MOCK — Results', 105, 20, { align: 'center' });
+  doc.setFontSize(14); doc.setFont(undefined, 'normal');
+  doc.text('Score: ' + score + ' / 40', 20, 40);
+  doc.text('Band Score: ' + band, 20, 50);
+  doc.text('Candidate: ' + (candidateName || candidateId), 20, 60);
+  doc.text('Date: ' + (candidateDate || new Date().toLocaleDateString()), 20, 70);
+  doc.setFontSize(11);
+  doc.setFont(undefined, 'bold');
+  doc.text('Q', 20, 90); doc.text('Your Answer', 35, 90); doc.text('Correct', 100, 90); doc.text('Result', 155, 90);
+  doc.setFont(undefined, 'normal');
+  let y = 100;
+  results.forEach(r => {
+    doc.setTextColor('#000000');
+    doc.text(String(r.q), 20, y);
+    doc.text(String(r.user), 35, y);
+    doc.text(String(r.correct), 100, y);
+    doc.setTextColor(r.ok ? '#1a7a1a' : '#c0392b');
+    doc.text(r.ok ? 'Correct' : 'Wrong', 155, y);
+    y += 8;
+    if (y > 280) { doc.addPage(); y = 20; }
+  });
+  doc.setTextColor('#000000');
+  doc.save('MOCK_Reading_' + (candidateName||candidateId).replace(/\s+/g,'_') + '.pdf');
+}
+</script>
+<!-- CONFIRM MODAL (blur backdrop, timer keeps running) -->
+<div id="confirm-overlay">
+  <div id="confirm-backdrop"></div>
+  <div id="confirm-box">
+    <h3>Submit Test?</h3>
+    <p>Once submitted, your answers are locked and the PDF will download.</p>
+    <div class="confirm-stats">
+      <div class="confirm-stat"><div class="confirm-stat-num" id="confirm-answered-num">0</div><div class="confirm-stat-label">Answered</div></div>
+      <div class="confirm-stat"><div class="confirm-stat-num" id="confirm-remaining-num">40</div><div class="confirm-stat-label">Remaining</div></div>
+    </div>
+    <div class="confirm-btns">
+      <button class="confirm-btn-back" onclick="closeConfirm()">← Go Back</button>
+      <button class="confirm-btn-submit" onclick="confirmSubmit()">Submit ✓</button>
+    </div>
+  </div>
+</div>
+    <div id="admin-login">
+      <div id="admin-pw-wrap">
+        <input id="admin-pw" type="password" placeholder="Password…">
+        <button id="admin-unlock-btn" onclick="adminUnlock()">Unlock</button>
+      </div>
+      <div id="admin-pw-err"></div>
+    </div>
+    <div id="admin-controls">
+      <div class="admin-section">
+        <h4>Timer</h4>
+        <div class="admin-row">
+          <span id="admin-timer-status">Running</span>
+          <button class="admin-btn" id="admin-freeze-btn" onclick="adminToggleTimer()">⏸ Freeze</button>
+        </div>
+        <div class="admin-row" style="margin-top:10px;flex-wrap:wrap;">
+          <button class="admin-btn" onclick="adminAdjustTime(-300)">-5m</button>
+          <button class="admin-btn" onclick="adminAdjustTime(-60)">-1m</button>
+          <button class="admin-btn" onclick="adminAdjustTime(60)">+1m</button>
+          <button class="admin-btn" onclick="adminAdjustTime(300)">+5m</button>
+        </div>
+      </div>
+      <button onclick="adminClose()" style="align-self:flex-end;background:none;border:1px solid #3a3f55;color:#8a8fa0;border-radius:6px;padding:6px 14px;font-size:12px;cursor:pointer;margin-top:4px;">Close Panel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── ADMIN ──────────────────────────────────────────────────────────────────
+const ADMIN_PASSWORD = '456654';
+let adminUnlocked = false, adminOpen = false, adminFrozen = false;
+const _adminKeys = new Set();
+
+document.addEventListener('keydown', e => {
+  _adminKeys.add(e.key);
+  if (e.shiftKey && _adminKeys.has('6') && _adminKeys.has('7')) {
+    e.preventDefault();
+    adminOpen ? adminClose() : adminTogglePanel();
+  }
+});
+document.addEventListener('keyup', e => _adminKeys.delete(e.key));
+
+function adminTogglePanel() {
+  adminOpen = true; adminUnlocked = false;
+  document.getElementById('admin-login').style.display = '';
+  document.getElementById('admin-controls').classList.remove('show');
+  document.getElementById('admin-pw').value = '';
+  document.getElementById('admin-pw-err').textContent = '';
+  document.getElementById('admin-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('admin-pw').focus(), 50);
+}
+function adminClose() {
+  adminOpen = false;
+  document.getElementById('admin-overlay').classList.remove('open');
+}
+function adminUnlock() {
+  if (document.getElementById('admin-pw').value === ADMIN_PASSWORD) {
+    adminUnlocked = true;
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-controls').classList.add('show');
+  } else {
+    document.getElementById('admin-pw-err').textContent = 'Wrong password.';
+    document.getElementById('admin-pw').value = '';
+    document.getElementById('admin-pw').focus();
+  }
+}
+function adminToggleTimer() {
+  adminFrozen = !adminFrozen;
+  const btn = document.getElementById('admin-freeze-btn');
+  const status = document.getElementById('admin-timer-status');
+  btn.textContent = adminFrozen ? '▶ Resume' : '⏸ Freeze';
+  status.textContent = adminFrozen ? 'Frozen ❄️' : 'Running';
+  status.style.color = adminFrozen ? '#e05c5c' : '#8a8fa0';
+}
+function adminAdjustTime(deltaSeconds) {
+  timeInSeconds = Math.max(0, timeInSeconds + deltaSeconds);
+  const m = Math.floor(timeInSeconds / 60);
+  const s = timeInSeconds % 60;
+  const display = document.getElementById('timer-display');
+  if (display) {
+    const remaining = Math.ceil(timeInSeconds / 60);
+    display.textContent = remaining + 'm remaining';
+    display.classList.toggle('timer-warning', timeInSeconds <= 300);
+  }
+  if (timeInSeconds <= 0) { clearInterval(timerInterval); handleTimeUp(); }
+}
+document.getElementById('admin-pw').addEventListener('keydown', e => { if (e.key === 'Enter') adminUnlock(); });
+
+// ── PATCH TIMER to respect adminFrozen ────────────────────────────────────
+// Wrap the existing startTimer to check adminFrozen flag
+const _origInterval = setInterval;
+// Instead, patch by overriding timerInterval tick - we hook into the existing
+// timer by modifying timeInSeconds only when not frozen.
+// The existing startTimer uses setInterval; we patch by monkey-patching
+// the tick: override after DOMContentLoaded.
+document.addEventListener('DOMContentLoaded', function() {
+  // Re-patch start-test to inject adminFrozen check
+  const origStartTest = window.startTest || null;
+  // We patch by replacing timerInterval after startTest runs
+  document.getElementById('start-test-btn').addEventListener('click', function() {
+    // After startTest fires, find and patch the interval
+    setTimeout(() => {
+      // Clear existing interval and restart with adminFrozen check
+      clearInterval(timerInterval);
+      timerInterval = setInterval(function() {
+        if (adminFrozen) return; // freeze check
+        timeInSeconds--;
+        const m = Math.floor(timeInSeconds / 60), s = timeInSeconds % 60;
+        const display = document.getElementById('timer-display');
+        const remaining = Math.ceil(timeInSeconds / 60);
+    display.textContent = remaining + 'm remaining';
+        if (timeInSeconds <= 300) display.classList.add('timer-warning');
+        if (timeInSeconds <= 0) { clearInterval(timerInterval); handleTimeUp(); }
+      }, 1000);
+    }, 100);
+  }, true); // capture phase so runs before existing listener
+});
+
+// ── CONFIRM MODAL ─────────────────────────────────────────────────────────
+function countAnswered() {
+  let n = 0;
+  const cbMap = {};
+  for (let i = 1; i <= 40; i++) {
+    if (cbMap[i]) {
+      if (document.querySelectorAll('input[name="' + cbMap[i] + '"]:checked').length >= 2) n++;
+      continue;
+    }
+    const txt = document.getElementById('q' + i);
+    if (txt && txt.value && txt.value.trim()) { n++; continue; }
+    if (document.querySelector('input[name="q' + i + '"]:checked')) { n++; continue; }
+  }
+  return n;
+}
+
+function openConfirm() {
+  const answered = countAnswered();
+  document.getElementById('confirm-answered-num').textContent = answered;
+  document.getElementById('confirm-remaining-num').textContent = 40 - answered;
+  document.getElementById('confirm-overlay').classList.add('open');
+}
+
+function closeConfirm() {
+  document.getElementById('confirm-overlay').classList.remove('open');
+}
+
+function confirmSubmit() {
+  closeConfirm();
+  submitTest(); // call existing submitTest
+}
+</script>
+
+<script>
+// ════════════════════════════════════════
+// TEXT HIGHLIGHTER
+// Select text → floating toolbar (Highlight / Note)
+// Click/right-click an existing highlight → context menu (Remove)
+// ════════════════════════════════════════
+class TextHighlighter {
+  constructor() {
+    this.selectedRange = null;
+    this.targetElement = null;
+    this._build();
+    this._bind();
+  }
+
+  _build() {
+    this.toolbar = document.createElement('div');
+    this.toolbar.className = 'selection-toolbar';
+    this.toolbar.innerHTML = `
+      <button id="th-highlight-btn">
+        <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+        Highlight
+      </button>
+      <button id="th-note-btn">
+        <svg viewBox="0 0 24 24"><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18z"/></svg>
+        Note
+      </button>
+    `;
+    document.body.appendChild(this.toolbar);
+
+    this.ctxMenu = document.createElement('div');
+    this.ctxMenu.className = 'context-menu';
+    this.ctxMenu.style.cssText = 'position:fixed;background:#1e2130;border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.45);z-index:4000;display:none;flex-direction:column;padding:6px;min-width:160px;';
+    this.ctxMenu.innerHTML = `
+      <div id="th-remove-btn" style="display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;font-size:13px;font-weight:600;color:#e05c5c;border-radius:8px;" onmouseover="this.style.background='#2a1a1a'" onmouseout="this.style.background='none'">
+        <span>🗑</span> Remove Highlight
+      </div>
+    `;
+    document.body.appendChild(this.ctxMenu);
+  }
+
+  _bind() {
+    document.addEventListener('mouseup', (e) => {
+      if (this.toolbar.contains(e.target) || this.ctxMenu.contains(e.target)) return;
+      if (e.target.closest('#admin-overlay') || e.target.closest('#settings-modal')) return;
+      setTimeout(() => {
+        const sel = window.getSelection();
+        if (sel && !sel.isCollapsed && sel.toString().trim().length > 0) {
+          const range = sel.getRangeAt(0);
+          const container = range.commonAncestorContainer;
+          const parent = container.nodeType === 3 ? container.parentNode : container;
+          if (parent.closest('input,select,textarea,.answer-input')) { this._hideToolbar(); return; }
+          this.selectedRange = range.cloneRange();
+          this._showToolbar(range.getBoundingClientRect());
+        } else {
+          this._hideToolbar();
+        }
+      }, 10);
+    });
+
+    document.addEventListener('mousedown', (e) => {
+      if (!this.toolbar.contains(e.target)) this._hideToolbar();
+      if (!this.ctxMenu.contains(e.target)) this._hideCtx();
+    });
+
+    document.addEventListener('contextmenu', (e) => {
+      const hl = e.target.closest('.highlight,.comment-highlight');
+      if (!hl) return;
+      e.preventDefault();
+      this.targetElement = hl;
+      this._showCtx(e.clientX, e.clientY);
+    });
+
+    document.addEventListener('click', (e) => {
+      const hl = e.target.closest('.highlight,.comment-highlight');
+      if (!hl) return;
+      const sel = window.getSelection();
+      if (sel && sel.toString().trim()) return;
+      this.targetElement = hl;
+      const rect = hl.getBoundingClientRect();
+      this._showCtx(rect.left + rect.width / 2, rect.top - 10);
+    });
+
+    document.getElementById('th-highlight-btn').addEventListener('click', () => {
+      this._apply('highlight', null);
+    });
+
+    document.getElementById('th-note-btn').addEventListener('click', () => {
+      const note = prompt('Enter your note:');
+      if (note && note.trim()) this._apply('comment-highlight', note.trim());
+      else this._hideToolbar();
+    });
+
+    document.getElementById('th-remove-btn').addEventListener('click', () => {
+      if (!this.targetElement) return;
+      const parent = this.targetElement.parentNode;
+      const tip = this.targetElement.querySelector('.comment-tooltip');
+      if (tip) tip.remove();
+      while (this.targetElement.firstChild) parent.insertBefore(this.targetElement.firstChild, this.targetElement);
+      parent.removeChild(this.targetElement);
+      parent.normalize();
+      this.targetElement = null;
+      this._hideCtx();
+    });
+  }
+
+  _apply(className, noteText) {
+    if (!this.selectedRange || !this.selectedRange.toString().trim()) return;
+    const range = this.selectedRange.cloneRange();
+
+    const root = range.commonAncestorContainer;
+    const treeRoot = root.nodeType === Node.TEXT_NODE ? root.parentNode : root;
+    const tw = document.createTreeWalker(treeRoot, NodeFilter.SHOW_TEXT);
+    const toWrap = [];
+    let node;
+    while ((node = tw.nextNode())) {
+      if (node.parentNode.closest('input,select,textarea')) continue;
+      const nr = document.createRange(); nr.selectNode(node);
+      if (range.compareBoundaryPoints(Range.END_TO_START, nr) >= 0) continue;
+      if (range.compareBoundaryPoints(Range.START_TO_END, nr) <= 0) continue;
+      toWrap.push(node);
+    }
+
+    toWrap.forEach(tn => {
+      let start = 0, end = tn.length;
+      if (tn === range.startContainer) start = range.startOffset;
+      if (tn === range.endContainer)   end   = range.endOffset;
+      if (start >= end) return;
+      const before = tn.nodeValue.slice(0, start);
+      const middle = tn.nodeValue.slice(start, end);
+      const after  = tn.nodeValue.slice(end);
+      const sp = document.createElement('span');
+      sp.className = className;
+      sp.textContent = middle;
+      if (noteText) {
+        const tip = document.createElement('span');
+        tip.className = 'comment-tooltip';
+        tip.textContent = noteText;
+        sp.appendChild(tip);
+      }
+      const p = tn.parentNode; if (!p) return;
+      if (before) p.insertBefore(document.createTextNode(before), tn);
+      p.insertBefore(sp, tn);
+      if (after)  p.insertBefore(document.createTextNode(after), tn);
+      p.removeChild(tn);
+    });
+
+    window.getSelection().removeAllRanges();
+    this.selectedRange = null;
+    this._hideToolbar();
+  }
+
+  _showToolbar(rect) {
+    this.toolbar.style.visibility = 'hidden';
+    this.toolbar.style.display = 'flex';
+    const tw = this.toolbar.offsetWidth;
+    this.toolbar.style.display = 'none';
+    this.toolbar.style.visibility = '';
+    let left = rect.left + rect.width / 2 - tw / 2;
+    let top  = rect.top - 50 + window.scrollY;
+    if (left < 4) left = 4;
+    if (left + tw > window.innerWidth - 4) left = window.innerWidth - tw - 4;
+    if (top < 4) top = rect.bottom + window.scrollY + 8;
+    this.toolbar.style.left = left + 'px';
+    this.toolbar.style.top  = top + 'px';
+    this.toolbar.style.display = 'flex';
+  }
+
+  _hideToolbar() {
+    this.toolbar.style.display = 'none';
+    this.selectedRange = null;
+  }
+
+  _showCtx(x, y) {
+    let top = y - 10;
+    if (top < 4) top = y + 20;
+    this.ctxMenu.style.left = x + 'px';
+    this.ctxMenu.style.top  = top + 'px';
+    this.ctxMenu.style.display = 'flex';
+  }
+
+  _hideCtx() {
+    this.ctxMenu.style.display = 'none';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => { new TextHighlighter(); });
+</script>
+
+<!-- Settings Modal -->
+<div id="settings-modal" class="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9000;align-items:center;justify-content:center;">
+  <div class="settings-modal-content">
+    <div class="settings-header">
+      <span class="settings-title">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+        Exam Settings
+      </span>
+      <button type="button" id="settings-close" class="settings-close">&times;</button>
+    </div>
+
+    <p class="settings-section-title">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 0 0 0-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
+      Theme
+    </p>
+    <button type="button" class="settings-option" data-theme="light">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 0 0 0-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
+      Light
+    </button>
+    <button type="button" class="settings-option" data-theme="dark">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
+      Dark
+    </button>
+    <button type="button" class="settings-option" data-theme="system">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7v2H8v2h8v-2h-2v-2h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H3V4h18v12z"/></svg>
+      System
+    </button>
+
+    <p class="settings-section-title">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 4v3h5.5v12h3V7H19V4z"/></svg>
+      Text Size
+    </p>
+    <button type="button" class="settings-option" data-textsize="default">Default</button>
+    <button type="button" class="settings-option" data-textsize="large" style="font-size:18.5px;">Large</button>
+    <button type="button" class="settings-option" data-textsize="xlarge" style="font-size:21.5px;">Extra Large</button>
+
+    <!-- Admin section (locked by password) -->
+    <p class="settings-section-title" style="margin-top:24px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+      Admin
+    </p>
+    <div id="admin-login-section">
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <input id="admin-pw-settings" type="password" placeholder="Admin password…"
+          style="flex:1;padding:10px 14px;border:1px solid #e5e7eb;border-radius:9px;font-size:14px;font-family:inherit;outline:none;background:#fff;color:#111;">
+        <button type="button" id="admin-unlock-settings"
+          style="background:#4a9eff;border:none;color:#fff;border-radius:9px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;">
+          Unlock
+        </button>
+      </div>
+      <div id="admin-pw-err-settings" style="color:#e53e3e;font-size:12px;min-height:16px;margin-bottom:4px;"></div>
+    </div>
+    <div id="admin-controls-settings" style="display:none;flex-direction:column;gap:8px;">
+      <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:9px;padding:14px 16px;">
+        <div style="font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6b7280;margin-bottom:10px;">Timer</div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <span id="admin-timer-status-s" style="font-size:13px;color:#6b7280;">Running</span>
+          <button type="button" id="admin-freeze-btn-s"
+            style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;color:#374151;">
+            ⏸ Freeze Timer
+          </button>
+          <button type="button" id="admin-minus5"
+            style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#374151;">
+            −5 min
+          </button>
+          <button type="button" id="admin-plus5"
+            style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#374151;">
+            +5 min
+          </button>
+        </div>
+      </div>
+      <button type="button" id="admin-lock-btn"
+        style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:9px;padding:11px 15px;font-size:14px;font-weight:500;cursor:pointer;color:#6b7280;text-align:left;display:flex;align-items:center;gap:8px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:16px;height:16px;fill:#6b7280;flex-shrink:0;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+        Lock Admin (re-enter password next time)
+      </button>
+    </div>
+
+    <button type="button" id="reset-settings-btn" class="settings-reset">
+      <span class="settings-reset-title">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-8 8s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+        Reset Settings
+      </span>
+      <span class="settings-reset-sub">Restore the default theme and text size. Your answers are kept.</span>
+    </button>
+  </div>
+</div>
+
+<script>
+// ═══ Settings: Theme + Text Size ═══
+(function() {
+  const settingsModal = document.getElementById('settings-modal');
+  const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+  function readSetting(key, fallback) {
+    try { return localStorage.getItem(key) || fallback; } catch(e) { return fallback; }
+  }
+  function saveSetting(key, value) {
+    try { localStorage.setItem(key, value); } catch(e) {}
+  }
+
+  function applyTheme(theme) {
+    const dark = theme === 'dark' || (theme === 'system' && darkQuery.matches);
+    document.body.classList.toggle('dark', dark);
+    document.querySelectorAll('.settings-option[data-theme]').forEach(b => {
+      b.classList.toggle('selected', b.dataset.theme === theme);
+    });
+  }
+
+  function applyTextSize(size) {
+    document.body.classList.remove('text-large', 'text-xlarge');
+    if (size === 'large') document.body.classList.add('text-large');
+    else if (size === 'xlarge') document.body.classList.add('text-xlarge');
+    document.querySelectorAll('.settings-option[data-textsize]').forEach(b => {
+      b.classList.toggle('selected', b.dataset.textsize === size);
+    });
+  }
+
+  document.querySelectorAll('.settings-option[data-theme]').forEach(btn => {
+    btn.addEventListener('click', () => { saveSetting('ielts-theme', btn.dataset.theme); applyTheme(btn.dataset.theme); });
+  });
+  document.querySelectorAll('.settings-option[data-textsize]').forEach(btn => {
+    btn.addEventListener('click', () => { saveSetting('ielts-textsize', btn.dataset.textsize); applyTextSize(btn.dataset.textsize); });
+  });
+
+  darkQuery.addEventListener('change', () => {
+    if (readSetting('ielts-theme', 'light') === 'system') applyTheme('system');
+  });
+
+  document.getElementById('settings-btn').addEventListener('click', () => {
+    settingsModal.style.display = 'flex';
+  });
+
+  // Admin unlock
+  let adminSettingsUnlocked = false;
+  let adminFrozen = false;
+  const ADMIN_PW = '456654';
+  document.getElementById('admin-unlock-settings').addEventListener('click', adminSettingsUnlock);
+  document.getElementById('admin-pw-settings').addEventListener('keydown', e => { if (e.key === 'Enter') adminSettingsUnlock(); });
+  function adminSettingsUnlock() {
+    const pw = document.getElementById('admin-pw-settings').value;
+    if (pw === ADMIN_PW) {
+      adminSettingsUnlocked = true;
+      document.getElementById('admin-login-section').style.display = 'none';
+      document.getElementById('admin-controls-settings').style.display = 'flex';
+    } else {
+      document.getElementById('admin-pw-err-settings').textContent = 'Wrong password.';
+      document.getElementById('admin-pw-settings').value = '';
+    }
+  }
+  document.getElementById('admin-lock-btn').addEventListener('click', () => {
+    adminSettingsUnlocked = false;
+    document.getElementById('admin-login-section').style.display = '';
+    document.getElementById('admin-controls-settings').style.display = 'none';
+    document.getElementById('admin-pw-settings').value = '';
+    document.getElementById('admin-pw-err-settings').textContent = '';
+  });
+  document.getElementById('admin-freeze-btn-s').addEventListener('click', () => {
+    adminFrozen = !adminFrozen;
+    document.getElementById('admin-freeze-btn-s').textContent = adminFrozen ? '▶ Resume Timer' : '⏸ Freeze Timer';
+    document.getElementById('admin-timer-status-s').textContent = adminFrozen ? 'Frozen ❄️' : 'Running';
+    document.getElementById('admin-timer-status-s').style.color = adminFrozen ? '#e53e3e' : '#6b7280';
+  });
+  document.getElementById('admin-minus5').addEventListener('click', () => { timeInSeconds = Math.max(0, timeInSeconds - 300); updateTimerDisplay(); });
+  document.getElementById('admin-plus5').addEventListener('click', () => { timeInSeconds = Math.min(7200, timeInSeconds + 300); updateTimerDisplay(); });
+  function updateTimerDisplay() {
+    const d = document.getElementById('timer-display');
+    d.textContent = Math.ceil(timeInSeconds / 60) + 'm remaining';
+    if (timeInSeconds <= 300) d.classList.add('timer-warning');
+    else d.classList.remove('timer-warning');
+  }
+
+  // Patch timerInterval to respect adminFrozen
+  document.getElementById('start-test-btn').addEventListener('click', function() {
+    setTimeout(() => {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(function() {
+        if (adminFrozen) return;
+        timeInSeconds--;
+        updateTimerDisplay();
+        if (timeInSeconds <= 0) { clearInterval(timerInterval); handleTimeUp(); }
+      }, 1000);
+    }, 200);
+  }, true);
+
+    document.getElementById('settings-close').addEventListener('click', () => {
+    settingsModal.style.display = 'none';
+  });
+  settingsModal.addEventListener('click', (e) => {
+    if (e.target === settingsModal) settingsModal.style.display = 'none';
+  });
+  document.getElementById('reset-settings-btn').addEventListener('click', () => {
+    saveSetting('ielts-theme', 'light');
+    saveSetting('ielts-textsize', 'default');
+    applyTheme('light');
+    applyTextSize('default');
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    applyTheme(readSetting('ielts-theme', 'light'));
+    applyTextSize(readSetting('ielts-textsize', 'default'));
+  });
+  applyTheme(readSetting('ielts-theme', 'light'));
+  applyTextSize(readSetting('ielts-textsize', 'default'));
+})();
+</script>
+</body>
+</html>
